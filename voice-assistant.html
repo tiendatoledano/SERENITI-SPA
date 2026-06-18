@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Asistente de Voz IA | Serenity Spa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --gold:#C9A961;--gold-deep:#A8883F;--bg:#0E0F0D;
+            --bg-card:rgba(22,24,20,.82);--text:#F5F2EB;
+            --text-muted:rgba(245,242,235,.35);--border:rgba(255,255,255,.06);
+        }
+        body{
+            font-family:'DM Sans',sans-serif;background:var(--bg);
+            min-height:100dvh;display:flex;align-items:center;justify-content:center;
+            padding:1rem;
+        }
+        .card{
+            width:100%;max-width:480px;background:var(--bg-card);
+            backdrop-filter:blur(28px);border-radius:40px;
+            border:1px solid var(--border);overflow:hidden;
+        }
+        .header{
+            padding:2rem 1.75rem 1.5rem;border-bottom:1px solid var(--border);
+            text-align:center;position:relative;
+        }
+        .avatar{
+            width:80px;height:80px;border-radius:50%;
+            background:linear-gradient(135deg,var(--gold),var(--gold-deep));
+            display:flex;align-items:center;justify-content:center;
+            margin:0 auto;box-shadow:0 8px 32px rgba(201,169,97,.35);
+            transition:all .3s;
+        }
+        .avatar.speaking{animation:avatarPulse .6s ease-in-out infinite}
+        .avatar.thinking{animation:avatarPulse 1.2s ease-in-out infinite}
+        @keyframes avatarPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+        .avatar svg{width:32px;height:32px;color:white}
+        .title{
+            font-family:'Playfair Display',serif;font-size:1.35rem;
+            color:var(--text);margin-top:.75rem;
+        }
+        .subtitle{
+            font-size:.7rem;color:var(--text-muted);margin-top:.25rem;
+        }
+        .status{
+            display:inline-flex;align-items:center;gap:.5rem;
+            padding:.35rem .9rem;border-radius:40px;
+            background:rgba(255,255,255,.05);font-size:.7rem;
+            color:var(--text);margin-top:.75rem;
+        }
+        .dot{width:7px;height:7px;border-radius:50%;background:#6DB98C}
+        .dot.recording{background:#E8A060;animation:blink .8s infinite alternate}
+        .dot.speaking{background:#6BA3D6;animation:blink .5s infinite alternate}
+        .dot.thinking{background:#C9A961;animation:blink 1s infinite alternate}
+        .dot.offline{background:#dc2626}
+        @keyframes blink{from{opacity:1}to{opacity:.35}}
+        
+        .conversation{
+            height:350px;overflow-y:auto;padding:1.25rem;
+            display:flex;flex-direction:column;gap:.9rem;
+        }
+        .message{display:flex;gap:.6rem;align-items:flex-end}
+        .message.user{flex-direction:row-reverse}
+        .msg-pip{
+            width:28px;height:28px;border-radius:50%;
+            background:linear-gradient(135deg,var(--gold),var(--gold-deep));
+            display:flex;align-items:center;justify-content:center;
+            font-size:.65rem;color:white;flex-shrink:0;
+        }
+        .message.user .msg-pip{background:rgba(255,255,255,.1);color:var(--gold)}
+        .bubble{
+            max-width:76%;padding:.65rem 1rem;border-radius:18px;
+            font-size:.84rem;line-height:1.55;color:var(--text);
+        }
+        .message.bot .bubble{
+            background:rgba(255,255,255,.07);border:1px solid var(--border);
+            border-bottom-left-radius:4px;white-space:pre-line;
+        }
+        .message.user .bubble{
+            background:linear-gradient(135deg,var(--gold),var(--gold-deep));
+            color:#1A160A;font-weight:500;border-bottom-right-radius:4px;
+        }
+        .ia-badge{
+            display:inline-flex;align-items:center;gap:.3rem;
+            background:rgba(201,169,97,.15);color:var(--gold);
+            padding:.15rem .5rem;border-radius:10px;font-size:.6rem;
+            margin-left:.5rem;
+        }
+        .controls{
+            padding:1.4rem 1.75rem 1.75rem;border-top:1px solid var(--border);
+            display:flex;align-items:center;justify-content:space-between;
+        }
+        .btn-back{
+            padding:.6rem 1.15rem;border-radius:40px;
+            background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);
+            color:var(--text);text-decoration:none;font-size:.8rem;
+            transition:all .2s;
+        }
+        .btn-back:hover{background:rgba(255,255,255,.12)}
+        .btn-mic{
+            width:72px;height:72px;border-radius:50%;
+            background:linear-gradient(145deg,#E8C97A,#A8883F);
+            border:none;color:white;font-size:1.5rem;cursor:pointer;
+            box-shadow:0 8px 32px rgba(201,169,97,.4);
+            display:flex;align-items:center;justify-content:center;
+            transition:all .3s;
+        }
+        .btn-mic.recording{
+            background:linear-gradient(145deg,#F0A060,#C06030);
+            animation:pulse 1.5s infinite;
+        }
+        .btn-mic:active{transform:scale(.95)}
+        @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+        
+        .btn-mode{
+            padding:.5rem 1rem;border-radius:40px;
+            background:transparent;border:1px solid rgba(255,255,255,.15);
+            color:var(--text);font-size:.7rem;cursor:pointer;
+            transition:all .2s;font-family:inherit;
+        }
+        .btn-mode:hover{border-color:var(--gold);color:var(--gold)}
+        .btn-mode.active{background:rgba(201,169,97,.15);border-color:var(--gold);color:var(--gold)}
+        
+        .codigo-info{
+            background:rgba(201,169,97,.1);
+            border:1px solid rgba(201,169,97,.2);
+            border-radius:12px;
+            padding:.75rem;
+            margin:.5rem 1rem;
+            font-size:.7rem;
+            color:var(--gold);
+            display:flex;
+            align-items:center;
+            gap:.5rem;
+        }
+        .codigo-info i{font-size:.9rem}
+        
+        @media(max-width:520px){
+            .card{border-radius:24px}
+            .conversation{height:280px}
+            .btn-mic{width:64px;height:64px}
+        }
+    </style>
+</head>
+<body>
+
+<main class="card">
+    <header class="header">
+        <div class="avatar" id="avatarEl">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+                <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+        </div>
+        <h1 class="title">Asistente de Voz IA</h1>
+        <p class="subtitle">Mantené presionado el micrófono para hablar</p>
+        <div class="status">
+            <span class="dot" id="statusDot"></span>
+            <span id="statusText">Conectando...</span>
+            <span class="ia-badge" id="iaBadge" style="display:none">
+                <i class="fas fa-robot"></i> IA
+            </span>
+        </div>
+    </header>
+    
+    <div class="codigo-info" id="codigoInfo" style="display:none">
+        <i class="fas fa-key"></i>
+        <span>Para cancelar tu reserva, solo necesitas tu código de 6 dígitos</span>
+    </div>
+    
+    <section class="conversation" id="conversation"></section>
+    
+    <footer class="controls">
+        <a href="/" class="btn-back">← Volver</a>
+        
+        <button class="btn-mic" id="micBtn" title="Mantené presionado para hablar">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+                <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+        </button>
+        
+        <button class="btn-mode" id="btnMode" title="Cambiar modo">
+            <i class="fas fa-keyboard"></i>
+        </button>
+    </footer>
+    
+    <div id="textInputArea" style="display:none;padding:0 1.75rem 1.75rem;border-top:1px solid var(--border)">
+        <div style="display:flex;gap:.5rem">
+            <input type="text" id="textInput" placeholder="Escribe tu mensaje..." style="flex:1;padding:.75rem 1rem;border-radius:40px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:var(--text);font-family:inherit;font-size:.85rem;outline:none">
+            <button id="btnSendText" style="padding:.75rem 1.25rem;border-radius:40px;background:var(--gold);border:none;color:#1A160A;cursor:pointer;font-weight:600;font-family:inherit;font-size:.8rem">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</main>
+
+<script>
+(function() {
+    'use strict';
+    
+    // ============================================================
+    // DOM REFS
+    // ============================================================
+    const micBtn = document.getElementById('micBtn');
+    const statusDot = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    const conversation = document.getElementById('conversation');
+    const avatarEl = document.getElementById('avatarEl');
+    const iaBadge = document.getElementById('iaBadge');
+    const btnMode = document.getElementById('btnMode');
+    const textInputArea = document.getElementById('textInputArea');
+    const textInput = document.getElementById('textInput');
+    const btnSendText = document.getElementById('btnSendText');
+    const codigoInfo = document.getElementById('codigoInfo');
+    
+    // ============================================================
+    // ESTADO DE RESERVA
+    // ============================================================
+    let clientName = null;
+    let clientPhone = null;
+    let clientCountry = '53';
+    let selectedMassageType = null;
+    let bookingState = null;
+    let pendingBooking = {
+        nombre: '', dia: '', hora: null, massageType: null,
+        telefono: null, codigoPais: '53', ubicacion: null, tipoServicio: 'salon'
+    };
+    let availableMassages = [];
+    let turnosExistentes = [];
+    let horariosGlobal = { dias: [], horarios: [] };
+    let useIA = false;
+    let isSpeaking = false;
+    let isThinking = false;
+    let isRecording = false;
+    let recognition = null;
+    let speechQueue = [];
+    let codigoCancelacionMostrado = null;
+    let cancelacionActiva = false;
+    
+    // ============================================================
+    // FUNCIONES DE UTILIDAD MEJORADAS
+    // ============================================================
+    function escapeHtml(str) {
+        if (!str) return '';
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    }
+    
+    function detectarPaisDesdeTexto(texto) {
+        const t = texto.toLowerCase().trim();
+        const paises = [
+            { nombre: 'Cuba', codigo: '53', claves: ['cuba'] },
+            { nombre: 'Argentina', codigo: '54', claves: ['argentina','arg'] },
+            { nombre: 'México', codigo: '52', claves: ['méxico','mexico','mex'] },
+            { nombre: 'Colombia', codigo: '57', claves: ['colombia','colom'] },
+            { nombre: 'Chile', codigo: '56', claves: ['chile','chil'] },
+            { nombre: 'Perú', codigo: '51', claves: ['perú','peru'] },
+            { nombre: 'España', codigo: '34', claves: ['españa','espania'] },
+            { nombre: 'Venezuela', codigo: '58', claves: ['venezuela','vene'] },
+            { nombre: 'Ecuador', codigo: '593', claves: ['ecuador','ecua'] },
+            { nombre: 'Uruguay', codigo: '598', claves: ['uruguay','uru'] },
+            { nombre: 'Paraguay', codigo: '595', claves: ['paraguay','para'] },
+            { nombre: 'Bolivia', codigo: '591', claves: ['bolivia','bol'] },
+            { nombre: 'Estados Unidos', codigo: '1', claves: ['estados unidos','usa','eeuu'] },
+            { nombre: 'Brasil', codigo: '55', claves: ['brasil','brazil'] },
+            { nombre: 'Italia', codigo: '39', claves: ['italia','ital'] },
+            { nombre: 'Francia', codigo: '33', claves: ['francia','fran'] },
+        ];
+        for (const pais of paises)
+            for (const clave of pais.claves)
+                if (t.includes(clave)) return pais;
+        return null;
+    }
+    
+    function extraerNombre(texto) {
+        const t = texto.toLowerCase().trim();
+        
+        // Si es una solicitud de cancelación, no extraer nombre
+        if (esSolicitudCancelacion(texto)) {
+            return null;
+        }
+        
+        const patrones = [
+            /(?:mi\s+nombre\s+es|me\s+llamo|soy|yo\s+soy)\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]*(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]*){0,2})/i,
+            /(?:hola|buenas?\s*(?:tardes|días|noches)).*?(?:soy|me\s+llamo|mi\s+nombre\s+es)\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]*(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]*){0,2})/i,
+            /^([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)(?:\s+(?:quisiera|quiero|reservar|para|un|masaje|turno|por|favor))?$/i,
+            /nombre\s+es\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]*(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]*){0,2})/i,
+            /llamo\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]*(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]*){0,2})/i,
+        ];
+        
+        for (const patron of patrones) {
+            const match = t.match(patron);
+            if (match && match[1]) {
+                let nombre = match[1].trim().replace(/[^A-ZÁÉÍÓÚÑa-záéíóúñ\s]/g, '');
+                const partes = nombre.split(/\s+/);
+                if (partes.length > 0 && partes[0].length >= 2) {
+                    return partes[0].charAt(0).toUpperCase() + partes[0].slice(1).toLowerCase();
+                }
+                if (nombre.length >= 2) return nombre;
+            }
+        }
+        
+        const palabras = t.split(/\s+/);
+        if (palabras.length >= 1) {
+            const primera = palabras[0];
+            if (primera.length >= 2 && /^[a-záéíóúñ]{2,15}$/.test(primera)) {
+                const comunes = ['hola', 'buenos', 'buenas', 'quiero', 'quisiera', 'necesito', 'reservar', 'turno', 'cita', 'por', 'favor', 'gracias', 'me', 'mi', 'es', 'de', 'un', 'una', 'para', 'en', 'el', 'la', 'cancelar', 'anular', 'eliminar'];
+                if (!comunes.includes(primera)) {
+                    return primera.charAt(0).toUpperCase() + primera.slice(1);
+                }
+            }
+        }
+        
+        return null;
+    }
+    
+    function detectarTipoMasaje(texto) {
+        const t = texto.toLowerCase().trim();
+        for (const servicio of availableMassages) {
+            const nombre = servicio.nombre.toLowerCase();
+            if (t.includes(nombre) || t.includes(nombre.replace('masaje ', '').trim())) {
+                return servicio;
+            }
+            const palabrasClave = nombre.split(' ');
+            let coincidencias = 0;
+            for (const palabra of palabrasClave) {
+                if (palabra.length > 2 && t.includes(palabra)) {
+                    coincidencias++;
+                }
+            }
+            if (coincidencias >= palabrasClave.length * 0.6) {
+                return servicio;
+            }
+        }
+        return null;
+    }
+    
+    function detectarIntencionReserva(texto) {
+        const t = texto.toLowerCase().trim();
+        // Si es cancelación, no es reserva
+        if (esSolicitudCancelacion(texto)) {
+            return false;
+        }
+        const palabrasReserva = [
+            'reservar', 'reserva', 'turno', 'cita', 'agendar', 'agenda',
+            'quiero', 'quisiera', 'necesito', 'me gustaría', 'me gustaria',
+            'puedo', 'puede', 'disponible', 'horario', 'quería',
+            'realizar', 'solicitar', 'pedir', 'tomar', 'sacar',
+            'deseo', 'me gustaria', 'me gustaría', 'poder'
+        ];
+        for (const palabra of palabrasReserva) {
+            if (t.includes(palabra)) return true;
+        }
+        return false;
+    }
+    
+    function detectarCodigoEnTexto(texto) {
+        const match = texto.match(/\b([A-Z0-9]{6})\b/i);
+        if (match) return match[1].toUpperCase();
+        return null;
+    }
+    
+    function esSolicitudCancelacion(texto) {
+        const t = texto.toLowerCase().trim();
+        const palabrasCancelacion = ['cancelar', 'anular', 'eliminar', 'cancelación', 'cancelacion', 'borrar'];
+        for (const palabra of palabrasCancelacion) {
+            if (t.includes(palabra)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    // ============================================================
+    // FUNCIONES DE FECHA MEJORADAS
+    // ============================================================
+    function detectarFechaCompleta(texto) {
+        const t = texto.toLowerCase().trim();
+        
+        const diasMap = {
+            'lunes': 'lunes', 'martes': 'martes', 'miercoles': 'miercoles',
+            'miércoles': 'miercoles', 'jueves': 'jueves', 'viernes': 'viernes',
+            'sabado': 'sabado', 'sábado': 'sabado', 'domingo': 'domingo'
+        };
+        
+        let diaEncontrado = null;
+        for (const [key, value] of Object.entries(diasMap)) {
+            if (t.includes(key)) {
+                diaEncontrado = value;
+                break;
+            }
+        }
+        
+        if (t.includes('hoy')) {
+            const hoy = new Date();
+            const diasSemana = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+            diaEncontrado = diasSemana[hoy.getDay()];
+        } else if (t.includes('mañana') || t.includes('mañana')) {
+            const manana = new Date();
+            manana.setDate(manana.getDate() + 1);
+            const diasSemana = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+            diaEncontrado = diasSemana[manana.getDay()];
+        }
+        
+        let horaEncontrada = null;
+        const horaRegex = /\b(1[0-9]|2[0-3]|[0-9])\b/;
+        const match = t.match(horaRegex);
+        if (match) {
+            const hora = parseInt(match[1]);
+            if (hora >= 0 && hora <= 23) {
+                horaEncontrada = hora;
+            }
+        }
+        
+        return {
+            dia: diaEncontrado,
+            hora: horaEncontrada,
+            textoCompleto: t
+        };
+    }
+    
+    function obtenerSugerenciaFecha(turnos, diaSugerido, horaSugerida) {
+        const diasSemana = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+        const hoy = new Date();
+        const diaActual = diasSemana[hoy.getDay()];
+        
+        if (!diaSugerido || !horariosGlobal.dias.includes(diaSugerido)) {
+            for (let i = 0; i < 7; i++) {
+                const fecha = new Date();
+                fecha.setDate(fecha.getDate() + i);
+                const diaSemana = diasSemana[fecha.getDay()];
+                if (horariosGlobal.dias.includes(diaSemana)) {
+                    const horariosLibres = horariosGlobal.horarios.map(h => parseInt(h.split(':')[0]))
+                        .filter(h => !turnos.some(t => t.dia === diaSemana && t.hora === h));
+                    if (horariosLibres.length > 0) {
+                        return {
+                            dia: diaSemana,
+                            hora: horariosLibres[0],
+                            fechaTexto: formatearFecha(fecha)
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+        
+        const idxDia = horariosGlobal.dias.indexOf(diaSugerido);
+        const idxHoy = horariosGlobal.dias.indexOf(diaActual);
+        
+        if (idxDia < idxHoy) {
+            for (let i = 1; i <= 7; i++) {
+                const fecha = new Date();
+                fecha.setDate(fecha.getDate() + i);
+                const diaSemana = diasSemana[fecha.getDay()];
+                if (horariosGlobal.dias.includes(diaSemana)) {
+                    const horariosLibres = horariosGlobal.horarios.map(h => parseInt(h.split(':')[0]))
+                        .filter(h => !turnos.some(t => t.dia === diaSemana && t.hora === h));
+                    if (horariosLibres.length > 0) {
+                        return {
+                            dia: diaSemana,
+                            hora: horariosLibres[0],
+                            fechaTexto: formatearFecha(fecha)
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+        
+        const horariosDisponibles = horariosGlobal.horarios.map(h => parseInt(h.split(':')[0]))
+            .filter(h => !turnos.some(t => t.dia === diaSugerido && t.hora === h));
+        
+        if (horariosDisponibles.length > 0) {
+            if (horaSugerida !== null && horariosDisponibles.includes(horaSugerida)) {
+                return {
+                    dia: diaSugerido,
+                    hora: horaSugerida,
+                    fechaTexto: `el ${diaSugerido}`
+                };
+            }
+            return {
+                dia: diaSugerido,
+                hora: horariosDisponibles[0],
+                fechaTexto: `el ${diaSugerido}`
+            };
+        }
+        
+        for (let i = 1; i <= 7; i++) {
+            const fecha = new Date();
+            fecha.setDate(fecha.getDate() + i);
+            const diaSemana = diasSemana[fecha.getDay()];
+            if (horariosGlobal.dias.includes(diaSemana)) {
+                const horariosLibres = horariosGlobal.horarios.map(h => parseInt(h.split(':')[0]))
+                    .filter(h => !turnos.some(t => t.dia === diaSemana && t.hora === h));
+                if (horariosLibres.length > 0) {
+                    return {
+                        dia: diaSemana,
+                        hora: horariosLibres[0],
+                        fechaTexto: formatearFecha(fecha)
+                    };
+                }
+            }
+        }
+        
+        return null;
+    }
+    
+    function formatearFecha(fecha) {
+        if (!fecha) return '';
+        const diasSemana = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+        const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+        return `${diasSemana[fecha.getDay()]} ${fecha.getDate()} de ${meses[fecha.getMonth()]}`;
+    }
+    
+    function esFechaValida(dia) {
+        if (!dia) return false;
+        const diasSemana = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+        const hoy = new Date();
+        const diaActual = diasSemana[hoy.getDay()];
+        const indiceDia = horariosGlobal.dias.indexOf(dia);
+        const indiceHoy = horariosGlobal.dias.indexOf(diaActual);
+        if (indiceDia === -1) return false;
+        if (indiceDia >= indiceHoy) return true;
+        return false;
+    }
+    
+    // ============================================================
+    // CARGA DE DATOS INICIALES
+    // ============================================================
+    async function cargarDatosIniciales() {
+        try {
+            const [serviciosResp, turnosResp, horariosResp] = await Promise.all([
+                fetch('/api/servicios'),
+                fetch('/turnos'),
+                fetch('/api/config/horarios')
+            ]);
+            
+            if (serviciosResp.ok) {
+                availableMassages = await serviciosResp.json();
+            }
+            if (turnosResp.ok) {
+                turnosExistentes = await turnosResp.json();
+            }
+            if (horariosResp.ok) {
+                horariosGlobal = await horariosResp.json();
+            }
+        } catch(e) {
+            console.warn('Error cargando datos:', e);
+        }
+    }
+    
+    // ============================================================
+    // VOZ NATURAL (Text-to-Speech)
+    // ============================================================
+    function speakNatural(texto) {
+        if (!window.speechSynthesis) return;
+        
+        let limpio = texto
+            .replace(/[\u{1F600}-\u{1F6FF}]/gu, '')
+            .replace(/[\u2600-\u26FF]/gu, '')
+            .replace(/<[^>]*>/g, '')
+            .replace(/\*/g, '')
+            .replace(/_/g, '')
+            .replace(/[#\[\]()]/g, '')
+            .replace(/[^\w\sáéíóúñü.,;:!?¿¡]/gi, '')
+            .trim();
+        
+        if (!limpio) return;
+        
+        window.speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(limpio);
+        utterance.lang = 'es-AR';
+        utterance.rate = 0.9;
+        utterance.pitch = 1.0;
+        utterance.volume = 1;
+        
+        const voices = window.speechSynthesis.getVoices();
+        const bestVoice = 
+            voices.find(v => v.lang === 'es-AR' && v.name.includes('Google')) ||
+            voices.find(v => v.lang === 'es-MX' && v.name.includes('Google')) ||
+            voices.find(v => v.lang === 'es-ES' && v.name.includes('Google')) ||
+            voices.find(v => v.lang.startsWith('es-AR')) ||
+            voices.find(v => v.lang.startsWith('es-MX')) ||
+            voices.find(v => v.lang.startsWith('es-ES')) ||
+            voices.find(v => v.lang.startsWith('es'));
+        
+        if (bestVoice) utterance.voice = bestVoice;
+        
+        utterance.onstart = () => {
+            isSpeaking = true;
+            avatarEl.classList.add('speaking');
+            statusDot.className = 'dot speaking';
+            statusText.textContent = 'Hablando...';
+        };
+        
+        utterance.onend = () => {
+            isSpeaking = false;
+            avatarEl.classList.remove('speaking');
+            statusDot.className = 'dot';
+            statusText.textContent = 'Escuchando...';
+            if (speechQueue.length > 0) {
+                setTimeout(() => speakNatural(speechQueue.shift()), 400);
+            }
+        };
+        
+        utterance.onerror = () => {
+            isSpeaking = false;
+            avatarEl.classList.remove('speaking');
+            statusDot.className = 'dot';
+            statusText.textContent = 'Escuchando...';
+        };
+        
+        window.speechSynthesis.speak(utterance);
+    }
+    
+    if (window.speechSynthesis) {
+        window.speechSynthesis.getVoices();
+        window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    }
+    
+    // ============================================================
+    // MENSAJES
+    // ============================================================
+    function addMessage(texto, who) {
+        let textoLimpio = texto
+            .replace(/[\u{1F300}-\u{1F6FF}]/gu, '')
+            .replace(/[\u2600-\u26FF]/gu, '')
+            .trim();
+        if (!textoLimpio) textoLimpio = texto;
+        
+        const row = document.createElement('div');
+        row.className = 'message ' + (who === 'user' ? 'user' : 'bot');
+        
+        const pip = document.createElement('div');
+        pip.className = 'msg-pip';
+        pip.textContent = who === 'user' ? 'T' : 'S';
+        
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.textContent = textoLimpio;
+        
+        row.appendChild(pip);
+        row.appendChild(bubble);
+        conversation.appendChild(row);
+        conversation.scrollTop = conversation.scrollHeight;
+        
+        if (who === 'bot') {
+            if (isSpeaking) {
+                speechQueue.push(textoLimpio);
+            } else {
+                speakNatural(textoLimpio);
+            }
+        }
+    }
+    
+    function showThinking() {
+        isThinking = true;
+        avatarEl.classList.add('thinking');
+        statusDot.className = 'dot thinking';
+        statusText.textContent = 'Pensando...';
+    }
+    
+    function hideThinking() {
+        isThinking = false;
+        avatarEl.classList.remove('thinking');
+        statusDot.className = 'dot';
+        statusText.textContent = 'Escuchando...';
+    }
+    
+    // ============================================================
+    // MOSTRAR MENÚ DE MASAJES
+    // ============================================================
+    function showMassageMenu() {
+        let menu = '💆 **Nuestros masajes disponibles:**\n\n';
+        availableMassages.forEach((m, i) => {
+            menu += `${i+1}. **${m.nombre}** - ${m.precio}\n   ${m.descripcion.substring(0, 60)}...\n\n`;
+        });
+        menu += 'Responde con el número del masaje que deseas o escribe el nombre.';
+        addMessage(menu, 'bot');
+    }
+    
+    // ============================================================
+    // PREGUNTAR PAÍS
+    // ============================================================
+    function preguntarPais() {
+        addMessage('🌍 ¿De qué país eres?', 'bot');
+        bookingState = 'awaiting_country';
+    }
+    
+    // ============================================================
+    // INICIAR RESERVA DIRECTA
+    // ============================================================
+    function iniciarReservaDirect() {
+        if (clientName && clientPhone && clientCountry) {
+            pendingBooking = {
+                nombre: clientName, dia: '', hora: null, massageType: null,
+                telefono: clientPhone, codigoPais: clientCountry || '53',
+                ubicacion: null, tipoServicio: 'salon'
+            };
+            bookingState = 'selecting_massage_simple';
+            showMassageMenu();
+        } else if (clientName && clientCountry) {
+            bookingState = 'awaiting_phone_simple';
+            addMessage('📱 Para reservar, necesito tu número de teléfono. ¿Cuál es?', 'bot');
+        } else if (clientName) {
+            bookingState = 'awaiting_country_simple';
+            preguntarPais();
+        } else {
+            bookingState = 'awaiting_name_simple';
+            addMessage('📝 Para reservar un turno, necesito tu nombre. ¿Cuál es?', 'bot');
+        }
+    }
+    
+    // ============================================================
+    // CONFIRMAR RESERVA (API)
+    // ============================================================
+    async function confirmarReserva() {
+        const datos = {
+            nombre: pendingBooking.nombre,
+            dia: pendingBooking.dia,
+            hora: pendingBooking.hora,
+            massageType: pendingBooking.massageType,
+            telefono: pendingBooking.telefono,
+            codigoPais: pendingBooking.codigoPais || '53',
+            ubicacion: pendingBooking.ubicacion || 'Salón Serenity Spa',
+            tipoServicio: pendingBooking.tipoServicio || 'salon'
+        };
+        
+        if (!datos.nombre || !datos.dia || datos.hora === null || !datos.massageType || !datos.telefono) {
+            addMessage('❌ Faltan datos para completar la reserva. Por favor, verifica la información.', 'bot');
+            return;
+        }
+        
+        showThinking();
+        
+        try {
+            const response = await fetch('/turnos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            });
+            const data = await response.json();
+            hideThinking();
+            
+            if (response.ok) {
+                codigoCancelacionMostrado = data.codigoCancelacion || 'N/A';
+                
+                let imagenUrl = '';
+                const servicio = availableMassages.find(s => s.nombre === datos.massageType);
+                if (servicio && servicio.imagenWhatsApp) {
+                    imagenUrl = servicio.imagenWhatsApp;
+                } else if (servicio && servicio.imagenWeb) {
+                    imagenUrl = servicio.imagenWeb;
+                }
+                if (!imagenUrl) {
+                    imagenUrl = 'https://i.postimg.cc/HWzhR73W/photo-1519823551278-64ac92734fb1.jpg';
+                }
+                
+                const tipoTexto = datos.tipoServicio === 'domicilio' ? `📍 Dirección: ${datos.ubicacion}` : '📍 Serenity Spa';
+                
+                const mensajeConfirmacion = `✅ **¡RESERVA CONFIRMADA!**
+
+📅 **Día:** ${datos.dia}
+⏰ **Hora:** ${datos.hora}:00 hs
+💆 **Masaje:** ${datos.massageType}
+${tipoTexto}
+📱 **Teléfono:** +${datos.codigoPais} ${datos.telefono}
+
+🔑 **Código de cancelación:** **${codigoCancelacionMostrado}**
+
+⚠️ **Importante:**
+• Tienes 4 horas de antelación para cancelar tu reserva.
+• Para cancelar, solo debes informar que deseas cancelar.
+• **GUARDA ESTE CÓDIGO** - Solo se muestra una vez.
+• **NO LO COMPARTAS** con nadie.
+
+🌿 **Te esperamos en Serenity Spa**`;
+
+                addMessage(mensajeConfirmacion, 'bot');
+                
+                bookingState = null;
+                pendingBooking = { nombre: clientName, dia: '', hora: null, massageType: null, telefono: clientPhone, codigoPais: datos.codigoPais, ubicacion: null, tipoServicio: 'salon' };
+                await cargarDatosIniciales();
+            } else {
+                if (data.sugerencia) {
+                    addMessage(`📌 ${data.mensaje || data.error}\n\n¿Te gustaría reservar para ${data.sugerencia.fechaTexto} a las ${data.sugerencia.hora}:00? (responde "sí" o "no")`, 'bot');
+                    bookingState = 'awaiting_suggestion';
+                    window._sugerenciaData = data.sugerencia;
+                } else if (data.alternativa) {
+                    addMessage(`El horario está ocupado. Tengo disponible ${data.alternativa.dia} a las ${data.alternativa.hora}:00. ¿Te sirve? (responde "sí" o "no")`, 'bot');
+                    bookingState = 'awaiting_alternative';
+                    window._alternativaData = data.alternativa;
+                } else {
+                    addMessage(`Error: ${data.error || 'No se pudo reservar'}`, 'bot');
+                }
+            }
+        } catch (error) {
+            hideThinking();
+            addMessage('Error de conexión. Intentá nuevamente.', 'bot');
+        }
+    }
+    
+    // ============================================================
+    // CANCELAR CON CÓDIGO
+    // ============================================================
+    async function cancelarConCodigo(codigo) {
+        showThinking();
+        try {
+            const response = await fetch('/api/cancelar-por-codigo', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ codigo: codigo.toUpperCase() })
+            });
+            const data = await response.json();
+            hideThinking();
+            
+            if (data.success) {
+                addMessage(data.mensaje, 'bot');
+                await cargarDatosIniciales();
+                cancelacionActiva = false;
+            } else {
+                addMessage(data.error || 'Código inválido. Verifica tu código de cancelación.', 'bot');
+            }
+        } catch(e) {
+            hideThinking();
+            addMessage('Error al cancelar. Intentá nuevamente.', 'bot');
+        }
+    }
+    
+    // ============================================================
+    // PROCESAR MENSAJE - LÓGICA COMPLETA CORREGIDA
+    // ============================================================
+    async function procesarMensaje(msg) {
+        const userMsg = msg.toLowerCase().trim();
+        
+        // ============================================================
+        // CASO 0: DETECTAR CANCELACIÓN (SIEMPRE PRIMERO)
+        // ============================================================
+        const codigo = detectarCodigoEnTexto(msg);
+        const esCancelacion = esSolicitudCancelacion(msg);
+        
+        // Si el usuario quiere cancelar y tiene código
+        if (esCancelacion && codigo) {
+            await cancelarConCodigo(codigo);
+            return;
+        }
+        
+        // Si el usuario quiere cancelar pero no tiene código
+        if (esCancelacion) {
+            addMessage('🔑 Para cancelar tu reserva, necesito tu código de 6 dígitos (ejemplo: A3B7X9).\n\nEl código lo recibiste en el mensaje de confirmación de tu reserva.\n\nSi no encuentras el código, contacta con nosotros directamente.', 'bot');
+            cancelacionActiva = true;
+            return;
+        }
+        
+        // Si estamos en modo cancelación esperando código
+        if (cancelacionActiva) {
+            if (codigo) {
+                await cancelarConCodigo(codigo);
+                return;
+            } else {
+                addMessage('🔑 Por favor, ingresa tu código de 6 dígitos para cancelar la reserva.\n\nEjemplo: A3B7X9', 'bot');
+                return;
+            }
+        }
+        
+        // ============================================================
+        // DETECCIONES PARA RESERVA
+        // ============================================================
+        const quiereReservar = detectarIntencionReserva(msg);
+        const servicioDetectado = detectarTipoMasaje(msg);
+        const fechaDetectada = detectarFechaCompleta(msg);
+        const paisDetectado = detectarPaisDesdeTexto(msg);
+        const nombreExtraido = extraerNombre(msg);
+        
+        console.log('📝 Procesando mensaje:', msg);
+        console.log('📊 Detección:', { quiereReservar, servicioDetectado, fechaDetectada, paisDetectado, nombreExtraido });
+        console.log('📋 Datos del cliente:', { nombre: clientName, telefono: clientPhone, pais: clientCountry });
+        console.log('📌 Estado actual:', bookingState);
+        
+        // ============================================================
+        // CASO 1: DETECTAR UBICACIÓN (SALÓN / DOMICILIO)
+        // ============================================================
+        const esSalon = userMsg.includes('salón') || userMsg.includes('salon') || userMsg.includes('en el salón') || userMsg === '1';
+        const esDomicilio = userMsg.includes('domicilio') || userMsg.includes('casa') || userMsg === '2';
+        
+        if (bookingState === 'awaiting_service_type') {
+            if (esSalon) {
+                pendingBooking.tipoServicio = 'salon';
+                pendingBooking.ubicacion = 'Salón Serenity Spa';
+                await confirmarReserva();
+                return;
+            } else if (esDomicilio) {
+                pendingBooking.tipoServicio = 'domicilio';
+                bookingState = 'awaiting_location';
+                addMessage(`🚗 Servicio a domicilio.\n\n📍 Por favor, ingresa tu dirección completa:`, 'bot');
+                return;
+            } else {
+                addMessage(`Por favor, responde con "1" para salón o "2" para domicilio.`, 'bot');
+                return;
+            }
+        }
+        
+        // ============================================================
+        // CASO 2: DETECTAR TODOS LOS DATOS EN UN SOLO MENSAJE
+        // ============================================================
+        if (servicioDetectado && nombreExtraido) {
+            const mencionaSalon = userMsg.includes('salón') || userMsg.includes('salon') || userMsg.includes('en el salón');
+            const mencionaDomicilio = userMsg.includes('domicilio') || userMsg.includes('casa');
+            const tieneFecha = fechaDetectada.dia && fechaDetectada.hora !== null;
+            
+            // Guardar nombre y servicio
+            if (!clientName) {
+                clientName = nombreExtraido;
+            }
+            selectedMassageType = servicioDetectado.nombre;
+            pendingBooking.nombre = clientName;
+            pendingBooking.massageType = selectedMassageType;
+            
+            // Si tiene fecha, guardarla
+            if (tieneFecha) {
+                pendingBooking.dia = fechaDetectada.dia;
+                pendingBooking.hora = fechaDetectada.hora;
+            }
+            
+            // Si mencionó ubicación (salón o domicilio)
+            if (mencionaSalon || mencionaDomicilio) {
+                // Verificar si tiene fecha
+                if (!tieneFecha) {
+                    if (clientCountry && clientPhone) {
+                        pendingBooking.codigoPais = clientCountry;
+                        pendingBooking.telefono = clientPhone;
+                        bookingState = 'awaiting_day';
+                        const diasStr = horariosGlobal.dias.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(', ');
+                        addMessage(`Perfecto ${clientName}. Has seleccionado **${selectedMassageType}**.\n\n📍 ¿Qué día prefieres? (${diasStr})`, 'bot');
+                        return;
+                    } else if (clientCountry) {
+                        bookingState = 'awaiting_phone_with_massage';
+                        addMessage(`Perfecto ${clientName}. Has seleccionado **${selectedMassageType}**.\n\nPara confirmar, necesito tu número de teléfono. ¿Cuál es?`, 'bot');
+                        return;
+                    } else {
+                        bookingState = 'awaiting_country_with_massage';
+                        addMessage(`Perfecto ${clientName}. Has seleccionado **${selectedMassageType}**.\n\n¿De qué país eres?`, 'bot');
+                        return;
+                    }
+                }
+                
+                // Tiene fecha, verificar validez
+                if (!esFechaValida(fechaDetectada.dia)) {
+                    const sugerencia = obtenerSugerenciaFecha(turnosExistentes, fechaDetectada.dia, fechaDetectada.hora);
+                    if (sugerencia) {
+                        addMessage(`El día ${fechaDetectada.dia} ya pasó. Te sugiero ${sugerencia.fechaTexto} a las ${sugerencia.hora}:00 hs. ¿Te sirve? (responde "sí" o "no")`, 'bot');
+                        bookingState = 'awaiting_suggestion';
+                        window._sugerenciaData = sugerencia;
+                    } else {
+                        addMessage(`El día ${fechaDetectada.dia} ya pasó. Por favor, elige un día futuro.`, 'bot');
+                        bookingState = 'awaiting_day';
+                    }
+                    return;
+                }
+                
+                // Verificar horario disponible
+                const horariosDisponibles = horariosGlobal.horarios.map(h => parseInt(h.split(':')[0]))
+                    .filter(h => !turnosExistentes.some(t => t.dia === fechaDetectada.dia && t.hora === h));
+                
+                if (!horariosDisponibles.includes(fechaDetectada.hora)) {
+                    if (horariosDisponibles.length > 0) {
+                        addMessage(`El horario de las ${fechaDetectada.hora}:00 está ocupado. Horarios disponibles: ${horariosDisponibles.join(' hs, ')} hs.`, 'bot');
+                        pendingBooking.dia = fechaDetectada.dia;
+                        bookingState = 'awaiting_time_specific';
+                    } else {
+                        const sugerencia = obtenerSugerenciaFecha(turnosExistentes, fechaDetectada.dia, null);
+                        if (sugerencia) {
+                            addMessage(`El ${fechaDetectada.dia} está completo. Te sugiero ${sugerencia.fechaTexto} a las ${sugerencia.hora}:00 hs. ¿Te sirve? (responde "sí" o "no")`, 'bot');
+                            bookingState = 'awaiting_suggestion';
+                            window._sugerenciaData = sugerencia;
+                        } else {
+                            addMessage(`No hay horarios disponibles para el ${fechaDetectada.dia}. Por favor, elige otro día.`, 'bot');
+                            bookingState = 'awaiting_day';
+                        }
+                    }
+                    return;
+                }
+                
+                // Todo válido, verificar si tiene país y teléfono
+                if (clientCountry && clientPhone) {
+                    pendingBooking.codigoPais = clientCountry;
+                    pendingBooking.telefono = clientPhone;
+                    
+                    if (mencionaSalon) {
+                        pendingBooking.tipoServicio = 'salon';
+                        pendingBooking.ubicacion = 'Salón Serenity Spa';
+                        await confirmarReserva();
+                    } else {
+                        pendingBooking.tipoServicio = 'domicilio';
+                        bookingState = 'awaiting_location';
+                        addMessage(`🚗 Servicio a domicilio.\n\n📍 Por favor, ingresa tu dirección completa:`, 'bot');
+                    }
+                    return;
+                } else if (clientCountry) {
+                    bookingState = 'awaiting_phone_with_all_data';
+                    pendingBooking.codigoPais = clientCountry;
+                    if (mencionaSalon) {
+                        pendingBooking.tipoServicio = 'salon';
+                        pendingBooking.ubicacion = 'Salón Serenity Spa';
+                    } else {
+                        pendingBooking.tipoServicio = 'domicilio';
+                    }
+                    addMessage(`Perfecto ${clientName}. Has seleccionado **${selectedMassageType}** para el ${fechaDetectada.dia} a las ${fechaDetectada.hora}:00.\n\nPara confirmar, necesito tu número de teléfono. ¿Cuál es?`, 'bot');
+                    return;
+                } else {
+                    bookingState = 'awaiting_country_with_all_data';
+                    addMessage(`Perfecto ${clientName}. Has seleccionado **${selectedMassageType}** para el ${fechaDetectada.dia} a las ${fechaDetectada.hora}:00.\n\n¿De qué país eres?`, 'bot');
+                    return;
+                }
+            }
+            
+            // No mencionó ubicación, pero tiene servicio y nombre
+            if (tieneFecha) {
+                if (clientCountry && clientPhone) {
+                    pendingBooking.codigoPais = clientCountry;
+                    pendingBooking.telefono = clientPhone;
+                    bookingState = 'awaiting_service_type';
+                    addMessage(`✅ Perfecto ${clientName}. Has seleccionado **${selectedMassageType}** para el ${fechaDetectada.dia} a las ${fechaDetectada.hora}:00.\n\n📍 ¿Dónde prefieres recibir el masaje?\n\n1️⃣ En el salón\n2️⃣ A domicilio`, 'bot');
+                    return;
+                } else if (clientCountry) {
+                    bookingState = 'awaiting_phone_with_all_data';
+                    pendingBooking.codigoPais = clientCountry;
+                    addMessage(`Perfecto ${clientName}. Has seleccionado **${selectedMassageType}** para el ${fechaDetectada.dia} a las ${fechaDetectada.hora}:00.\n\nPara confirmar, necesito tu número de teléfono. ¿Cuál es?`, 'bot');
+                    return;
+                } else {
+                    bookingState = 'awaiting_country_with_all_data';
+                    addMessage(`Perfecto ${clientName}. Has seleccionado **${selectedMassageType}** para el ${fechaDetectada.dia} a las ${fechaDetectada.hora}:00.\n\n¿De qué país eres?`, 'bot');
+                    return;
+                }
+            } else {
+                if (clientCountry && clientPhone) {
+                    pendingBooking.codigoPais = clientCountry;
+                    pendingBooking.telefono = clientPhone;
+                    bookingState = 'awaiting_day';
+                    const diasStr = horariosGlobal.dias.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(', ');
+                    addMessage(`Perfecto ${clientName}. Has seleccionado **${selectedMassageType}**.\n\n📍 ¿Qué día prefieres? (${diasStr})`, 'bot');
+                    return;
+                } else if (clientCountry) {
+                    bookingState = 'awaiting_phone_with_massage';
+                    addMessage(`Perfecto ${clientName}. Has seleccionado **${selectedMassageType}**.\n\nPara confirmar, necesito tu número de teléfono. ¿Cuál es?`, 'bot');
+                    return;
+                } else {
+                    bookingState = 'awaiting_country_with_massage';
+                    addMessage(`Perfecto ${clientName}. Has seleccionado **${selectedMassageType}**.\n\n¿De qué país eres?`, 'bot');
+                    return;
+                }
+            }
+        }
+        
+        // ============================================================
+        // PROCESAR POR ESTADO (flujo normal)
+        // ============================================================
+        
+        // --- 1. AWAITING_NAME ---
+        if (bookingState === 'awaiting_name_simple' || bookingState === 'awaiting_name_with_massage' || 
+            bookingState === 'awaiting_name_with_date' || bookingState === 'awaiting_name_with_massage_and_date') {
+            
+            let nombre = nombreExtraido;
+            if (!nombre && msg.trim().length >= 2) {
+                nombre = escapeHtml(msg.trim());
+            }
+            
+            if (nombre) {
+                clientName = nombre;
+                pendingBooking.nombre = clientName;
+                
+                if (servicioDetectado && fechaDetectada.dia && fechaDetectada.hora !== null) {
+                    selectedMassageType = servicioDetectado.nombre;
+                    pendingBooking.massageType = selectedMassageType;
+                    pendingBooking.dia = fechaDetectada.dia;
+                    pendingBooking.hora = fechaDetectada.hora;
+                    
+                    if (esFechaValida(fechaDetectada.dia)) {
+                        bookingState = 'awaiting_country_with_all_data';
+                        addMessage(`Gracias ${clientName}. Has seleccionado **${selectedMassageType}** para el ${fechaDetectada.dia} a las ${fechaDetectada.hora}:00.\n\n¿De qué país eres?`, 'bot');
+                    } else {
+                        const sugerencia = obtenerSugerenciaFecha(turnosExistentes, fechaDetectada.dia, fechaDetectada.hora);
+                        if (sugerencia) {
+                            addMessage(`El día ${fechaDetectada.dia} ya pasó. Te sugiero ${sugerencia.fechaTexto} a las ${sugerencia.hora}:00 hs. ¿Te sirve? (responde "sí" o "no")`, 'bot');
+                            bookingState = 'awaiting_suggestion';
+                            window._sugerenciaData = sugerencia;
+                        } else {
+                            addMessage(`El día ${fechaDetectada.dia} ya pasó. Por favor, elige un día futuro.`, 'bot');
+                            bookingState = 'awaiting_day';
+                        }
+                    }
+                    return;
+                }
+                
+                if (servicioDetectado) {
+                    selectedMassageType = servicioDetectado.nombre;
+                    pendingBooking.massageType = selectedMassageType;
+                    bookingState = 'awaiting_country_with_massage';
+                    addMessage(`Gracias ${clientName}. Has seleccionado **${selectedMassageType}**.\n\n¿De qué país eres?`, 'bot');
+                    return;
+                }
+                
+                if (fechaDetectada.dia && fechaDetectada.hora !== null) {
+                    pendingBooking.dia = fechaDetectada.dia;
+                    pendingBooking.hora = fechaDetectada.hora;
+                    
+                    if (esFechaValida(fechaDetectada.dia)) {
+                        bookingState = 'awaiting_country_with_date';
+                        addMessage(`Gracias ${clientName}. Has solicitado para el ${fechaDetectada.dia} a las ${fechaDetectada.hora}:00.\n\n¿De qué país eres?`, 'bot');
+                    } else {
+                        const sugerencia = obtenerSugerenciaFecha(turnosExistentes, fechaDetectada.dia, fechaDetectada.hora);
+                        if (sugerencia) {
+                            addMessage(`El día ${fechaDetectada.dia} ya pasó. Te sugiero ${sugerencia.fechaTexto} a las ${sugerencia.hora}:00 hs. ¿Te sirve? (responde "sí" o "no")`, 'bot');
+                            bookingState = 'awaiting_suggestion';
+                            window._sugerenciaData = sugerencia;
+                        } else {
+                            addMessage(`El día ${fechaDetectada.dia} ya pasó. Por favor, elige un día futuro.`, 'bot');
+                            bookingState = 'awaiting_day';
+                        }
+                    }
+                    return;
+                }
+                
+                bookingState = 'awaiting_country_simple';
+                addMessage(`Gracias ${clientName}. ¿De qué país eres?`, 'bot');
+                return;
+            } else {
+                addMessage('Por favor, ingresa tu nombre.', 'bot');
+                return;
+            }
+        }
+        
+        // --- 2. AWAITING_COUNTRY ---
+        if (bookingState === 'awaiting_country' || bookingState === 'awaiting_country_simple' ||
+            bookingState === 'awaiting_country_with_massage' || bookingState === 'awaiting_country_with_date' ||
+            bookingState === 'awaiting_country_with_massage_and_date' || bookingState === 'awaiting_country_with_all_data') {
+            
+            if (paisDetectado) {
+                clientCountry = paisDetectado.codigo;
+                pendingBooking.codigoPais = paisDetectado.codigo;
+                
+                addMessage(`${paisDetectado.nombre} registrado exitosamente.`, 'bot');
+                
+                if (bookingState === 'awaiting_country_with_all_data') {
+                    bookingState = 'awaiting_phone_with_all_data';
+                    addMessage('Ahora, ¿cuál es tu número de teléfono?', 'bot');
+                    return;
+                } else if (bookingState === 'awaiting_country_with_massage_and_date') {
+                    bookingState = 'awaiting_phone_with_massage_and_date';
+                    addMessage('Ahora, ¿cuál es tu número de teléfono?', 'bot');
+                    return;
+                } else if (bookingState === 'awaiting_country_with_date') {
+                    bookingState = 'awaiting_phone_with_date';
+                    addMessage('Ahora, ¿cuál es tu número de teléfono?', 'bot');
+                    return;
+                } else if (bookingState === 'awaiting_country_with_massage') {
+                    bookingState = 'awaiting_phone_with_massage';
+                    addMessage('Ahora, ¿cuál es tu número de teléfono?', 'bot');
+                    return;
+                } else {
+                    bookingState = 'awaiting_phone_simple';
+                    addMessage('Ahora, ¿cuál es tu número de teléfono?', 'bot');
+                    return;
+                }
+            } else {
+                addMessage('No reconocí el país. Por favor, dilo de nuevo.\nEjemplos: Cuba, Argentina, México, España...', 'bot');
+                return;
+            }
+        }
+        
+        // --- 3. AWAITING_PHONE ---
+        if (bookingState === 'awaiting_phone_simple' || bookingState === 'awaiting_phone_with_massage' || 
+            bookingState === 'awaiting_phone_with_date' || bookingState === 'awaiting_phone_with_massage_and_date' ||
+            bookingState === 'awaiting_phone_with_all_data') {
+            
+            const telefono = msg.replace(/\D/g, '');
+            if (telefono.length >= 7) {
+                clientPhone = telefono;
+                pendingBooking.telefono = telefono;
+                pendingBooking.nombre = clientName;
+                pendingBooking.codigoPais = clientCountry || '53';
+                
+                if (bookingState === 'awaiting_phone_with_all_data') {
+                    bookingState = 'awaiting_service_type';
+                    addMessage(`✅ Teléfono registrado. ¿Dónde prefieres recibir el masaje?\n\n1️⃣ En el salón\n2️⃣ A domicilio`, 'bot');
+                    return;
+                } else if (bookingState === 'awaiting_phone_with_massage_and_date') {
+                    bookingState = 'awaiting_service_type';
+                    addMessage(`✅ Teléfono registrado. ¿Dónde prefieres recibir el masaje?\n\n1️⃣ En el salón\n2️⃣ A domicilio`, 'bot');
+                    return;
+                } else if (bookingState === 'awaiting_phone_with_date') {
+                    bookingState = 'selecting_massage_for_date';
+                    addMessage(`✅ Teléfono registrado. ¿Qué masaje deseas para ${pendingBooking.dia} a las ${pendingBooking.hora}:00?`, 'bot');
+                    showMassageMenu();
+                    return;
+                } else if (bookingState === 'awaiting_phone_with_massage') {
+                    bookingState = 'awaiting_day';
+                    const diasStr = horariosGlobal.dias.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(', ');
+                    addMessage(`✅ Teléfono registrado. ¿Qué día prefieres? (${diasStr})`, 'bot');
+                    return;
+                } else {
+                    bookingState = 'selecting_massage_simple';
+                    showMassageMenu();
+                    return;
+                }
+            } else {
+                addMessage('Número inválido. Ingresa al menos 7 dígitos.', 'bot');
+                return;
+            }
+        }
+        
+        // --- 4. SELECTING_MASSAGE ---
+        if (bookingState === 'selecting_massage_simple' || bookingState === 'selecting_massage_for_date') {
+            let servicio = servicioDetectado;
+            if (!servicio) {
+                const option = parseInt(msg);
+                if (!isNaN(option) && option >= 1 && option <= availableMassages.length) {
+                    servicio = availableMassages[option - 1];
+                }
+            }
+            
+            if (servicio) {
+                selectedMassageType = servicio.nombre;
+                pendingBooking.massageType = selectedMassageType;
+                
+                if (bookingState === 'selecting_massage_for_date' && pendingBooking.dia && pendingBooking.hora !== null) {
+                    bookingState = 'awaiting_service_type';
+                    addMessage(`✅ Has seleccionado **${selectedMassageType}** para el ${pendingBooking.dia} a las ${pendingBooking.hora}:00.\n\n📍 ¿Dónde prefieres recibir el masaje?\n\n1️⃣ En el salón\n2️⃣ A domicilio`, 'bot');
+                    return;
+                }
+                
+                bookingState = 'awaiting_day';
+                const diasStr = horariosGlobal.dias.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(', ');
+                addMessage(`Has seleccionado **${selectedMassageType}**. ¿Qué día prefieres? (${diasStr})`, 'bot');
+                return;
+            } else {
+                addMessage('Por favor, selecciona un número válido de la lista o escribe el nombre del masaje.', 'bot');
+                return;
+            }
+        }
+        
+        // --- 5. AWAITING_DAY ---
+        if (bookingState === 'awaiting_day') {
+            const fechaDetectadaDia = detectarFechaCompleta(msg);
+            let dia = fechaDetectadaDia.dia;
+            let horaSugerida = fechaDetectadaDia.hora;
+            
+            if (!dia) {
+                const diasStr = horariosGlobal.dias.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(', ');
+                addMessage(`No reconocí el día. Por favor, dime el día de la semana (${diasStr}) o "hoy" o "mañana".`, 'bot');
+                return;
+            }
+            
+            if (!horariosGlobal.dias.includes(dia)) {
+                const sugerencia = obtenerSugerenciaFecha(turnosExistentes, dia, horaSugerida);
+                if (sugerencia) {
+                    addMessage(`El día ${dia} no está disponible. Te sugiero ${sugerencia.fechaTexto} a las ${sugerencia.hora}:00 hs. ¿Te sirve? (responde "sí" o "no")`, 'bot');
+                    bookingState = 'awaiting_suggestion';
+                    window._sugerenciaData = sugerencia;
+                } else {
+                    const diasStr = horariosGlobal.dias.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(', ');
+                    addMessage(`Día no válido. Días disponibles: ${diasStr}. Por favor, elige uno.`, 'bot');
+                }
+                return;
+            }
+            
+            if (!esFechaValida(dia)) {
+                const sugerencia = obtenerSugerenciaFecha(turnosExistentes, dia, horaSugerida);
+                if (sugerencia) {
+                    addMessage(`El día ${dia} ya pasó. Te sugiero ${sugerencia.fechaTexto} a las ${sugerencia.hora}:00 hs. ¿Te sirve? (responde "sí" o "no")`, 'bot');
+                    bookingState = 'awaiting_suggestion';
+                    window._sugerenciaData = sugerencia;
+                } else {
+                    addMessage(`El día ${dia} ya pasó. Por favor, elige un día futuro.`, 'bot');
+                }
+                return;
+            }
+            
+            const horariosDisponibles = horariosGlobal.horarios.map(h => parseInt(h.split(':')[0]))
+                .filter(h => !turnosExistentes.some(t => t.dia === dia && t.hora === h));
+            
+            if (horariosDisponibles.length === 0) {
+                const sugerencia = obtenerSugerenciaFecha(turnosExistentes, dia, null);
+                if (sugerencia) {
+                    addMessage(`El ${dia} está completo. Te sugiero ${sugerencia.fechaTexto} a las ${sugerencia.hora}:00 hs. ¿Te sirve? (responde "sí" o "no")`, 'bot');
+                    bookingState = 'awaiting_suggestion';
+                    window._sugerenciaData = sugerencia;
+                } else {
+                    addMessage(`No hay horarios disponibles para el ${dia}. Por favor, elige otro día.`, 'bot');
+                }
+                return;
+            }
+            
+            if (horaSugerida !== null && horariosDisponibles.includes(horaSugerida)) {
+                pendingBooking.dia = dia;
+                pendingBooking.hora = horaSugerida;
+                bookingState = 'awaiting_service_type';
+                addMessage(`✅ Día ${dia} a las ${horaSugerida}:00 confirmado.\n\n📍 ¿Dónde prefieres recibir el masaje?\n\n1️⃣ En el salón\n2️⃣ A domicilio`, 'bot');
+                return;
+            }
+            
+            pendingBooking.dia = dia;
+            bookingState = 'awaiting_time_specific';
+            const horariosStr = horariosDisponibles.join(' hs, ');
+            addMessage(`✅ Día ${dia} confirmado. Horarios disponibles: ${horariosStr} hs.\n\n¿A qué hora prefieres? (responde con el número)`, 'bot');
+            return;
+        }
+        
+        // --- 6. AWAITING_TIME_SPECIFIC ---
+        if (bookingState === 'awaiting_time_specific') {
+            let hora = parseInt(msg);
+            const horasNumeros = horariosGlobal.horarios.map(h => parseInt(h.split(':')[0]));
+            if (!horasNumeros.includes(hora)) {
+                addMessage(`Hora no válida. Horarios: ${horariosGlobal.horarios.join(', ')}.`, 'bot');
+                return;
+            }
+            
+            const ocupado = turnosExistentes.some(t => t.dia === pendingBooking.dia && t.hora === hora);
+            if (!ocupado) {
+                const yaTieneTurno = turnosExistentes.some(t => t.telefono === pendingBooking.telefono && t.dia === pendingBooking.dia);
+                if (yaTieneTurno) {
+                    addMessage(`Ya tienes un turno reservado para el ${pendingBooking.dia}. Solo se permite un masaje por día.`, 'bot');
+                    bookingState = null;
+                    return;
+                }
+                pendingBooking.hora = hora;
+                bookingState = 'awaiting_service_type';
+                addMessage(`✅ Hora ${hora}:00 confirmada.\n\n📍 ¿Dónde prefieres recibir el masaje?\n\n1️⃣ En el salón\n2️⃣ A domicilio`, 'bot');
+            } else {
+                const horariosDisponibles = horasNumeros.filter(h => !turnosExistentes.some(t => t.dia === pendingBooking.dia && t.hora === h));
+                if (horariosDisponibles.length > 0) {
+                    addMessage(`El horario de las ${hora}:00 está ocupado. Horarios disponibles: ${horariosDisponibles.join(' hs, ')} hs.`, 'bot');
+                } else {
+                    const sugerencia = obtenerSugerenciaFecha(turnosExistentes, pendingBooking.dia, null);
+                    if (sugerencia) {
+                        addMessage(`El ${pendingBooking.dia} está completo. Te sugiero ${sugerencia.fechaTexto} a las ${sugerencia.hora}:00 hs. ¿Te sirve? (responde "sí" o "no")`, 'bot');
+                        bookingState = 'awaiting_suggestion';
+                        window._sugerenciaData = sugerencia;
+                    } else {
+                        addMessage(`No hay horarios disponibles para el ${pendingBooking.dia}. Por favor, elige otro día.`, 'bot');
+                        bookingState = 'awaiting_day';
+                    }
+                }
+            }
+            return;
+        }
+        
+        // --- 7. AWAITING_LOCATION ---
+        if (bookingState === 'awaiting_location') {
+            if (msg.trim().length > 5) {
+                pendingBooking.ubicacion = escapeHtml(msg.trim());
+                await confirmarReserva();
+            } else {
+                addMessage('Por favor, ingresa una dirección válida.', 'bot');
+            }
+            return;
+        }
+        
+        // --- 8. AWAITING_SUGGESTION ---
+        if (bookingState === 'awaiting_suggestion') {
+            if (userMsg.includes('sí') || userMsg.includes('si') || userMsg.includes('ok') || userMsg.includes('vale') || userMsg.includes('perfecto')) {
+                const sugerencia = window._sugerenciaData;
+                if (sugerencia) {
+                    pendingBooking.dia = sugerencia.dia;
+                    pendingBooking.hora = sugerencia.hora;
+                    bookingState = 'awaiting_service_type';
+                    addMessage(`✅ Perfecto. Entonces tu turno será ${sugerencia.fechaTexto} a las ${sugerencia.hora}:00.\n\n📍 ¿Dónde prefieres recibir el masaje?\n\n1️⃣ En el salón\n2️⃣ A domicilio`, 'bot');
+                } else {
+                    addMessage('No tengo una sugerencia disponible. Por favor, elige un día y hora.', 'bot');
+                    bookingState = 'awaiting_day';
+                }
+            } else {
+                addMessage('Entendido. ¿Qué día prefieres entonces?', 'bot');
+                bookingState = 'awaiting_day';
+            }
+            return;
+        }
+        
+        // --- 9. AWAITING_ALTERNATIVE ---
+        if (bookingState === 'awaiting_alternative') {
+            if (userMsg.includes('sí') || userMsg.includes('si') || userMsg.includes('ok') || userMsg.includes('vale')) {
+                const alt = window._alternativaData;
+                if (alt) {
+                    pendingBooking.dia = alt.dia;
+                    pendingBooking.hora = alt.hora;
+                    await confirmarReserva();
+                }
+            } else {
+                addMessage('Entendido. ¿Qué día prefieres entonces?', 'bot');
+                bookingState = 'awaiting_day';
+            }
+            return;
+        }
+        
+        // --- 10. AWAITING_SERVICE_TYPE ---
+        if (bookingState === 'awaiting_service_type') {
+            addMessage(`Por favor, responde con "1" para salón o "2" para domicilio.`, 'bot');
+            return;
+        }
+        
+        // ============================================================
+        // CASO 4: MENSAJES GENERALES
+        // ============================================================
+        if (userMsg.includes('horario') || userMsg.includes('horarios') || userMsg.includes('disponible')) {
+            addMessage(`⏰ **Horarios disponibles:**\n${horariosGlobal.horarios.join(' hs\n')} hs\n\n📅 **Días:** ${horariosGlobal.dias.map(d => d.charAt(0).toUpperCase() + d.slice(1)).join(', ')}\n\n⚠️ Un masaje por persona por día.`, 'bot');
+            return;
+        }
+        
+        if (userMsg.includes('masaje') || userMsg.includes('tipos') || userMsg.includes('servicios')) {
+            showMassageMenu();
+            return;
+        }
+        
+        if (userMsg.includes('precio') || userMsg.includes('costo') || userMsg.includes('cuánto') || userMsg.includes('cuanto')) {
+            let lista = '💰 **Precios:**\n\n';
+            availableMassages.forEach(m => { lista += `• ${m.nombre}: ${m.precio}\n`; });
+            addMessage(lista, 'bot');
+            return;
+        }
+        
+        if (userMsg.includes('gracias') || userMsg.includes('ok') || userMsg.includes('vale')) {
+            addMessage(`🙏 Gracias a ti, ${clientName || 'cliente'}! Que tengas un excelente día.\n\n¿Necesitas algo más?`, 'bot');
+            return;
+        }
+        
+        if (quiereReservar) {
+            iniciarReservaDirect();
+            return;
+        }
+        
+        // ============================================================
+        // CASO 5: INTENTAR CON IA
+        // ============================================================
+        try {
+            const response = await fetch('/api/chat-ia', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    mensaje: msg,
+                    nombre: clientName || 'cliente',
+                    codigoPais: clientCountry || '53'
+                })
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data.modo === 'bloqueado') {
+                    addMessage(data.respuesta, 'bot');
+                    return;
+                }
+                addMessage(data.respuesta, 'bot');
+                return;
+            }
+        } catch(e) {
+            console.warn('Error en IA:', e);
+        }
+        
+        const nombre = clientName || 'cliente';
+        addMessage(`👋 Hola ${nombre}! Puedo ayudarte con:\n\n📌 Reservar un turno\n⏰ Ver horarios disponibles\n💆 Conocer los tipos de masaje\n💰 Consultar precios\n🔑 Cancelar una reserva\n\n¿Qué necesitas?`, 'bot');
+    }
+    
+    // ============================================================
+    // ENVIAR MENSAJE
+    // ============================================================
+    function enviarMensaje(texto) {
+        if (!texto.trim()) return;
+        addMessage(texto, 'user');
+        showThinking();
+        
+        setTimeout(async () => {
+            try {
+                await procesarMensaje(texto);
+            } catch(e) {
+                console.error('Error procesando mensaje:', e);
+                addMessage('Ocurrió un error al procesar tu mensaje. Intentá de nuevo.', 'bot');
+            }
+            hideThinking();
+        }, 500);
+    }
+    
+    // ============================================================
+    // MENSAJE DE BIENVENIDA
+    // ============================================================
+    function mensajeBienvenida() {
+        const bienvenida = useIA 
+            ? 'Hola, soy el asistente con inteligencia artificial de Serenity Spa. Decime tu nombre y de qué país sos para comenzar. También podes cancelar tu reserva con tu código de 6 dígitos.'
+            : 'Hola, sea usted bienvenido a Serenity Spa. Puedo ayudarte a reservar un turno o cancelar una reserva existente con tu código de 6 dígitos. ¿Qué necesitas?';
+        addMessage(bienvenida, 'bot');
+        setTimeout(() => {
+            codigoInfo.style.display = 'flex';
+            setTimeout(() => {
+                codigoInfo.style.opacity = '0';
+                setTimeout(() => codigoInfo.style.display = 'none', 500);
+            }, 5000);
+        }, 1000);
+    }
+    
+    // ============================================================
+    // RECONOCIMIENTO DE VOZ
+    // ============================================================
+    function startRecording() {
+        if (isRecording || isSpeaking) return;
+        
+        if (window.speechSynthesis && isSpeaking) {
+            window.speechSynthesis.cancel();
+            isSpeaking = false;
+            avatarEl.classList.remove('speaking');
+        }
+        
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            addMessage('Este navegador no soporta reconocimiento de voz. Usá el modo texto o Google Chrome.', 'bot');
+            return;
+        }
+        
+        try {
+            recognition = new SpeechRecognition();
+            recognition.lang = 'es-ES';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            
+            recognition.onstart = () => {
+                isRecording = true;
+                micBtn.classList.add('recording');
+                statusDot.className = 'dot recording';
+                statusText.textContent = 'Grabando... Soltá para enviar';
+            };
+            
+            recognition.onresult = (event) => {
+                const texto = event.results[0][0].transcript;
+                enviarMensaje(texto);
+            };
+            
+            recognition.onend = () => {
+                isRecording = false;
+                micBtn.classList.remove('recording');
+                recognition = null;
+                if (!isSpeaking && !isThinking) {
+                    statusDot.className = 'dot';
+                    statusText.textContent = 'Escuchando...';
+                }
+            };
+            
+            recognition.onerror = (event) => {
+                console.log('Error reconocimiento:', event.error);
+                if (event.error === 'no-speech') {
+                    addMessage('No detecté ningún sonido. Intentá de nuevo.', 'bot');
+                } else if (event.error === 'not-allowed') {
+                    addMessage('Permiso de micrófono denegado. Usá el modo texto.', 'bot');
+                }
+            };
+            
+            recognition.start();
+        } catch(e) {
+            isRecording = false;
+            micBtn.classList.remove('recording');
+            addMessage('Error al iniciar el micrófono. Usá el modo texto.', 'bot');
+        }
+    }
+    
+    function stopRecording() {
+        if (recognition) {
+            try { recognition.stop(); } catch(e) {}
+        }
+    }
+    
+    // ============================================================
+    // MODO TEXTO
+    // ============================================================
+    function toggleTextMode() {
+        const textMode = textInputArea.style.display !== 'block';
+        
+        if (textMode) {
+            textInputArea.style.display = 'block';
+            btnMode.classList.add('active');
+            btnMode.innerHTML = '<i class="fas fa-microphone"></i>';
+            micBtn.style.display = 'none';
+            textInput.focus();
+        } else {
+            textInputArea.style.display = 'none';
+            btnMode.classList.remove('active');
+            btnMode.innerHTML = '<i class="fas fa-keyboard"></i>';
+            micBtn.style.display = 'flex';
+        }
+    }
+    
+    // ============================================================
+    // INICIALIZACIÓN
+    // ============================================================
+    async function init() {
+        try {
+            const resp = await fetch('/health');
+            const data = await resp.json();
+            useIA = data.ia === 'conectada';
+            if (useIA) {
+                iaBadge.style.display = 'inline-flex';
+            }
+        } catch(e) {}
+        
+        await cargarDatosIniciales();
+        
+        statusDot.className = 'dot';
+        statusText.textContent = 'Escuchando...';
+        mensajeBienvenida();
+        
+        micBtn.addEventListener('mousedown', (e) => { e.preventDefault(); startRecording(); });
+        micBtn.addEventListener('mouseup', (e) => { e.preventDefault(); stopRecording(); });
+        micBtn.addEventListener('mouseleave', () => { if (isRecording) stopRecording(); });
+        
+        micBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startRecording(); }, { passive: false });
+        micBtn.addEventListener('touchend', (e) => { e.preventDefault(); stopRecording(); }, { passive: false });
+        
+        btnMode.addEventListener('click', toggleTextMode);
+        
+        btnSendText.addEventListener('click', () => {
+            const texto = textInput.value;
+            if (texto.trim()) {
+                enviarMensaje(texto);
+                textInput.value = '';
+            }
+        });
+        
+        textInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const texto = textInput.value;
+                if (texto.trim()) {
+                    enviarMensaje(texto);
+                    textInput.value = '';
+                }
+            }
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'm') {
+                e.preventDefault();
+                if (!isRecording) startRecording();
+                else stopRecording();
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key === 't') {
+                e.preventDefault();
+                toggleTextMode();
+            }
+        });
+    }
+    
+    init();
+    
+})();
+</script>
+</body>
+</html>
