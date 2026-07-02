@@ -29,7 +29,7 @@ const seguridad = require('./security.js');
 // Configuración SMTP desde variables de entorno
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: parseInt(process.env.SMTP_PORT || '587'),
+    port: parseInt(process.env.SMTP_PORT || '465'),
     secure: false, // true para 465, false para otras
     auth: {
         user: process.env.SMTP_USER,
