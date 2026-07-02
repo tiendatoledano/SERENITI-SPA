@@ -24,18 +24,27 @@ const TESTIMONIOS_FILE = path.join(BASE_DIR, 'testimonios.json');
 // ============================================================
 // IMPORTAR SISTEMA DE SEGURIDAD (AQUÍ ESTÁ LA LÍNEA)
 // ============================================================
-const seguridad = require('./security.js');
 
-// Configuración SMTP desde variables de entorno
+
+
+// Configuración SMTP CORREGIDA para evitar que se cuelgue
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: parseInt(process.env.SMTP_PORT || '465'),
-    secure: false, // true para 465, false para otras
+    secure: true, // OBLIGATORIO poner true para el puerto 465
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS
-    }
-});
+    },
+    // NUEVAS LÍNEAS PARA EVITAR QUE SE CARGUE PARA SIEMPRE
+    connectionTimeout: 10000, // 10 segundos para conectar
+    greetingTimeout: 10000,   // 10 segundos para saludo
+    socketTimeout: 15000,     // 15 segundos para enviar
+    debug: true,              // Esto mostrará los errores en la consola de Render
+    logger: true              // Para que puedas ver qué está pasando
+})
+
+
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
