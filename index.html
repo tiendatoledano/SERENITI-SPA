@@ -1974,31 +1974,55 @@
             } catch(e) { console.warn('Error cargando ubicación:', e); }
         }
 
-        async function cargarHorarios() {
-            try {
-                const resp = await fetch(HORARIOS_API);
-                const data = await resp.json();
-                horariosGlobal = data;
-                console.log('✅ Horarios cargados:', horariosGlobal);
-                renderCalendar();
-            } catch(e) { 
-                console.warn('Error cargando horarios:', e);
-                horariosGlobal = { 
-                    dias: ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'], 
-                    horarios: ['12:00', '16:00', '20:00'] 
-                };
-                renderCalendar();
-            }
-        }
 
-        async function cargarTurnos() {
-            try {
-                const resp = await fetch(API_URL);
-                if (!resp.ok) throw new Error();
-                turnosExistentes = await resp.json();
-            } catch { turnosExistentes = []; }
-        }
 
+async function cargarHorarios() {
+    try {
+        console.log('📤 Cargando horarios...');
+        const resp = await fetch(HORARIOS_API);
+        if (!resp.ok) {
+            throw new Error('Error al cargar horarios');
+        }
+        const data = await resp.json();
+        horariosGlobal = {
+            dias: data.dias || ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'],
+            horarios: data.horarios || ['12:00', '16:00', '20:00']
+        };
+        console.log('✅ Horarios cargados:', horariosGlobal);
+        // ✅ FORZAR RENDER DEL CALENDARIO
+        renderCalendar();
+    } catch(e) { 
+        console.warn('⚠️ Error cargando horarios:', e);
+        horariosGlobal = { 
+            dias: ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'], 
+            horarios: ['12:00', '16:00', '20:00'] 
+        };
+        renderCalendar();
+    }
+}
+
+
+
+async function cargarTurnos() {
+    try {
+        console.log('📤 Cargando turnos...');
+        const resp = await fetch(API_URL);
+        if (!resp.ok) throw new Error('Error al cargar turnos');
+        turnosExistentes = await resp.json();
+        console.log(`✅ Turnos cargados: ${turnosExistentes.length}`);
+        // ✅ RENDERIZAR CALENDARIO DESPUÉS DE CARGAR TURNOS
+        renderCalendar();
+    } catch (e) { 
+        console.warn('⚠️ Error cargando turnos:', e);
+        turnosExistentes = [];
+        renderCalendar();
+    }
+}
+
+
+
+
+        
         async function cargarServicios() {
             try {
                 const resp = await fetch(SERVICIOS_API);
@@ -2221,81 +2245,134 @@ function renderTestimonios(testimonios) {
         // ============================================================
         // CALENDARIO
         // ============================================================
-        function renderCalendar() {
-            const grid = document.getElementById('calendarGrid');
-            const display = document.getElementById('monthYearDisplay');
-            if (!grid) {
-                console.warn('⚠️ Calendar grid no encontrado');
-                return;
-            }
+     
+function renderCalendar() {
+    const grid = document.getElementById('calendarGrid');
+    const display = document.getElementById('monthYearDisplay');
+    
+    if (!grid) {
+        console.warn('⚠️ Calendar grid no encontrado');
+        return;
+    }
 
-            const hoy = new Date();
-            const hoyStr = formatearFechaCorta(hoy);
+    console.log('📅 Renderizando calendario...');
+    
+    const hoy = new Date();
+    const hoyStr = formatearFechaCorta(hoy);
 
-            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-            display.textContent = `${meses[mesActual]} ${anioActual}`;
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    display.textContent = `${meses[mesActual]} ${anioActual}`;
 
-            const primerDia = new Date(anioActual, mesActual, 1);
-            const ultimoDia = new Date(anioActual, mesActual + 1, 0);
-            const diasEnMes = ultimoDia.getDate();
-            const diaInicioSemana = primerDia.getDay();
+    const primerDia = new Date(anioActual, mesActual, 1);
+    const ultimoDia = new Date(anioActual, mesActual + 1, 0);
+    const diasEnMes = ultimoDia.getDate();
+    const diaInicioSemana = primerDia.getDay();
 
-            const diasSemana = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
-            let html = diasSemana.map(d => `<div class="day-name">${d}</div>`).join('');
+    const diasSemana = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
+    let html = diasSemana.map(d => `<div class="day-name">${d}</div>`).join('');
 
-            for (let i = 0; i < diaInicioSemana; i++) {
-                html += `<div class="day-cell empty"></div>`;
-            }
+    // Días vacíos antes del primer día
+    for (let i = 0; i < diaInicioSemana; i++) {
+        html += `<div class="day-cell empty"></div>`;
+    }
 
-            for (let d = 1; d <= diasEnMes; d++) {
-                const fecha = new Date(anioActual, mesActual, d);
-                const fechaStr = formatearFechaCorta(fecha);
-                const diaSemana = getDiaSemana(fecha);
-                const esHoy = fechaStr === hoyStr;
-                const esFutura = esFechaFuturaODiaActual(fecha);
+    // Generar días del mes
+    for (let d = 1; d <= diasEnMes; d++) {
+        const fecha = new Date(anioActual, mesActual, d);
+        const fechaStr = formatearFechaCorta(fecha);
+        const diaSemana = getDiaSemana(fecha);
+        const esHoy = fechaStr === hoyStr;
+        const esFutura = esFechaFuturaODiaActual(fecha);
+        
+        let clases = 'day-cell';
+        let dataAttr = `data-fecha="${fechaStr}" data-dia="${diaSemana}"`;
+        
+        if (esHoy) clases += ' today';
+        if (!esFutura) clases += ' past';
+        
+        // Verificar disponibilidad SOLO si es futura
+        if (esFutura) {
+            const diaDisponible = horariosGlobal.dias && horariosGlobal.dias.includes(diaSemana);
+            
+            if (!diaDisponible) {
+                clases += ' full';
+            } else {
+                // Horarios del día
+                const horariosDelDia = horariosGlobal.horarios ? horariosGlobal.horarios.map(h => parseInt(h.split(':')[0])) : [];
                 
-                let clases = 'day-cell';
-                if (esHoy) clases += ' today';
-                if (!esFutura) clases += ' past';
+                // Obtener horarios ocupados para esta fecha
+                const ocupados = turnosExistentes
+                    .filter(t => t.dia === diaSemana && t.fecha === fechaStr)
+                    .map(t => t.hora);
                 
-                if (esFutura) {
-                    const diaDisponible = horariosGlobal.dias && horariosGlobal.dias.includes(diaSemana);
-                    if (!diaDisponible) {
-                        clases += ' full';
-                    } else {
-                        const horariosDelDia = horariosGlobal.horarios ? horariosGlobal.horarios.map(h => parseInt(h.split(':')[0])) : [];
-                        const ocupados = turnosExistentes
-                            .filter(t => t.dia === diaSemana && t.fecha === fechaStr)
-                            .map(t => t.hora);
-                        const disponibles = horariosDelDia.filter(h => !ocupados.includes(h));
-                        clases += disponibles.length > 0 ? ' available' : ' full';
-                    }
-                }
-                
-                if (fechaSeleccionada && fechaStr === formatearFechaCorta(fechaSeleccionada)) {
-                    clases += ' selected';
-                }
-
-                html += `<div class="${clases}" data-fecha="${fechaStr}" data-dia="${diaSemana}">${d}</div>`;
+                const disponibles = horariosDelDia.filter(h => !ocupados.includes(h));
+                clases += disponibles.length > 0 ? ' available' : ' full';
             }
-
-            grid.innerHTML = html;
-
-            document.querySelectorAll('.day-cell.available, .day-cell.selected').forEach(cell => {
-                cell.addEventListener('click', function() {
-                    const fechaStr = this.dataset.fecha;
-                    const dia = this.dataset.dia;
-                    if (!fechaStr) return;
-                    const [y, m, d] = fechaStr.split('-').map(Number);
-                    const fechaObj = new Date(y, m-1, d);
-                    seleccionarFecha(fechaObj, dia);
-                });
-            });
-
-            document.getElementById('prevMonth').disabled = (anioActual === hoy.getFullYear() && mesActual <= hoy.getMonth());
-            document.getElementById('nextMonth').disabled = (anioActual === hoy.getFullYear() && mesActual >= hoy.getMonth() + 2);
+        }
+        
+        if (fechaSeleccionada && fechaStr === formatearFechaCorta(fechaSeleccionada)) {
+            clases += ' selected';
         }
 
+        html += `<div class="${clases}" ${dataAttr}>${d}</div>`;
+    }
+
+    grid.innerHTML = html;
+
+    // ✅ AGREGAR EVENTOS DE CLIC A LAS CELDAS
+    document.querySelectorAll('.day-cell.available, .day-cell.selected').forEach(cell => {
+        // Eliminar eventos anteriores para evitar duplicados
+        cell.replaceWith(cell.cloneNode(true));
+    });
+    
+    // Volver a seleccionar después de clonar
+    document.querySelectorAll('.day-cell.available, .day-cell.selected').forEach(cell => {
+        cell.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const fechaStr = this.dataset.fecha;
+            const dia = this.dataset.dia;
+            if (!fechaStr) return;
+            
+            console.log('📅 Fecha seleccionada:', fechaStr, dia);
+            
+            const [y, m, d] = fechaStr.split('-').map(Number);
+            const fechaObj = new Date(y, m-1, d);
+            seleccionarFecha(fechaObj, dia);
+        });
+    });
+    
+    // ✅ TAMBIÉN AGREGAR EVENTOS A CELDAS CON CLICK (para móviles)
+    document.querySelectorAll('.day-cell:not(.empty):not(.past)').forEach(cell => {
+        // Si no tiene evento, agregarlo
+        if (!cell._listenerAdded) {
+            cell._listenerAdded = true;
+            cell.addEventListener('click', function(e) {
+                const fechaStr = this.dataset.fecha;
+                const dia = this.dataset.dia;
+                if (!fechaStr || this.classList.contains('empty') || this.classList.contains('past')) return;
+                
+                if (!this.classList.contains('available') && !this.classList.contains('selected')) {
+                    return;
+                }
+                
+                const [y, m, d] = fechaStr.split('-').map(Number);
+                const fechaObj = new Date(y, m-1, d);
+                seleccionarFecha(fechaObj, dia);
+            });
+        }
+    });
+
+    // ✅ ACTUALIZAR BOTONES DE NAVEGACIÓN
+    const hoyDate = new Date();
+    document.getElementById('prevMonth').disabled = (anioActual === hoyDate.getFullYear() && mesActual <= hoyDate.getMonth());
+    document.getElementById('nextMonth').disabled = (anioActual === hoyDate.getFullYear() && mesActual >= hoyDate.getMonth() + 2);
+
+    console.log('📅 Calendario renderizado correctamente');
+}
+     
+
+     
+        
         function seleccionarFecha(fecha, dia) {
             fechaSeleccionada = fecha;
             diaSeleccionado = dia;
@@ -2738,6 +2815,35 @@ function renderTestimonios(testimonios) {
         // ============================================================
         // INICIALIZACIÓN
         // ============================================================
+      
+async function init() {
+    console.log('🚀 Iniciando sistema de reservas...');
+    
+    await cargarConfigEmailJS();
+    await verificarSesion();
+    await cargarUbicacionSalon();
+    
+    // ✅ Cargar horarios (esto renderiza el calendario)
+    await cargarHorarios();
+    
+    // ✅ Cargar turnos (esto vuelve a renderizar el calendario con ocupados)
+    await cargarTurnos();
+    
+    // ✅ Cargar servicios y testimonios
+    await cargarServicios();
+    await cargarTestimonios();
+    
+    // ✅ Asegurar que el calendario esté renderizado
+    renderCalendar();
+    
+    initScrollReveal();
+
+    console.log('🌸 Serenity Spa - Sistema de reservas cargado');
+    console.log(`🔒 Usuario logueado: ${usuarioLogueado} (${nombreUsuario || 'Invitado'})`);
+}
+      
+      
+
         async function init() {
             await cargarConfigEmailJS();
             
