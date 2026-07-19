@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Asistente de Voz IA | Serenity Spa</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         /* ============================================================
            ROOT VARIABLES - TAMAÑOS MÁS GRANDES
@@ -1467,6 +1467,37 @@
             .card { max-width: 1480px; max-height: 960px; }
             .reservas-grid { grid-template-columns: repeat(3, 1fr); }
         }
+
+        /* ============================================================
+           ESTILO PARA BOTÓN ELIMINAR
+           ============================================================ */
+        .btn-eliminar-reserva {
+            background: transparent;
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            color: #f87171;
+            padding: 0.8rem;
+            border-radius: var(--radius-full);
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font-sans);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        .btn-eliminar-reserva:hover:not(:disabled) {
+            background: var(--red-dim);
+            border-color: var(--red);
+            color: #dc2626;
+        }
+        .btn-eliminar-reserva:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
     </style>
 </head>
 <body>
@@ -1677,6 +1708,10 @@
                     </button>
                     <button class="btn-cancelar-reserva" id="btnCancelarTurno">
                         <i class="fas fa-times-circle" aria-hidden="true"></i> Cancelar Turno
+                    </button>
+                    <!-- BOTÓN ELIMINAR AGREGADO -->
+                    <button class="btn-eliminar-reserva" id="btnEliminarTurno">
+                        <i class="fas fa-trash-alt" aria-hidden="true"></i> Eliminar Turno
                     </button>
                 </div>
 
@@ -2422,7 +2457,7 @@
         }
 
         // ============================================================
-        // PANEL DEL USUARIO — MIS TURNOS (CORREGIDO)
+        // PANEL DEL USUARIO — MIS TURNOS
         // ============================================================
         const ETIQUETAS_ESTADO = {
             confirmado: 'Confirmado',
@@ -2569,7 +2604,6 @@
                 let reservas = Array.isArray(data) ? data : [];
 
                 if (reservas.length === 0) {
-                    // Intentar cargar desde localStorage como fallback
                     const locales = obtenerReservasLocales();
                     if (locales.length > 0) {
                         reservas = locales;
@@ -2581,7 +2615,6 @@
                 reservasCargadas = true;
                 if (btnRefrescar) btnRefrescar.classList.remove('spinning');
 
-                // Actualizar badge
                 const badge = document.getElementById('reservasBadge');
                 if (badge) {
                     const pendientes = reservas.filter(r => r.estado === 'pendiente' || r.estado === 'pendiente_confirmacion' || r.estado === 'confirmado').length;
@@ -2684,10 +2717,12 @@
 
             const btnConfirmar = document.getElementById('btnConfirmarTurno');
             const btnCancelar = document.getElementById('btnCancelarTurno');
+            const btnEliminar = document.getElementById('btnEliminarTurno');
             const mensajeDiv = document.getElementById('turnoDetalleMensaje');
 
             btnConfirmar.style.display = 'block';
             btnCancelar.style.display = 'block';
+            btnEliminar.style.display = 'block';
             mensajeDiv.style.display = 'none';
 
             const estado = turno.estado || 'pendiente';
@@ -2698,29 +2733,44 @@
             if (yaCancelado) {
                 btnConfirmar.style.display = 'none';
                 btnCancelar.style.display = 'none';
+                btnEliminar.style.display = 'block';
+                btnEliminar.disabled = false;
+                btnEliminar.style.opacity = '1';
+                btnEliminar.textContent = '🗑️ Eliminar Turno';
                 mensajeDiv.style.display = 'block';
                 mensajeDiv.className = 'ticket-nota';
                 mensajeDiv.style.color = 'var(--red)';
                 mensajeDiv.textContent = '❌ Este turno ha sido cancelado.';
-                document.getElementById('turnoDetalleInfoTexto').textContent = 'Turno cancelado. No se pueden realizar acciones.';
+                document.getElementById('turnoDetalleInfoTexto').textContent = 'Turno cancelado. Puedes eliminarlo si lo deseas.';
             } else if (cancelacionSolicitada) {
                 btnConfirmar.style.display = 'none';
                 btnCancelar.style.display = 'none';
+                btnEliminar.style.display = 'block';
+                btnEliminar.disabled = false;
+                btnEliminar.style.opacity = '1';
+                btnEliminar.textContent = '🗑️ Eliminar Turno';
                 mensajeDiv.style.display = 'block';
                 mensajeDiv.className = 'ticket-nota';
                 mensajeDiv.style.color = 'var(--gold)';
                 mensajeDiv.textContent = '⏳ Tu solicitud de cancelación está en proceso. Te confirmaremos en breve.';
-                document.getElementById('turnoDetalleInfoTexto').textContent = 'Cancelación en proceso. Espera confirmación.';
+                document.getElementById('turnoDetalleInfoTexto').textContent = 'Cancelación en proceso. Puedes eliminar el registro.';
             } else if (yaConfirmado) {
                 btnConfirmar.style.display = 'none';
                 btnCancelar.style.display = 'block';
                 btnCancelar.textContent = '❌ Cancelar Turno';
+                btnEliminar.style.display = 'none';
+                btnEliminar.style.opacity = '0.5';
+                btnEliminar.disabled = true;
                 document.getElementById('turnoDetalleInfoTexto').textContent = 'Turno confirmado. Puedes cancelar hasta 2 horas antes.';
             } else {
                 btnConfirmar.style.display = 'block';
                 btnConfirmar.textContent = '✅ Confirmar Turno';
                 btnCancelar.style.display = 'block';
                 btnCancelar.textContent = '❌ Cancelar Turno';
+                btnEliminar.style.display = 'block';
+                btnEliminar.disabled = true;
+                btnEliminar.style.opacity = '0.5';
+                btnEliminar.textContent = '⏳ Eliminar (turno pendiente)';
 
                 const tiempo = calcularTiempoRestante(turno.fecha, turno.hora);
                 if (tiempo.puedeVerificar) {
@@ -2752,6 +2802,11 @@
 
             btnConfirmar.onclick = function() { confirmarTurno(id); };
             btnCancelar.onclick = function() { mostrarMotivoCancelacion(id); };
+            btnEliminar.onclick = function() {
+                if (!this.disabled) {
+                    eliminarTurno(id);
+                }
+            };
 
             turnoSeleccionadoId = id;
             document.getElementById('modalDetalleTurno').classList.add('active');
@@ -2780,6 +2835,66 @@
             }
         }
 
+        // ============================================================
+        // ELIMINAR TURNO (borra definitivamente)
+        // ============================================================
+        async function eliminarTurno(id) {
+            const confirmado = confirm(
+                `⚠️ ¿Eliminar este turno definitivamente?\n\n` +
+                `Esta acción borrará el turno de la base de datos y no podrá recuperarse.`
+            );
+            if (!confirmado) return;
+
+            const btn = document.getElementById('btnEliminarTurno');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Eliminando...';
+            btn.disabled = true;
+
+            try {
+                const token = getToken();
+                if (!token) {
+                    mostrarToast('Debes iniciar sesión para eliminar el turno', 'exclamation-circle');
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    return;
+                }
+
+                const response = await fetch(`/turnos/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    mostrarToast('🗑️ Turno eliminado correctamente', 'check-circle');
+                    
+                    // Eliminar de localStorage
+                    const locales = obtenerReservasLocales();
+                    const nuevas = locales.filter(r => r.id !== id);
+                    guardarReservasLocales(nuevas);
+                    
+                    // Recargar lista
+                    cargarMisReservas();
+                    cerrarModalTurno();
+                } else {
+                    mostrarToast('❌ Error: ' + (data.error || 'No se pudo eliminar'), 'exclamation-circle');
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            } catch (e) {
+                mostrarToast('❌ Error de conexión', 'exclamation-circle');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // ============================================================
+        // CONFIRMAR TURNO
+        // ============================================================
         async function confirmarTurno(id) {
             if (!confirm('¿Confirmar tu turno?\n\nAl confirmar, el turno quedará listo para realizar.')) return;
 
@@ -2824,6 +2939,9 @@
             }
         }
 
+        // ============================================================
+        // CANCELAR TURNO
+        // ============================================================
         function mostrarMotivoCancelacion(id) {
             const motivo = prompt('Motivo de la cancelación (opcional):');
             if (motivo === null) return;
@@ -3032,7 +3150,7 @@
         btnMic.addEventListener('click', toggleModoVoz);
 
         // ============================================================
-        // INICIALIZACIÓN (CORREGIDO)
+        // INICIALIZACIÓN
         // ============================================================
         async function init() {
             console.log('🚀 Iniciando Asistente Serenity...');
@@ -3058,7 +3176,6 @@
             const testimonioLocal = localStorage.getItem('testimonioEnviado');
             const tieneTestimonio = testimonioLocal === 'true';
 
-            // ⭐ CARGAR TURNOS DEL USUARIO SI ESTÁ LOGEADO
             if (usuarioVerificado) {
                 setTimeout(() => {
                     cargarMisReservas();
