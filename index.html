@@ -1,0 +1,2810 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
+    <!-- ====== SEO OPTIMIZADO ====== -->
+    <title>Serenity Spa | Masajes Profesionales - Bienestar y Relajación</title>
+    <meta name="description" content="Descubre la mejor experiencia de bienestar en Serenity Spa. Masajes personalizados en un entorno profesional y relajante. Reserva tu turno ahora." />
+    <meta name="keywords" content="masajes, spa, bienestar, relajación, masaje terapéutico, serenity spa" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://serenity-spa-2utz.onrender.com" />
+    
+    <!-- ====== OPEN GRAPH ====== -->
+    <meta property="og:title" content="Serenity Spa | Masajes Profesionales" />
+    <meta property="og:description" content="Descubre la mejor experiencia de bienestar en Serenity Spa. Masajes personalizados en un entorno profesional y relajante." />
+    <meta property="og:image" content="https://i.postimg.cc/DzDdPdjP/1781383382370.webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://serenity-spa-2utz.onrender.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="Serenity Spa" />
+
+    <!-- ====== TWITTER CARDS ====== -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Serenity Spa | Masajes Profesionales" />
+    <meta name="twitter:description" content="Descubre la mejor experiencia de bienestar en Serenity Spa. Masajes personalizados en un entorno profesional y relajante." />
+    <meta name="twitter:image" content="https://i.postimg.cc/DzDdPdjP/1781383382370.webp" />
+
+    <!-- ====== FAVICON ====== -->
+    <link rel="icon" href="https://i.postimg.cc/hz1zW7dg/1781383382370.webp" type="image/webp" />
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/hz1zW7dg/1781383382370.webp" />
+
+    <!-- ====== SCHEMA.ORG ====== -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Serenity Spa",
+        "description": "Masajes profesionales y bienestar en un entorno relajante.",
+        "image": "https://i.postimg.cc/DzDdPdjP/1781383382370.webp",
+        "url": "https://serenity-spa-2utz.onrender.com",
+        "telephone": "+53 53571569",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Cuba"
+        },
+        "priceRange": "$$",
+        "openingHours": "Mo-Sa 08:00-20:00"
+    }
+    </script>
+
+    <!-- ====== FONTS ====== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- ====== EMAILJS SDK ====== -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+
+    <style>
+        /* ===== RESET Y VARIABLES ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --ink: #0d0804;
+            --deep: #150d07;
+            --dark: #1c1009;
+            --surface: #251408;
+            --surface2: #2e1a0c;
+            --gold: #c9a87a;
+            --gold-light: #e8c98a;
+            --gold-dim: rgba(201, 168, 122, 0.18);
+            --gold-line: rgba(201, 168, 122, 0.30);
+            --gold-glow: rgba(201, 168, 122, 0.22);
+            --cream: #f0e6d3;
+            --text: #e8d5b8;
+            --text-muted: #a8906e;
+            --white: #ffffff;
+            --radius-pill: 999px;
+            --radius-card: 18px;
+            --radius-lg: 26px;
+            --transition: all 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+            --focus-ring: 0 0 0 3px rgba(201, 168, 122, 0.5);
+        }
+
+        [data-theme="light"] {
+            --ink: #F7F3EC;
+            --deep: #EDE8DF;
+            --dark: #E8E0D6;
+            --surface: #FFFFFF;
+            --surface2: #F5F0E8;
+            --gold: #C9A96E;
+            --gold-light: #3D5A2A;
+            --gold-dim: rgba(61, 90, 42, 0.10);
+            --gold-line: rgba(61, 90, 42, 0.25);
+            --gold-glow: rgba(61, 90, 42, 0.12);
+            --cream: #F7F3EC;
+            --text: #2C2C2C;
+            --text-muted: #5A5A4A;
+            --white: #FFFFFF;
+        }
+
+        /* ===== ESTILOS BASE ===== */
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'Lato', sans-serif;
+            background: var(--ink);
+            color: var(--text);
+            line-height: 1.65;
+            overflow-x: hidden;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+        h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; font-weight: 400; line-height: 1.2; }
+
+        :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--ink); }
+        ::-webkit-scrollbar-thumb { background: var(--gold-line); border-radius: 3px; }
+
+        .skip-link {
+            position: absolute; top: -100%; left: 50%; transform: translateX(-50%);
+            background: var(--gold); color: var(--ink); padding: 0.5rem 1.5rem;
+            border-radius: 0 0 8px 8px; z-index: 9999; font-weight: 700;
+            text-decoration: none; transition: top 0.3s ease;
+        }
+        .skip-link:focus { top: 0; }
+
+        /* ===== HEADER ===== */
+        header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(13, 8, 4, 0.82); backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--gold-line); z-index: 1000;
+            padding: 0.8rem 5%; display: flex; justify-content: space-between;
+            align-items: center; transition: var(--transition);
+        }
+        header.scrolled { padding: 0.6rem 5%; background: rgba(13, 8, 4, 0.95); box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
+
+        .header-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.85rem; 
+            text-decoration: none;
+        }
+        .logo-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--gold-line); }
+        .logo-text-container { display: flex; flex-direction: column; }
+        .logo-title {
+            font-family: 'Cinzel', serif; font-size: 1.0rem; font-weight: 600;
+            color: var(--gold-light); letter-spacing: .12em; display: flex; align-items: center; gap: .5rem;
+        }
+        .logo-title i { color: var(--gold); font-size: 0.9rem; }
+        .logo-subtitle {
+            font-family: 'Lato', sans-serif; font-size: 0.55rem; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: .15em; margin-top: -2px;
+            transition: var(--transition); display: flex; align-items: center; gap: 4px;
+        }
+        .logo-subtitle.user-logged { color: var(--gold-light); font-weight: 600; letter-spacing: .1em; cursor: pointer; text-transform: none; font-size: 0.65rem; }
+
+        /* ===== NOTIFICACIÓN DE RESERVA - JUNTO AL NOMBRE ===== */
+        .user-info-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+        }
+        #notificacionReserva {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: #e74c3c;
+            color: #fff;
+            border-radius: 50%;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 5px;
+            font-size: 0.55rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+            border: 2px solid var(--ink);
+            animation: pulseNotif 0.6s ease;
+            line-height: 1;
+            text-align: center;
+        }
+        #notificacionReserva.show {
+            display: inline-flex;
+        }
+
+        @keyframes pulseNotif {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        nav ul { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
+        nav a {
+            font-size: 0.75rem; font-weight: 400; letter-spacing: .08em; text-transform: uppercase;
+            color: var(--text-muted); text-decoration: none; padding: .4rem 0;
+            position: relative; transition: color .25s;
+        }
+        nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--gold); transition: width .3s; }
+        nav a:hover { color: var(--gold-light); }
+        nav a:hover::after { width: 100%; }
+        nav a:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 4px; }
+
+        .btn-registro-header {
+            background: var(--gold); color: var(--ink); padding: 0.4rem 1.2rem;
+            border-radius: var(--radius-pill); font-weight: 700; font-size: 0.8rem;
+            text-decoration: none; transition: var(--transition); border: 1px solid var(--gold);
+            cursor: pointer; font-family: 'Lato', sans-serif;
+        }
+        .btn-registro-header:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(201,168,122,0.3); }
+        .btn-registro-header:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+        .btn-mi-cuenta {
+            background: transparent; border: 1px solid var(--gold-line); color: var(--gold-light);
+            padding: 0.4rem 1.2rem; border-radius: var(--radius-pill); font-weight: 500;
+            font-size: 0.8rem; text-decoration: none; transition: var(--transition);
+            cursor: pointer; font-family: 'Lato', sans-serif; display: flex; align-items: center; gap: 0.4rem;
+        }
+        .btn-mi-cuenta:hover { border-color: var(--gold); background: var(--gold-dim); transform: translateY(-2px); }
+        .btn-salir {
+            background: transparent; border: 1px solid rgba(220,38,38,0.3); color: #f87171;
+            padding: 0.3rem 0.9rem; border-radius: var(--radius-pill); font-weight: 500;
+            font-size: 0.7rem; text-decoration: none; transition: var(--transition);
+            cursor: pointer; font-family: 'Lato', sans-serif;
+        }
+        .btn-salir:hover { background: rgba(220,38,38,0.1); border-color: #dc2626; color: #dc2626; }
+
+        /* ===== BOTÓN TEMA FLOTANTE (VISIBLE) ===== */
+        .theme-toggle-floating {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 2px solid var(--gold-line);
+            color: var(--gold-light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            backdrop-filter: blur(8px);
+        }
+        .theme-toggle-floating:hover {
+            transform: scale(1.1);
+            border-color: var(--gold);
+            background: var(--gold-dim);
+            box-shadow: 0 6px 30px rgba(201,168,122,0.3);
+        }
+        .theme-toggle-floating:focus-visible {
+            outline: 3px solid var(--gold);
+            outline-offset: 2px;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;
+            background: linear-gradient(160deg, rgba(26,35,50,0.9) 0%, rgba(44,62,80,0.82) 50%, rgba(201,169,97,0.6) 100%),
+                url('https://i.postimg.cc/DzDdPdjP/1781383382370.webp');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            color: white; position: relative; transition: background 0.4s ease;
+        }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(160deg, rgba(10,5,2,0.88) 0%, rgba(20,10,4,0.75) 50%, rgba(201,168,122,0.35) 100%);
+            transition: background 0.4s ease;
+        }
+        .hero-content { max-width: 760px; padding: 2rem; position: relative; z-index: 1; animation: fadeUp .9s cubic-bezier(.22,1,.36,1); }
+        .hero-lotus { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 1.4rem; opacity: .75; }
+        .hero-lotus::before, .hero-lotus::after { content: ''; display: block; width: 60px; height: 1px; background: var(--gold); }
+        .hero-lotus i { color: var(--gold); font-size: .9rem; }
+        .hero-content h1 {
+            font-family: 'Cinzel', serif; font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 400;
+            letter-spacing: .12em; color: var(--gold-light); margin-bottom: .8rem;
+            text-shadow: 0 2px 40px rgba(0,0,0,0.6);
+        }
+        .hero-tagline { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.2rem, 2.5vw, 1.6rem); color: var(--text); opacity: .85; margin-bottom: 2.2rem; }
+        .hero-swirl { color: var(--gold); font-size: 1.5rem; letter-spacing: -4px; display: block; margin-bottom: 2rem; opacity: .7; }
+        .btn-hero {
+            display: inline-flex; align-items: center; gap: .65rem; padding: .9rem 2.2rem;
+            background: rgba(13,8,4,0.65); border: 1.5px solid var(--gold-line); border-radius: var(--radius-pill);
+            color: var(--gold-light); font-family: 'Lato', sans-serif; font-size: .9rem; font-weight: 700;
+            letter-spacing: .06em; text-decoration: none; text-transform: uppercase;
+            transition: var(--transition); backdrop-filter: blur(8px);
+        }
+        .btn-hero:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 8px 28px rgba(201,168,122,0.35); }
+        .btn-hero:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ===== SERVICIOS ===== */
+        .services { padding: 7rem 5%; background: var(--deep); transition: background 0.4s ease; }
+        .section-title { text-align: center; margin-bottom: 3.5rem; }
+        .section-eyebrow { display: block; font-family: 'Lato', sans-serif; font-size: .65rem; font-weight: 700; letter-spacing: .35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+        .section-title h2 { font-family: 'Cinzel', serif; font-size: clamp(1.6rem, 4vw, 2.4rem); color: var(--gold-light); letter-spacing: .08em; position: relative; display: inline-block; transition: color 0.4s ease; }
+        .section-title h2::after { content: ''; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); width: 40px; height: 1px; background: var(--gold); transition: background 0.4s ease; }
+        .section-title p { color: var(--text-muted); max-width: 580px; margin: 1.8rem auto 0; font-size: .9rem; transition: color 0.4s ease; }
+
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        .card {
+            background: var(--surface); border: 1px solid var(--gold-line); border-radius: var(--radius-card);
+            overflow: hidden; cursor: pointer; transition: var(--transition);
+        }
+        .card:hover { transform: translateY(-6px); border-color: rgba(201,168,122,0.55); box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,122,0.08); }
+        .card:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+        .card-img { width: 100%; height: 210px; object-fit: cover; transition: transform .6s cubic-bezier(.22,1,.36,1); filter: brightness(0.88) saturate(0.9); cursor: pointer; }
+        .card:hover .card-img { transform: scale(1.05); filter: brightness(0.95) saturate(1.05); }
+        .card-content { padding: 1.4rem; }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; margin-bottom: .75rem; flex-wrap: wrap; }
+        .card-header h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--gold-light); transition: color 0.4s ease; }
+        .price { background: var(--gold-dim); border: 1px solid var(--gold-line); color: var(--gold); padding: .25rem .9rem; border-radius: var(--radius-pill); font-size: .78rem; font-weight: 700; white-space: nowrap; transition: all 0.4s ease; }
+        .description { color: var(--text-muted); font-size: .86rem; line-height: 1.55; margin-bottom: .75rem; transition: color 0.4s ease; }
+        .benefits-list { list-style: none; margin-top: .75rem; }
+        .benefits-list li { display: flex; align-items: center; gap: .55rem; margin-bottom: .45rem; font-size: .8rem; color: var(--text-muted); transition: color 0.4s ease; }
+        .benefits-list i { color: var(--gold); font-size: .65rem; flex-shrink: 0; }
+        .card-cta { margin-top: 1rem; padding-top: .8rem; border-top: 1px solid var(--gold-line); display: flex; justify-content: flex-end; }
+        .btn-details { color: var(--text-muted); font-size: .82rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; display: flex; align-items: center; gap: .4rem; text-decoration: none; transition: var(--transition); }
+        .btn-details:hover { color: var(--gold); gap: .65rem; }
+
+        /* ===== TESTIMONIOS ===== */
+        .testimonios-section {
+            padding: 5rem 5%; background: var(--dark); border-top: 1px solid var(--gold-line);
+            transition: background 0.4s ease, border-color 0.4s ease;
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+        }
+        .testimonios-grid-wrapper { flex: 1; display: flex; flex-direction: column; max-height: 70vh; min-height: 400px; overflow: hidden; position: relative; }
+        .testimonios-grid { flex: 1; overflow-y: auto; padding-right: 0.5rem; display: flex; flex-direction: column; gap: 0.6rem; scroll-behavior: smooth; }
+        .testimonios-grid::-webkit-scrollbar { width: 4px; }
+        .testimonios-grid::-webkit-scrollbar-track { background: transparent; }
+        .testimonios-grid::-webkit-scrollbar-thumb { background: var(--gold-line); border-radius: 2px; }
+        .testimonio-card { padding: 0.8rem 1.2rem; border-radius: 12px; background: var(--surface); border: 1px solid var(--gold-line); transition: var(--transition); flex-shrink: 0; }
+        .testimonio-card:hover { border-color: var(--gold); background: var(--surface2); }
+        .testimonio-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.2rem; flex-wrap: wrap; }
+        .testimonio-avatar { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 2px solid var(--gold-line); flex-shrink: 0; background: var(--gold-dim); }
+        .testimonio-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .testimonio-nombre { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; color: var(--gold-light); transition: color 0.4s ease; }
+        .testimonio-estrellas { color: var(--gold); font-size: 0.7rem; margin-left: 0.2rem; }
+        .testimonio-fecha { margin-left: auto; font-size: 0.55rem; color: var(--text-muted); opacity: 0.5; }
+        .testimonio-comentario { color: var(--text-muted); font-style: italic; font-size: 0.85rem; line-height: 1.5; padding-left: 0.8rem; border-left: 2px solid var(--gold-line); transition: color 0.4s ease, border-color 0.4s ease; }
+        .testimonios-section .section-title { margin-bottom: 2rem; }
+        .testimonios-section .section-title p { margin-top: 1rem; }
+
+        /* ===== BOOKING ===== */
+        .booking-section { padding: 5rem 5%; background: var(--deep); transition: background 0.4s ease; }
+        .booking-container { max-width: 900px; margin: 0 auto; background: var(--surface); border: 1px solid var(--gold-line); border-radius: var(--radius-lg); padding: 2.5rem; position: relative; transition: all 0.4s ease; }
+        .booking-container h2 { font-family: 'Cinzel', serif; font-size: 1.6rem; color: var(--gold-light); text-align: center; margin-bottom: 2rem; letter-spacing: .08em; transition: color 0.4s ease; }
+
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-size: .85rem; font-weight: 700; color: var(--gold-light); margin-bottom: .5rem; letter-spacing: .06em; transition: color 0.4s ease; }
+        .form-group label .required { color: #ff6b6b; margin-left: 2px; }
+
+        .form-control {
+            width: 100%; padding: .85rem 1rem; background: var(--deep); border: 2px solid var(--gold-line);
+            border-radius: var(--radius-card); color: var(--text); font-size: .95rem;
+            font-family: 'Lato', sans-serif; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none; position: relative;
+        }
+        .form-control:focus { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(201,168,122,0.15); transform: scale(1.01); }
+        .form-control:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+
+        .form-control.error { border-color: #ff6b6b; background: rgba(255,107,107,0.12); box-shadow: 0 0 0 4px rgba(255,107,107,0.15); animation: shake 0.5s cubic-bezier(0.36,0.07,0.19,0.97) both; }
+        @keyframes shake { 0%,100% { transform: translateX(0); } 10%,30%,50%,70%,90% { transform: translateX(-6px); } 20%,40%,60%,80% { transform: translateX(6px); } }
+        .form-control.success { border-color: #51cf66; background: rgba(81,207,102,0.12); box-shadow: 0 0 0 4px rgba(81,207,102,0.15); }
+
+        .form-control-wrapper { position: relative; }
+        .form-control-wrapper .status-icon { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.1rem; opacity: 0; transition: all 0.3s ease; pointer-events: none; }
+        .form-control-wrapper .status-icon.error { opacity: 1; color: #ff6b6b; }
+        .form-control-wrapper .status-icon.success { opacity: 1; color: #51cf66; }
+
+        .validation-hint { font-size: .75rem; margin-top: .4rem; padding-left: .2rem; display: none; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        .validation-hint.error { display: flex; align-items: center; gap: .4rem; color: #ff6b6b; }
+        .validation-hint.success { display: flex; align-items: center; gap: .4rem; color: #51cf66; }
+        .validation-hint i { font-size: .8rem; }
+
+        .terminos-group { margin: 1rem 0; }
+        .terminos-group label { display: flex; align-items: center; gap: .5rem; font-size: .85rem; color: var(--text-muted); cursor: pointer; transition: all 0.3s ease; }
+        .terminos-group input[type="checkbox"] { accent-color: var(--gold); width: 18px; height: 18px; cursor: pointer; }
+        .terminos-group label.error { color: #ff6b6b; }
+        .terminos-group label.error input[type="checkbox"] { outline: 2px solid #ff6b6b; outline-offset: 2px; animation: shake 0.5s cubic-bezier(0.36,0.07,0.19,0.97) both; }
+        .terminos-group a { color: var(--gold); text-decoration: underline; transition: color 0.4s ease; }
+
+        .calendar-wrapper {
+            background: var(--deep); border-radius: var(--radius-card); border: 2px solid var(--gold-line);
+            padding: 1.5rem; margin: 1rem 0 1.5rem 0; transition: all 0.3s ease;
+        }
+        .calendar-wrapper.error { border-color: #ff6b6b; background: rgba(255,107,107,0.12); box-shadow: 0 0 0 4px rgba(255,107,107,0.15); animation: shake 0.5s cubic-bezier(0.36,0.07,0.19,0.97) both; }
+        .calendar-wrapper.success { border-color: #51cf66; background: rgba(81,207,102,0.12); box-shadow: 0 0 0 4px rgba(81,207,102,0.15); }
+
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .calendar-header .month-year { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold-light); letter-spacing: .06em; transition: color 0.4s ease; }
+        .calendar-nav { display: flex; gap: .5rem; }
+        .calendar-nav button { background: var(--surface); border: 1px solid var(--gold-line); color: var(--gold); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; font-size: .85rem; }
+        .calendar-nav button:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+        .calendar-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+        .calendar-nav button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+        .calendar-grid .day-name { text-align: center; font-size: .7rem; font-weight: 700; color: var(--text-muted); padding: .4rem 0; text-transform: uppercase; letter-spacing: .08em; transition: color 0.4s ease; }
+        .calendar-grid .day-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: .9rem; font-weight: 500; cursor: pointer; transition: var(--transition); color: var(--text-muted); border: 2px solid transparent; background: transparent; position: relative; }
+        .calendar-grid .day-cell:hover:not(.empty):not(.disabled):not(.past):not(.full) { background: var(--gold-dim); border-color: var(--gold-line); }
+        .calendar-grid .day-cell.selected { background: var(--gold); color: var(--ink); font-weight: 700; border-color: var(--gold); }
+        .calendar-grid .day-cell.available { color: var(--text); }
+        .calendar-grid .day-cell.available:hover { background: var(--gold-dim); border-color: var(--gold-line); }
+        .calendar-grid .day-cell.full { color: #e74c3c; cursor: not-allowed; opacity: 0.6; text-decoration: line-through; }
+        .calendar-grid .day-cell.empty { cursor: default; opacity: 0; }
+        .calendar-grid .day-cell.past { color: #555; cursor: not-allowed; opacity: 0.35; }
+        .calendar-grid .day-cell.today { border-color: var(--gold); color: var(--gold-light); }
+
+        .horarios-disponibles { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .8rem; }
+        .hora-btn {
+            padding: .5rem 1.2rem; background: var(--surface); border: 2px solid var(--gold-line);
+            border-radius: var(--radius-pill); color: var(--text-muted); font-size: .8rem;
+            font-weight: 600; cursor: pointer; transition: var(--transition); font-family: 'Lato', sans-serif;
+        }
+        .hora-btn:hover:not(.disabled):not(.full) { background: var(--gold-dim); border-color: var(--gold); color: var(--gold-light); }
+        .hora-btn.selected { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+        .hora-btn.disabled { opacity: .3; cursor: not-allowed; text-decoration: line-through; }
+        .hora-btn.full { color: #e74c3c; border-color: rgba(231,76,60,0.3); cursor: not-allowed; opacity: 0.5; }
+        .hora-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+        .leyenda-calendario { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1rem; font-size: .75rem; color: var(--text-muted); flex-wrap: wrap; transition: color 0.4s ease; }
+        .leyenda-calendario span { display: flex; align-items: center; gap: .4rem; }
+        .leyenda-calendario .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+        .dot.available { background: var(--gold); }
+        .dot.full { background: #e74c3c; }
+        .dot.past { background: #555; }
+        .dot.selected { background: var(--gold-light); }
+
+        .btn-submit-reserva {
+            width: 100%; padding: 1rem; background: var(--gold); border: none;
+            border-radius: var(--radius-pill); color: var(--ink); font-size: 1rem;
+            font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+            cursor: pointer; transition: var(--transition); font-family: 'Lato', sans-serif; margin-top: 1rem;
+        }
+        .btn-submit-reserva:hover:not(:disabled) { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,122,0.35); }
+        .btn-submit-reserva:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+        .btn-submit-reserva:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+        .mensaje-reserva { padding: 1rem 1.5rem; border-radius: var(--radius-card); margin-top: 1.5rem; display: none; font-size: .95rem; position: relative; backdrop-filter: blur(8px); }
+        .mensaje-reserva .cerrar-mensaje { position: absolute; top: 0.5rem; right: 0.8rem; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: inherit; opacity: 0.6; transition: var(--transition); }
+        .mensaje-reserva .cerrar-mensaje:hover { opacity: 1; transform: rotate(90deg); }
+        .mensaje-reserva.success { display: block; background: rgba(46,204,113,0.12); border: 1px solid rgba(46,204,113,0.3); color: #2ecc71; }
+        .mensaje-reserva.error { display: block; background: rgba(255,107,107,0.12); border: 1px solid rgba(255,107,107,0.3); color: #ff6b6b; }
+        .mensaje-reserva.info { display: block; background: rgba(52,152,219,0.12); border: 1px solid rgba(52,152,219,0.3); color: #3498db; }
+
+        /* ===== MODAL REGISTRO COMPLETO ===== */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            z-index: 2000; display: none; align-items: center; justify-content: center;
+            padding: 1.5rem; transition: background 0.4s ease;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            max-width: 550px; width: 100%; max-height: 90vh; overflow-y: auto;
+            background: var(--surface); border: 1px solid var(--gold-line);
+            border-radius: var(--radius-lg); padding: 2rem; position: relative;
+            animation: fadeUp .4s cubic-bezier(.22,1,.36,1); transition: all 0.4s ease;
+        }
+        .modal::-webkit-scrollbar { width: 4px; }
+        .modal::-webkit-scrollbar-track { background: transparent; }
+        .modal::-webkit-scrollbar-thumb { background: var(--gold-line); border-radius: 2px; }
+
+        .modal-close {
+            position: absolute; top: 1rem; right: 1.2rem; background: none; border: none;
+            color: var(--text-muted); font-size: 1.4rem; cursor: pointer; transition: var(--transition);
+        }
+        .modal-close:hover { color: var(--gold); transform: rotate(90deg); }
+        .modal h2 {
+            font-family: 'Cinzel', serif; color: var(--gold-light); margin-bottom: 1.5rem;
+            text-align: center; transition: color 0.4s ease;
+        }
+
+        .modal .form-group { margin-bottom: 1.2rem; }
+        .modal .form-group label { display: block; font-size: .85rem; font-weight: 700; color: var(--gold-light); margin-bottom: .5rem; letter-spacing: .06em; transition: color 0.4s ease; }
+        .modal .form-control {
+            width: 100%; padding: .8rem 1rem; background: var(--deep); border: 1px solid var(--gold-line);
+            border-radius: var(--radius-card); color: var(--text); font-size: .95rem;
+            font-family: 'Lato', sans-serif; transition: var(--transition); outline: none;
+        }
+        .modal .form-control:focus { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(201,168,122,0.15); }
+        .modal .form-control.error { border-color: #ff6b6b; background: rgba(255,107,107,0.12); }
+        .modal .form-control.success { border-color: #51cf66; background: rgba(81,207,102,0.12); }
+
+        .modal .btn-submit {
+            width: 100%; padding: .9rem; background: var(--gold); border: none;
+            border-radius: var(--radius-pill); color: var(--ink); font-size: .9rem;
+            font-weight: 700; cursor: pointer; transition: var(--transition); font-family: 'Lato', sans-serif;
+        }
+        .modal .btn-submit:hover:not(:disabled) { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,122,0.35); }
+        .modal .btn-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+        .modal .auth-message { display: none; margin-bottom: 1rem; padding: .8rem; border-radius: var(--radius-card); font-size: .9rem; }
+        .modal .auth-message.error { display: block; background: rgba(231,76,60,0.15); border: 1px solid rgba(231,76,60,0.3); color: #e74c3c; }
+        .modal .auth-message.success { display: block; background: rgba(46,204,113,0.15); border: 1px solid rgba(46,204,113,0.3); color: #2ecc71; }
+        .modal .auth-message.info { display: block; background: rgba(52,152,219,0.15); border: 1px solid rgba(52,152,219,0.3); color: #3498db; }
+
+        .modal .validation-hint { font-size: .7rem; margin-top: .3rem; display: none; }
+        .modal .validation-hint.error { display: block; color: #e74c3c; }
+        .modal .validation-hint.success { display: block; color: #2ecc71; }
+
+        .spinner {
+            display: inline-block; width: 16px; height: 16px;
+            border: 2px solid rgba(0,0,0,0.1); border-top-color: var(--ink);
+            border-radius: 50%; animation: spin .6s linear infinite; margin-right: 8px; vertical-align: middle;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .auth-switch { text-align: center; margin-top: 1rem; font-size: .85rem; color: var(--text-muted); }
+        .auth-switch a { color: var(--gold); cursor: pointer; text-decoration: underline; font-weight: 600; transition: color 0.4s ease; }
+        .auth-switch a:hover { color: var(--gold-light); }
+
+        .login-section { display: none; }
+        .login-section.active { display: block; }
+        .register-section { display: block; }
+        .register-section.hidden { display: none; }
+
+        /* ===== MODAL DETALLES SERVICIO ===== */
+        .modal-servicio-img { display: none; width: 100%; height: auto; max-height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; }
+
+        /* ===== SHARE ===== */
+        .share-section { padding: 3.5rem 5%; background: var(--deep); text-align: center; border-top: 1px solid var(--gold-line); transition: background 0.4s ease, border-color 0.4s ease; }
+        .share-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.4rem; color: var(--gold-light); margin-bottom: 1.4rem; transition: color 0.4s ease; }
+        .share-bar { display: flex; justify-content: center; gap: .75rem; }
+        .share-btn { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 1rem; border: none; cursor: pointer; transition: var(--transition); }
+        .share-btn.facebook { background: #1877F2; }
+        .share-btn.whatsapp { background: #25D366; }
+        .share-btn.instagram { background: radial-gradient(circle at 30% 110%, #ffdb8a, #f46f30, #d62976); }
+        .share-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
+        .share-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+        .scroll-reveal { opacity: 0; transform: translateY(22px); transition: all .7s cubic-bezier(.22,1,.36,1); }
+        .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+        footer { text-align: center; padding: 1.5rem; background: var(--ink); border-top: 1px solid var(--gold-line); font-size: .72rem; color: var(--text-muted); letter-spacing: .1em; transition: all 0.4s ease; }
+        footer span { color: var(--gold); transition: color 0.4s ease; }
+
+        .intervalo-info { margin-top: 0.5rem; padding: 0.4rem 0.8rem; background: rgba(201,169,97,0.08); border-radius: 8px; font-size: 0.7rem; color: var(--text-muted); }
+        .intervalo-info i { margin-right: 0.3rem; }
+
+        .direccion-salon-display { display: none; align-items: center; gap: 0.5rem; margin-top: 0.5rem; padding: 0.5rem 0.8rem; background: rgba(201,169,97,0.06); border-radius: 8px; border: 1px solid var(--gold-line); font-size: 0.8rem; color: var(--text-muted); }
+        .direccion-salon-display i { color: var(--gold); }
+        .direccion-salon-display .direccion-texto { color: var(--text); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            header { padding: .6rem 1.5rem; }
+            nav ul { gap: .8rem; }
+            nav a { font-size: .65rem; }
+            .services-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .booking-container { padding: 1.5rem; }
+            .calendar-grid .day-cell { font-size: .8rem; }
+            .horarios-disponibles { gap: .4rem; }
+            .hora-btn { padding: .4rem .9rem; font-size: .7rem; }
+            .testimonios-grid-wrapper { max-height: 60vh; min-height: 300px; }
+            .testimonios-section { min-height: 80vh; padding: 3rem 5%; }
+            .testimonio-card { padding: 0.6rem 0.8rem; }
+            .hero-content h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); }
+            .theme-toggle-floating { width: 44px; height: 44px; font-size: 1rem; bottom: 1.5rem; right: 1.5rem; }
+            .modal { padding: 1.5rem; max-width: 95%; }
+        }
+        @media (max-width: 480px) {
+            .logo-title { font-size: 0.7rem; }
+            .logo-img { width: 30px; height: 30px; }
+            .btn-hero { padding: .7rem 1.5rem; font-size: .75rem; }
+            .card-header h3 { font-size: 1.1rem; }
+            .booking-container { padding: 1rem; }
+            .calendar-grid .day-cell { font-size: .7rem; }
+            .hora-btn { padding: .3rem .7rem; font-size: .65rem; }
+            .theme-toggle-floating { width: 40px; height: 40px; font-size: .9rem; bottom: 1rem; right: 1rem; }
+            #notificacionReserva { min-width: 16px; height: 16px; font-size: 0.45rem; padding: 0 3px; }
+        }
+
+        /* ===== TEMA CLARO ===== */
+        [data-theme="light"] .hero {
+            background: linear-gradient(160deg, rgba(247,243,236,0.92) 0%, rgba(237,232,223,0.88) 50%, rgba(201,169,110,0.30) 100%),
+                url('https://i.postimg.cc/DzDdPdjP/1781383382370.webp');
+            background-size: cover; background-position: center; background-attachment: fixed; color: #2C2C2C;
+        }
+        [data-theme="light"] .hero::before { background: linear-gradient(160deg, rgba(247,243,236,0.85) 0%, rgba(237,232,223,0.70) 50%, rgba(201,169,110,0.20) 100%); }
+        [data-theme="light"] .hero-content h1 { color: #3D5A2A; text-shadow: 0 2px 40px rgba(0,0,0,0.10); }
+        [data-theme="light"] .hero-tagline { color: #5A5A4A; }
+        [data-theme="light"] .btn-hero { background: rgba(255,255,255,0.85); border: 1.5px solid #3D5A2A; color: #3D5A2A; backdrop-filter: blur(8px); }
+        [data-theme="light"] .btn-hero:hover { background: #3D5A2A; color: #FFFFFF; border-color: #3D5A2A; }
+        [data-theme="light"] header { background: rgba(247,243,236,0.92); backdrop-filter: blur(18px); border-bottom: 1px solid rgba(61,90,42,0.20); }
+        [data-theme="light"] header.scrolled { background: rgba(247,243,236,0.97); box-shadow: 0 4px 24px rgba(61,90,42,0.12); }
+        [data-theme="light"] .logo-title { color: #3D5A2A; }
+        [data-theme="light"] .logo-subtitle { color: #5A5A4A; }
+        [data-theme="light"] nav a { color: #5A5A4A; }
+        [data-theme="light"] nav a:hover { color: #3D5A2A; }
+        [data-theme="light"] nav a::after { background: #C9A96E; }
+        [data-theme="light"] .btn-registro-header { background: #3D5A2A; color: #FFFFFF; border: 1px solid #3D5A2A; }
+        [data-theme="light"] .btn-registro-header:hover { background: #5C7A42; box-shadow: 0 4px 12px rgba(61,90,42,0.30); }
+        [data-theme="light"] .btn-mi-cuenta { border: 1px solid rgba(61,90,42,0.25); color: #3D5A2A; }
+        [data-theme="light"] .btn-mi-cuenta:hover { border-color: #3D5A2A; background: rgba(61,90,42,0.08); }
+        [data-theme="light"] .btn-salir { border: 1px solid rgba(220,38,38,0.25); color: #dc2626; }
+        [data-theme="light"] .btn-salir:hover { background: rgba(220,38,38,0.08); border-color: #dc2626; }
+        [data-theme="light"] .services { background: #EDE8DF; }
+        [data-theme="light"] .section-title h2 { color: #3D5A2A; }
+        [data-theme="light"] .section-title h2::after { background: #C9A96E; }
+        [data-theme="light"] .section-title p { color: #5A5A4A; }
+        [data-theme="light"] .card { background: #FFFFFF; border: 1px solid rgba(61,90,42,0.15); }
+        [data-theme="light"] .card:hover { border-color: rgba(61,90,42,0.40); box-shadow: 0 16px 40px rgba(61,90,42,0.10); }
+        [data-theme="light"] .card-header h3 { color: #3D5A2A; }
+        [data-theme="light"] .price { background: rgba(61,90,42,0.08); border: 1px solid rgba(61,90,42,0.20); color: #3D5A2A; }
+        [data-theme="light"] .description { color: #5A5A4A; }
+        [data-theme="light"] .benefits-list li { color: #5A5A4A; }
+        [data-theme="light"] .benefits-list i { color: #C9A96E; }
+        [data-theme="light"] .card-cta { border-top: 1px solid rgba(61,90,42,0.15); }
+        [data-theme="light"] .btn-details { color: #5A5A4A; }
+        [data-theme="light"] .btn-details:hover { color: #3D5A2A; }
+        [data-theme="light"] .testimonios-section { background: #E8E0D6; border-top: 1px solid rgba(61,90,42,0.15); }
+        [data-theme="light"] .testimonio-card { background: #FFFFFF; border: 1px solid rgba(61,90,42,0.15); }
+        [data-theme="light"] .testimonio-card:hover { border-color: #C9A96E; background: #F5F0E8; }
+        [data-theme="light"] .testimonio-nombre { color: #3D5A2A; }
+        [data-theme="light"] .testimonio-comentario { color: #5A5A4A; border-left: 2px solid rgba(61,90,42,0.20); }
+        [data-theme="light"] .booking-section { background: #EDE8DF; }
+        [data-theme="light"] .booking-container { background: #FFFFFF; border: 1px solid rgba(61,90,42,0.15); }
+        [data-theme="light"] .booking-container h2 { color: #3D5A2A; }
+        [data-theme="light"] .form-group label { color: #3D5A2A; }
+        [data-theme="light"] .form-control { background: #F7F3EC; border: 2px solid rgba(61,90,42,0.20); color: #2C2C2C; }
+        [data-theme="light"] .form-control:focus { border-color: #3D5A2A; box-shadow: 0 0 0 4px rgba(61,90,42,0.12); }
+        [data-theme="light"] .calendar-wrapper { background: #F7F3EC; border: 2px solid rgba(61,90,42,0.20); }
+        [data-theme="light"] .calendar-header .month-year { color: #3D5A2A; }
+        [data-theme="light"] .calendar-nav button { background: #FFFFFF; border: 1px solid rgba(61,90,42,0.20); color: #3D5A2A; }
+        [data-theme="light"] .calendar-nav button:hover { background: #3D5A2A; color: #FFFFFF; border-color: #3D5A2A; }
+        [data-theme="light"] .calendar-grid .day-name { color: #5A5A4A; }
+        [data-theme="light"] .calendar-grid .day-cell { color: #5A5A4A; }
+        [data-theme="light"] .calendar-grid .day-cell:hover:not(.empty):not(.disabled):not(.past):not(.full) { background: rgba(61,90,42,0.08); border-color: rgba(61,90,42,0.20); }
+        [data-theme="light"] .calendar-grid .day-cell.selected { background: #3D5A2A; color: #FFFFFF; border-color: #3D5A2A; }
+        [data-theme="light"] .calendar-grid .day-cell.available { color: #2C2C2C; }
+        [data-theme="light"] .calendar-grid .day-cell.today { border-color: #C9A96E; color: #3D5A2A; }
+        [data-theme="light"] .hora-btn { background: #F7F3EC; border: 2px solid rgba(61,90,42,0.20); color: #5A5A4A; }
+        [data-theme="light"] .hora-btn:hover:not(.disabled):not(.full) { background: rgba(61,90,42,0.08); border-color: #3D5A2A; color: #3D5A2A; }
+        [data-theme="light"] .hora-btn.selected { background: #3D5A2A; color: #FFFFFF; border-color: #3D5A2A; }
+        [data-theme="light"] .btn-submit-reserva { background: #3D5A2A; color: #FFFFFF; }
+        [data-theme="light"] .btn-submit-reserva:hover:not(:disabled) { background: #5C7A42; box-shadow: 0 8px 28px rgba(61,90,42,0.30); }
+        [data-theme="light"] .terminos-group label { color: #5A5A4A; }
+        [data-theme="light"] .terminos-group a { color: #3D5A2A; }
+        [data-theme="light"] .share-section { background: #EDE8DF; border-top: 1px solid rgba(61,90,42,0.15); }
+        [data-theme="light"] .share-title { color: #3D5A2A; }
+        [data-theme="light"] footer { background: #F7F3EC; border-top: 1px solid rgba(61,90,42,0.15); color: #5A5A4A; }
+        [data-theme="light"] footer span { color: #C9A96E; }
+        [data-theme="light"] .modal { background: #FFFFFF; border: 1px solid rgba(61,90,42,0.15); }
+        [data-theme="light"] .modal h2 { color: #3D5A2A; }
+        [data-theme="light"] .modal .form-group label { color: #3D5A2A; }
+        [data-theme="light"] .modal .form-control { background: #F7F3EC; border: 1px solid rgba(61,90,42,0.20); color: #2C2C2C; }
+        [data-theme="light"] .modal .form-control:focus { border-color: #3D5A2A; box-shadow: 0 0 0 4px rgba(61,90,42,0.12); }
+        [data-theme="light"] .modal .btn-submit { background: #3D5A2A; color: #FFFFFF; }
+        [data-theme="light"] .modal .btn-submit:hover:not(:disabled) { background: #5C7A42; box-shadow: 0 8px 28px rgba(61,90,42,0.30); }
+        [data-theme="light"] .auth-switch a { color: #3D5A2A; }
+        [data-theme="light"] .modal-overlay { background: rgba(0,0,0,0.60); }
+        [data-theme="light"] .mensaje-reserva.success { background: rgba(46,204,113,0.12); border: 1px solid rgba(46,204,113,0.30); color: #2ecc71; }
+        [data-theme="light"] .mensaje-reserva.error { background: rgba(255,107,107,0.12); border: 1px solid rgba(255,107,107,0.30); color: #ff6b6b; }
+        [data-theme="light"] .mensaje-reserva.info { background: rgba(52,152,219,0.12); border: 1px solid rgba(52,152,219,0.30); color: #3498db; }
+        [data-theme="light"] .leyenda-calendario { color: #5A5A4A; }
+        [data-theme="light"] .dot.available { background: #3D5A2A; }
+        [data-theme="light"] .dot.selected { background: #C9A96E; }
+        [data-theme="light"] .intervalo-info { background: rgba(61,90,42,0.06); color: #5A5A4A; }
+        [data-theme="light"] .direccion-salon-display { background: rgba(61,90,42,0.05); border: 1px solid rgba(61,90,42,0.15); color: #5A5A4A; }
+        [data-theme="light"] .direccion-salon-display i { color: #C9A96E; }
+        [data-theme="light"] .direccion-salon-display .direccion-texto { color: #2C2C2C; }
+        [data-theme="light"] .section-eyebrow { color: #5C7A42; }
+        [data-theme="light"] .hero-lotus::before, [data-theme="light"] .hero-lotus::after { background: #C9A96E; }
+        [data-theme="light"] .hero-lotus i { color: #C9A96E; }
+        [data-theme="light"] .theme-toggle-floating { background: #FFFFFF; border-color: rgba(61,90,42,0.25); color: #3D5A2A; }
+        [data-theme="light"] .theme-toggle-floating:hover { background: rgba(61,90,42,0.08); border-color: #3D5A2A; }
+        [data-theme="light"] #notificacionReserva { border-color: #FFFFFF; }
+    </style>
+</head>
+<body>
+
+    <!-- ===== SKIP LINK ===== -->
+    <a class="skip-link" href="#inicio">Saltar al contenido principal</a>
+
+    <!-- ===== HEADER ===== -->
+    <header id="header" role="banner">
+        <a href="#" class="header-left" aria-label="Serenity Spa - Inicio">
+            <img class="logo-img" src="https://i.postimg.cc/hz1zW7dg/1781383382370.webp" alt="Serenity Spa Logo" width="40" height="40">
+            <div class="logo-text-container">
+                <div class="logo-title">
+                    <i class="fas fa-feather-alt" aria-hidden="true"></i> SERENITY SPA
+                </div>
+                <span class="logo-subtitle" id="userDisplay">by FGStudio</span>
+            </div>
+        </a>
+
+        <nav role="navigation" aria-label="Navegación principal">
+            <ul>
+                <li id="navUserAuth">
+                    <button class="btn-registro-header" id="btnRegistroHeader">Registrarse</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ===== BOTÓN TEMA FLOTANTE (VISIBLE) ===== -->
+    <button class="theme-toggle-floating" id="themeToggle" aria-label="Cambiar tema claro/oscuro" title="Cambiar tema">
+        <i class="fas fa-moon" id="themeIcon" aria-hidden="true"></i>
+    </button>
+
+    <main>
+        <!-- ===== HERO ===== -->
+        <section id="inicio" class="hero" aria-labelledby="heroTitulo">
+            <div class="hero-content">
+                <div class="hero-lotus" aria-hidden="true"><i class="fas fa-spa"></i></div>
+                <h1 id="heroTitulo">Renueva tu Energía</h1>
+                <p class="hero-tagline" id="heroSubtitulo">Experiencias de bienestar</p>
+                <span class="hero-swirl" aria-hidden="true">∞</span>
+                <a href="#reservas" class="btn-hero" id="heroBoton" aria-label="Reservar tu turno">
+                    <i class="fas fa-calendar-plus" aria-hidden="true"></i> Reserva tu Turno
+                </a>
+            </div>
+        </section>
+
+        <!-- ===== SERVICIOS ===== -->
+        <section id="servicios" class="services" aria-labelledby="serviciosTitulo">
+            <div class="section-title scroll-reveal">
+                <span class="section-eyebrow" id="serviciosEtiqueta">Nuestros Servicios</span>
+                <h2 id="serviciosTitulo">Elige tu Masaje Ideal</h2>
+                <p id="serviciosDescripcion">Turnos disponibles según horarios</p>
+            </div>
+            <div class="services-grid" id="servicesGrid" role="list">
+                <div style="text-align:center;padding:2rem;color:var(--text-muted);" role="status">Cargando servicios...</div>
+            </div>
+        </section>
+
+        <!-- ===== TESTIMONIOS ===== -->
+        <section id="testimonios" class="testimonios-section" aria-labelledby="testimoniosTitulo">
+            <div class="section-title scroll-reveal">
+                <span class="section-eyebrow">Lo que dicen nuestros clientes</span>
+                <h2 id="testimoniosTitulo">Reseñas y Experiencias</h2>
+                <p>Opiniones reales de quienes ya disfrutaron de Serenity Spa</p>
+            </div>
+            <div class="testimonios-grid-wrapper">
+                <div class="testimonios-grid" id="testimoniosGrid" role="list">
+                    <div style="text-align:center;padding:2rem;color:var(--text-muted);" role="status">Cargando reseñas...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== RESERVAS ===== -->
+        <section id="reservas" class="booking-section" aria-labelledby="reservasTitulo">
+            <div class="section-title scroll-reveal">
+                <span class="section-eyebrow">Reserva tu Turno</span>
+                <h2 id="reservasTitulo">Agenda tu Masaje</h2>
+                <p>Completa el formulario y selecciona la fecha disponible en el calendario</p>
+            </div>
+
+            <div class="booking-container scroll-reveal">
+                <h2><i class="fas fa-spa" style="color:var(--gold);margin-right:.5rem;" aria-hidden="true"></i> Reservar Turno</h2>
+
+                <form id="bookingForm" novalidate>
+                    <div class="form-group">
+                        <label for="clienteNombre">Nombre completo <span class="required" aria-hidden="true">*</span></label>
+                        <div class="form-control-wrapper">
+                            <input type="text" id="clienteNombre" class="form-control" placeholder="Ej: María González" required autocomplete="name" aria-describedby="nombreHint">
+                            <span class="status-icon" id="nombreIcon" aria-hidden="true"></span>
+                        </div>
+                        <div class="validation-hint" id="nombreHint" role="alert"></div>
+                    </div>
+
+                    <div class="form-row" style="display:grid;grid-template-columns:1fr 2fr;gap:1rem;">
+                        <div class="form-group">
+                            <label for="clientePais">País <span class="required" aria-hidden="true">*</span></label>
+                            <select id="clientePais" class="form-control" required>
+                                <option value="53">🇨🇺 Cuba (+53)</option>
+                                <option value="54">🇦🇷 Argentina (+54)</option>
+                                <option value="52">🇲🇽 México (+52)</option>
+                                <option value="57">🇨🇴 Colombia (+57)</option>
+                                <option value="56">🇨🇱 Chile (+56)</option>
+                                <option value="51">🇵🇪 Perú (+51)</option>
+                                <option value="34">🇪🇸 España (+34)</option>
+                                <option value="58">🇻🇪 Venezuela (+58)</option>
+                                <option value="593">🇪🇨 Ecuador (+593)</option>
+                                <option value="598">🇺🇾 Uruguay (+598)</option>
+                                <option value="591">🇧🇴 Bolivia (+591)</option>
+                                <option value="595">🇵🇾 Paraguay (+595)</option>
+                                <option value="1">🇺🇸 Estados Unidos (+1)</option>
+                                <option value="55">🇧🇷 Brasil (+55)</option>
+                                <option value="39">🇮🇹 Italia (+39)</option>
+                                <option value="33">🇫🇷 Francia (+33)</option>
+                                <option value="44">🇬🇧 Reino Unido (+44)</option>
+                                <option value="49">🇩🇪 Alemania (+49)</option>
+                            </select>
+                            <div class="validation-hint" id="paisHint" role="alert"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="clienteTelefono">Teléfono <span class="required" aria-hidden="true">*</span></label>
+                            <div class="form-control-wrapper">
+                                <input type="tel" id="clienteTelefono" class="form-control" placeholder="Ej: 5551234567" required autocomplete="tel" aria-describedby="telefonoHint">
+                                <span class="status-icon" id="telefonoIcon" aria-hidden="true"></span>
+                            </div>
+                            <div class="validation-hint" id="telefonoHint" role="alert"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tipoMasaje">Selecciona el masaje <span class="required" aria-hidden="true">*</span></label>
+                        <select id="tipoMasaje" class="form-control" required aria-describedby="masajeHint">
+                            <option value="">-- Selecciona un masaje --</option>
+                        </select>
+                        <div class="validation-hint" id="masajeHint" role="alert"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>¿Dónde prefieres recibir el masaje? <span class="required" aria-hidden="true">*</span></label>
+                        <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:.3rem;" role="radiogroup" aria-label="Lugar del servicio">
+                            <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.9rem;color:var(--text);">
+                                <input type="radio" name="tipoServicio" value="salon" checked style="accent-color:var(--gold);width:18px;height:18px;" aria-label="En el salón">
+                                <i class="fas fa-building" style="color:var(--gold);" aria-hidden="true"></i> En el salón
+                            </label>
+                            <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.9rem;color:var(--text);" id="domicilioLabel">
+                                <input type="radio" name="tipoServicio" value="domicilio" style="accent-color:var(--gold);width:18px;height:18px;" aria-label="A domicilio">
+                                <i class="fas fa-home" style="color:var(--gold);" aria-hidden="true"></i> A domicilio
+                            </label>
+                        </div>
+                        <div class="direccion-salon-display" id="direccionSalonDisplay">
+                            <i class="fas fa-map-pin" aria-hidden="true"></i>
+                            <span class="direccion-texto" id="direccionSalonTexto">Cargando dirección...</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="direccionGroup" style="display:none;">
+                        <label for="direccionDomicilio">Dirección completa <span class="required" aria-hidden="true">*</span></label>
+                        <div class="form-control-wrapper">
+                            <input type="text" id="direccionDomicilio" class="form-control" placeholder="Calle, número, ciudad, etc." aria-describedby="direccionHint">
+                            <span class="status-icon" id="direccionIcon" aria-hidden="true"></span>
+                        </div>
+                        <div class="validation-hint" id="direccionHint" role="alert"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Selecciona la fecha <span class="required" aria-hidden="true">*</span></label>
+                        <div id="calendarWrapper" class="calendar-wrapper" role="application" aria-label="Calendario de fechas disponibles">
+                            <div class="calendar-header">
+                                <button type="button" class="calendar-nav" id="prevMonth" aria-label="Mes anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+                                <span class="month-year" id="monthYearDisplay" aria-live="polite">Enero 2026</span>
+                                <button type="button" class="calendar-nav" id="nextMonth" aria-label="Mes siguiente"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+                            </div>
+                            <div class="calendar-grid" id="calendarGrid" role="grid"></div>
+                            <div class="leyenda-calendario" role="group" aria-label="Leyenda del calendario">
+                                <span><span class="dot available" aria-hidden="true"></span> Disponible</span>
+                                <span><span class="dot full" aria-hidden="true"></span> Ocupado / No laboral</span>
+                                <span><span class="dot past" aria-hidden="true"></span> No disponible</span>
+                                <span><span class="dot selected" aria-hidden="true"></span> Seleccionado</span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="fechaSeleccionada" value="">
+                        <input type="hidden" id="diaSeleccionado" value="">
+                        <div id="fechaSeleccionadaDisplay" style="color:var(--gold-light);font-size:.9rem;margin-top:.3rem;min-height:1.5rem;" aria-live="polite"></div>
+                        <div class="validation-hint" id="fechaHint" role="alert"></div>
+                    </div>
+
+                    <div class="form-group" id="horariosGroup" style="display:none;">
+                        <label>Horarios disponibles para esta fecha:</label>
+                        <div class="horarios-disponibles" id="horariosContainer" role="group" aria-label="Horarios disponibles"></div>
+                        <input type="hidden" id="horaSeleccionada" value="">
+                        <div class="validation-hint" id="horaHint" role="alert"></div>
+                    </div>
+
+                    <div class="terminos-group">
+                        <label id="terminosLabel">
+                            <input type="checkbox" id="aceptarTerminos" required aria-describedby="terminosHint">
+                            Acepto los <a href="/terminos" target="_blank">Términos</a> y las <a href="/terminos" target="_blank">Políticas</a>
+                            <span class="required" aria-hidden="true"></span>
+                        </label>
+                        <div class="validation-hint" id="terminosHint" role="alert"></div>
+                    </div>
+
+                    <button type="submit" class="btn-submit-reserva" id="submitReserva">
+                        <i class="fas fa-calendar-check" aria-hidden="true"></i> Reservar Turno
+                    </button>
+                </form>
+
+                <div id="mensajeResultado" class="mensaje-reserva" role="alert">
+                    <button class="cerrar-mensaje" id="cerrarMensajeBtn" title="Cerrar mensaje" aria-label="Cerrar mensaje">×</button>
+                    <div id="mensajeContenido"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SHARE ===== -->
+        <section class="share-section" aria-labelledby="shareTitulo">
+            <h3 class="share-title" id="shareTitulo">Comparte Serenity Spa</h3>
+            <div class="share-bar" role="group" aria-label="Compartir en redes sociales">
+                <button class="share-btn facebook" data-social="facebook" aria-label="Compartir en Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></button>
+                <button class="share-btn whatsapp" data-social="whatsapp" aria-label="Compartir en WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></button>
+                <button class="share-btn instagram" data-social="instagram" aria-label="Compartir en Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></button>
+            </div>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <span aria-hidden="true">✦</span> Bienestar que se siente, donde estés. <span aria-hidden="true">✦</span>
+    </footer>
+
+    <!-- ===== MODAL REGISTRO COMPLETO ===== -->
+    <div class="modal-overlay" id="modalRegistro" role="dialog" aria-modal="true" aria-labelledby="modalTitleRegistro">
+        <div class="modal">
+            <button class="modal-close" id="modalRegistroClose" aria-label="Cerrar"><i class="fas fa-times" aria-hidden="true"></i></button>
+
+            <!-- ===== SECCIÓN REGISTRO ===== -->
+            <div id="registerSection" class="register-section">
+                <h2 id="modalTitleRegistro"><i class="fas fa-user-plus" aria-hidden="true"></i> Crear Cuenta</h2>
+                <div id="authMessage1" class="auth-message" role="alert"></div>
+
+                <form id="authForm" novalidate>
+                    <div class="form-group">
+                        <label for="authNombre">Nombre completo <span class="required" aria-hidden="true">*</span></label>
+                        <div class="form-control-wrapper">
+                            <input type="text" id="authNombre" class="form-control" placeholder="Ej: María González" autocomplete="name" aria-describedby="authNombreHint" required>
+                            <span class="status-icon" id="authNombreIcon" aria-hidden="true"></span>
+                        </div>
+                        <div class="validation-hint" id="authNombreHint" role="alert"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="authEmail">Correo electrónico <span class="required" aria-hidden="true">*</span></label>
+                        <div class="form-control-wrapper">
+                            <input type="email" id="authEmail" class="form-control" placeholder="ejemplo@correo.com" autocomplete="email" aria-describedby="authEmailHint" required>
+                            <span class="status-icon" id="authEmailIcon" aria-hidden="true"></span>
+                        </div>
+                        <div class="validation-hint" id="authEmailHint" role="alert"></div>
+                    </div>
+
+                    <div class="terminos-group">
+                        <label id="authTerminosLabel">
+                            <input type="checkbox" id="authTerminos" required aria-describedby="authTerminosHint">
+                            Acepto los <a href="/terminos" target="_blank">Términos y Condiciones</a>
+                            <span class="required" aria-hidden="true">*</span>
+                        </label>
+                        <div class="validation-hint" id="authTerminosHint" role="alert"></div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="btnSolicitarCodigo">
+                        <i class="fas fa-envelope" aria-hidden="true"></i> Enviar Código de Verificación
+                    </button>
+                </form>
+
+                <div class="auth-switch">
+                    ¿Ya tienes cuenta? <a id="switchToLogin" role="button" tabindex="0">Iniciar Sesión</a>
+                </div>
+            </div>
+
+            <!-- ===== SECCIÓN VERIFICACIÓN ===== -->
+            <div id="verificacionSection" style="display:none;">
+                <h2><i class="fas fa-shield-alt" aria-hidden="true"></i> Verificar Código</h2>
+                <div id="authMessage2" class="auth-message" role="alert"></div>
+
+                <form id="authVerificarForm">
+                    <div class="form-group">
+                        <label for="authCodigo">Código de 6 dígitos <span class="required" aria-hidden="true">*</span></label>
+                        <div class="form-control-wrapper">
+                            <input type="text" id="authCodigo" class="form-control" placeholder="123456" maxlength="6" inputmode="numeric" aria-describedby="authCodigoHint" required>
+                            <span class="status-icon" id="authCodigoIcon" aria-hidden="true"></span>
+                        </div>
+                        <div class="validation-hint" id="authCodigoHint" role="alert"></div>
+                        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.3rem;">
+                            <i class="fas fa-clock" aria-hidden="true"></i> El código fue enviado a tu correo. Expira en 3 minutos.
+                        </p>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="btnVerificarCodigo">
+                        <i class="fas fa-check-circle" aria-hidden="true"></i> Verificar y Registrar
+                    </button>
+                </form>
+
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button class="btn-reenviar" id="btnReenviarCodigo" aria-label="Reenviar código" style="background:transparent;border:1px solid var(--gold-line);color:var(--text-muted);padding:0.4rem 1.2rem;border-radius:var(--radius-pill);cursor:pointer;font-family:'Lato',sans-serif;font-size:0.8rem;transition:var(--transition);">
+                        <i class="fas fa-sync" aria-hidden="true"></i> Reenviar código
+                    </button>
+                </div>
+
+                <div class="auth-switch" style="margin-top: 1rem;">
+                    <a id="switchBackToRegister" role="button" tabindex="0">← Volver al registro</a>
+                </div>
+            </div>
+
+            <!-- ===== SECCIÓN LOGIN ===== -->
+            <div id="loginSection" class="login-section">
+                <h2><i class="fas fa-sign-in-alt" aria-hidden="true"></i> Iniciar Sesión</h2>
+                <div id="authMessageLogin" class="auth-message" role="alert"></div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Correo electrónico <span class="required" aria-hidden="true">*</span></label>
+                        <div class="form-control-wrapper">
+                            <input type="email" id="loginEmail" class="form-control" placeholder="ejemplo@correo.com" autocomplete="email" aria-describedby="loginEmailHint" required>
+                            <span class="status-icon" id="loginEmailIcon" aria-hidden="true"></span>
+                        </div>
+                        <div class="validation-hint" id="loginEmailHint" role="alert"></div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="btnLogin">
+                        <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Iniciar Sesión
+                    </button>
+                </form>
+
+                <div class="auth-switch">
+                    ¿No tienes cuenta? <a id="switchToRegister" role="button" tabindex="0">Registrarse</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL DETALLES SERVICIO ===== -->
+    <div class="modal-overlay" id="modalServicioDetalles" role="dialog" aria-modal="true" aria-labelledby="modalServicioNombre">
+        <div class="modal" style="max-width: 700px;">
+            <button class="modal-close" id="modalServicioClose" aria-label="Cerrar"><i class="fas fa-times" aria-hidden="true"></i></button>
+            <div class="modal-servicio-content">
+                <img class="modal-servicio-img" id="modalServicioImg" src="" alt="Imagen del servicio" style="display:none; width:100%; height:auto; max-height:300px; object-fit:cover; border-radius:8px; margin-bottom:1rem;">
+                <div id="modalServicioVideoContainer" style="display:none; width:100%; margin-bottom:1rem;">
+                    <iframe id="modalServicioVideo" width="100%" height="300" frameborder="0" allowfullscreen style="border-radius:8px; display:block; width:100%;" title="Video del servicio"></iframe>
+                </div>
+                <h2 id="modalServicioNombre" style="font-family:'Cinzel',serif;font-size:1.6rem;color:var(--gold-light);margin-bottom:.5rem;"></h2>
+                <div class="modal-precio" id="modalServicioPrecio" style="color:var(--gold);font-size:1.2rem;font-weight:700;margin-bottom:.8rem;"></div>
+                <p class="modal-desc" id="modalServicioDesc" style="color:var(--text-muted);font-size:.95rem;line-height:1.6;margin-bottom:1rem;"></p>
+                <div style="margin-bottom:1rem;">
+                    <strong style="color:var(--gold-light);font-size:.9rem;">Beneficios:</strong>
+                    <div class="modal-beneficios" id="modalServicioBeneficios" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.3rem;"></div>
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <strong style="color:var(--gold-light);font-size:.9rem;">Efectos:</strong>
+                    <div class="modal-efectos" id="modalServicioEfectos" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.3rem;"></div>
+                </div>
+                <a href="#reservas" class="btn-reservar-modal" id="modalServicioReservar" style="display:inline-flex;align-items:center;gap:.6rem;padding:.8rem 2rem;background:var(--gold);border:none;border-radius:var(--radius-pill);color:var(--ink);font-weight:700;font-size:.9rem;cursor:pointer;transition:var(--transition);text-decoration:none;">
+                    <i class="fas fa-calendar-plus" aria-hidden="true"></i> Reservar este masaje
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    SCRIPT PRINCIPAL - CORREGIDO CON TOKEN EN RESERVA Y NOTIFICACIÓN
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // CONFIGURACIÓN
+            // ============================================================
+            const API_URL = '/turnos';
+            const SERVICIOS_API = '/api/servicios';
+            const HORARIOS_API = '/api/config/horarios';
+            const MODALIDADES_API = '/api/config/modalidades';
+            const PAISES_API = '/api/seguridad/paises';
+            const TESTIMONIOS_API = '/api/testimonios';
+            const REGISTRO_API = '/api/registro';
+
+            // ============================================================
+            // CACHE EN MEMORIA (TTL 2 MINUTOS)
+            // ============================================================
+            const memoryCache = new Map();
+
+            function getCached(key, ttlMs = 120000) {
+                const entry = memoryCache.get(key);
+                if (!entry) return null;
+                if (Date.now() - entry.timestamp > ttlMs) {
+                    memoryCache.delete(key);
+                    return null;
+                }
+                return entry.data;
+            }
+
+            function setCache(key, data) {
+                memoryCache.set(key, { data, timestamp: Date.now() });
+            }
+
+            // ============================================================
+            // FETCH CON CACHE
+            // ============================================================
+            async function fetchWithCache(url, cacheKey, ttlMs = 120000) {
+                const cached = getCached(cacheKey, ttlMs);
+                if (cached) {
+                    console.log(`⚡ Cache hit: ${cacheKey}`);
+                    return cached;
+                }
+                console.log(`⏳ Fetching: ${url}`);
+                try {
+                    const resp = await fetch(url);
+                    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                    const data = await resp.json();
+                    setCache(cacheKey, data);
+                    console.log(`✅ Cargado ${cacheKey} (${data.length || Object.keys(data).length} items)`);
+                    return data;
+                } catch (e) {
+                    console.warn(`⚠️ Error en fetch ${url}:`, e);
+                    const stale = memoryCache.get(cacheKey);
+                    if (stale) {
+                        console.log(`♻️ Usando stale cache para ${cacheKey}`);
+                        return stale.data;
+                    }
+                    throw e;
+                }
+            }
+
+            // ============================================================
+            // EMAILJS
+            // ============================================================
+            let emailjsConfig = { publicKey: '', serviceId: '', templateId: '' };
+
+            async function cargarConfigEmailJS() {
+                try {
+                    const response = await fetch('/api/config-emailjs');
+                    const data = await response.json();
+                    emailjsConfig = data;
+                    if (emailjsConfig.publicKey) {
+                        emailjs.init(emailjsConfig.publicKey);
+                        console.log('✅ EmailJS inicializado');
+                    }
+                } catch (error) {
+                    console.warn('⚠️ Error cargando EmailJS:', error);
+                }
+            }
+
+            async function enviarCodigoEmailJS(email, nombre, codigo) {
+                try {
+                    if (!emailjsConfig.publicKey || !emailjsConfig.templateId) {
+                        throw new Error('EmailJS no configurado');
+                    }
+                    const templateParams = {
+                        to_email: email,
+                        name: nombre,
+                        passcode: codigo,
+                        time: '3 minutos'
+                    };
+                    await emailjs.send(
+                        emailjsConfig.serviceId,
+                        emailjsConfig.templateId,
+                        templateParams
+                    );
+                    return { success: true };
+                } catch (error) {
+                    console.error('❌ Error enviando email:', error);
+                    return { success: false, error: error.text || 'Error al enviar' };
+                }
+            }
+
+            // ============================================================
+            // AUTENTICACIÓN
+            // ============================================================
+            function getToken() {
+                return sessionStorage.getItem('userToken') || localStorage.getItem('userToken') || null;
+            }
+
+            function setToken(token) {
+                if (token) {
+                    sessionStorage.setItem('userToken', token);
+                    localStorage.setItem('userToken', token);
+                } else {
+                    sessionStorage.removeItem('userToken');
+                    localStorage.removeItem('userToken');
+                }
+            }
+
+            function getUserData() {
+                const nombre = sessionStorage.getItem('userNombre') || localStorage.getItem('userNombre') || null;
+                const email = sessionStorage.getItem('userEmail') || localStorage.getItem('userEmail') || null;
+                const avatar = sessionStorage.getItem('userAvatar') || localStorage.getItem('userAvatar') || null;
+                return { nombre, email, avatar };
+            }
+
+            function setUserData(nombre, email, avatar) {
+                if (nombre) {
+                    sessionStorage.setItem('userNombre', nombre);
+                    localStorage.setItem('userNombre', nombre);
+                }
+                if (email) {
+                    sessionStorage.setItem('userEmail', email);
+                    localStorage.setItem('userEmail', email);
+                }
+                if (avatar) {
+                    sessionStorage.setItem('userAvatar', avatar);
+                    localStorage.setItem('userAvatar', avatar);
+                }
+            }
+
+            function clearUserData() {
+                sessionStorage.removeItem('userToken');
+                sessionStorage.removeItem('userNombre');
+                sessionStorage.removeItem('userEmail');
+                sessionStorage.removeItem('userAvatar');
+                localStorage.removeItem('userToken');
+                localStorage.removeItem('userNombre');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userAvatar');
+            }
+
+            // ============================================================
+            // VERIFICAR SESIÓN
+            // ============================================================
+            async function verificarSesion() {
+                const token = getToken();
+                if (!token) {
+                    usuarioLogueado = false;
+                    nombreUsuario = '';
+                    emailUsuario = '';
+                    actualizarHeader();
+                    return false;
+                }
+                try {
+                    const res = await fetch('/api/verify/user', {
+                        headers: { 'Authorization': 'Bearer ' + token }
+                    });
+                    const data = await res.json();
+                    if (data.valid) {
+                        const userData = getUserData();
+                        if (userData.nombre) {
+                            usuarioLogueado = true;
+                            nombreUsuario = userData.nombre;
+                            emailUsuario = userData.email || '';
+                            console.log('✅ Usuario autenticado:', nombreUsuario);
+                            actualizarHeader();
+                            return true;
+                        } else {
+                            try {
+                                const userRes = await fetch('/api/usuario/actual', {
+                                    headers: { 'Authorization': 'Bearer ' + token }
+                                });
+                                if (userRes.ok) {
+                                    const userData2 = await userRes.json();
+                                    if (userData2.nombre) {
+                                        setUserData(userData2.nombre, userData2.email, userData2.avatar);
+                                        usuarioLogueado = true;
+                                        nombreUsuario = userData2.nombre;
+                                        emailUsuario = userData2.email || '';
+                                        actualizarHeader();
+                                        return true;
+                                    }
+                                }
+                            } catch (e) {
+                                console.warn('Error obteniendo datos del usuario:', e);
+                            }
+                            clearUserData();
+                            usuarioLogueado = false;
+                            nombreUsuario = '';
+                            emailUsuario = '';
+                            actualizarHeader();
+                            return false;
+                        }
+                    } else {
+                        clearUserData();
+                        usuarioLogueado = false;
+                        nombreUsuario = '';
+                        emailUsuario = '';
+                        actualizarHeader();
+                        return false;
+                    }
+                } catch (e) {
+                    console.warn('Error verificando sesión:', e);
+                    usuarioLogueado = false;
+                    nombreUsuario = '';
+                    emailUsuario = '';
+                    actualizarHeader();
+                    return false;
+                }
+            }
+
+            // ============================================================
+            // VARIABLES GLOBALES
+            // ============================================================
+            let horariosGlobal = { dias: [], horarios: [], inicio: 8, fin: 20 };
+            let turnosExistentes = [];
+            let serviciosDisponibles = [];
+            let fechaSeleccionada = null;
+            let diaSeleccionado = null;
+            let horaSeleccionada = null;
+            let mesActual = new Date().getMonth();
+            let anioActual = new Date().getFullYear();
+            let usuarioLogueado = false;
+            let nombreUsuario = '';
+            let emailUsuario = '';
+            let ubicacionSalon = '';
+            let emailRegistro = '';
+            let modalidadesActivas = { salon: true, domicilio: true };
+            let esModoLogin = false;
+
+            // ============================================================
+            // TEMA CLARO / OSCURO
+            // ============================================================
+            function getTheme() {
+                return localStorage.getItem('theme') || 'dark';
+            }
+
+            function setTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                const icon = document.getElementById('themeIcon');
+                if (icon) {
+                    icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            }
+
+            function toggleTheme() {
+                const current = getTheme();
+                setTheme(current === 'dark' ? 'light' : 'dark');
+            }
+
+            // ============================================================
+            // NOTIFICACIÓN DE RESERVA - CORREGIDA (junto al nombre)
+            // ============================================================
+            function mostrarNotificacionReserva() {
+                const notif = document.getElementById('notificacionReserva');
+                if (!notif) return;
+
+                try {
+                    const misReservas = JSON.parse(localStorage.getItem('misReservas') || '[]');
+                    const pendientes = misReservas.filter(r =>
+                        r.estado === 'pendiente' || r.estado === 'pendiente_confirmacion' || r.estado === 'confirmado'
+                    );
+
+                    if (pendientes.length > 0 && usuarioLogueado) {
+                        notif.textContent = pendientes.length;
+                        notif.classList.add('show');
+                        notif.style.animation = 'none';
+                        setTimeout(() => {
+                            notif.style.animation = 'pulseNotif 0.6s ease';
+                        }, 10);
+                        setTimeout(() => {
+                            notif.style.animation = '';
+                        }, 610);
+                    } else {
+                        notif.classList.remove('show');
+                    }
+                } catch (e) {
+                    notif.classList.remove('show');
+                }
+            }
+
+            // ============================================================
+            // HEADER - CORREGIDO CON NOTIFICACIÓN
+            // ============================================================
+            function actualizarHeader() {
+                const userDisplay = document.getElementById('userDisplay');
+                const navUser = document.getElementById('navUserAuth');
+
+                console.log('🔄 Actualizando header, usuario logueado:', usuarioLogueado, 'nombre:', nombreUsuario);
+
+                if (usuarioLogueado && nombreUsuario) {
+                    const userData = getUserData();
+                    const avatar = userData.avatar;
+                    let avatarHtml = '';
+
+                    if (avatar && (avatar.startsWith('data:image') || avatar.startsWith('http'))) {
+                        avatarHtml = `<img src="${avatar}" alt="${nombreUsuario}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid var(--gold-line);">`;
+                    } else {
+                        const iniciales = nombreUsuario.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+                        avatarHtml =
+                            `<div style="width:28px;height:28px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.7rem;">${iniciales}</div>`;
+                    }
+
+                    userDisplay.innerHTML = '';
+                    userDisplay.className = 'logo-subtitle';
+                    userDisplay.style.display = 'none';
+
+                    // Construir el HTML con la notificación dentro del wrapper del usuario
+                    navUser.innerHTML = `
+                        <div class="user-info-wrapper">
+                            <button class="btn-mi-cuenta" onclick="window.location.href='/asistente.html'" style="display:flex;align-items:center;gap:0.5rem;padding:0.3rem 1rem;" aria-label="Mi cuenta">
+                                ${avatarHtml}
+                                <span style="font-size:0.8rem;font-weight:500;color:var(--gold-light);">${nombreUsuario}</span>
+                            </button>
+                            <span id="notificacionReserva">0</span>
+                        </div>
+                        <button class="btn-salir" id="btnLogoutHeader" aria-label="Cerrar sesión">
+                            <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Salir
+                        </button>
+                    `;
+
+                    // Reasignar referencia después de recrear el elemento
+                    const notif = document.getElementById('notificacionReserva');
+                    if (notif) {
+                        setTimeout(() => mostrarNotificacionReserva(), 50);
+                    }
+
+                    const logoutBtn = document.getElementById('btnLogoutHeader');
+                    if (logoutBtn) {
+                        logoutBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            clearUserData();
+                            usuarioLogueado = false;
+                            nombreUsuario = '';
+                            emailUsuario = '';
+                            actualizarHeader();
+                            setTimeout(() => location.reload(), 100);
+                        });
+                    }
+                } else {
+                    userDisplay.innerHTML = `by FGStudio`;
+                    userDisplay.className = 'logo-subtitle';
+                    userDisplay.style.display = 'flex';
+                    userDisplay.style.cursor = 'default';
+                    userDisplay.onclick = null;
+
+                    navUser.innerHTML = `
+                        <button class="btn-registro-header" id="btnRegistroHeader">Registrarse</button>
+                    `;
+                    const registerBtn = document.getElementById('btnRegistroHeader');
+                    if (registerBtn) {
+                        registerBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            abrirModalRegistro();
+                        });
+                    }
+                }
+            }
+
+            // ============================================================
+            // MODAL REGISTRO
+            // ============================================================
+            function abrirModalRegistro(modo) {
+                const modal = document.getElementById('modalRegistro');
+                const registerSection = document.getElementById('registerSection');
+                const loginSection = document.getElementById('loginSection');
+                const verificacionSection = document.getElementById('verificacionSection');
+
+                esModoLogin = (modo === 'login');
+
+                registerSection.classList.remove('hidden');
+                registerSection.style.display = 'block';
+                loginSection.classList.remove('active');
+                loginSection.style.display = 'none';
+                verificacionSection.style.display = 'none';
+
+                document.getElementById('authMessage1').className = 'auth-message';
+                document.getElementById('authMessage1').style.display = 'none';
+                document.getElementById('authMessageLogin').className = 'auth-message';
+                document.getElementById('authMessageLogin').style.display = 'none';
+                document.getElementById('authMessage2').className = 'auth-message';
+                document.getElementById('authMessage2').style.display = 'none';
+
+                document.getElementById('authNombre').value = '';
+                document.getElementById('authEmail').value = '';
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('authCodigo').value = '';
+                document.getElementById('authTerminos').checked = false;
+
+                document.querySelectorAll('#modalRegistro .form-control').forEach(el => {
+                    el.classList.remove('error', 'success');
+                });
+                document.querySelectorAll('#modalRegistro .validation-hint').forEach(el => {
+                    el.className = 'validation-hint';
+                });
+                document.querySelectorAll('#modalRegistro .status-icon').forEach(el => {
+                    el.className = 'status-icon';
+                });
+                document.getElementById('authTerminosLabel').classList.remove('error');
+
+                if (modo === 'login') {
+                    registerSection.style.display = 'none';
+                    loginSection.style.display = 'block';
+                    loginSection.classList.add('active');
+                    document.getElementById('modalTitleRegistro').textContent = 'Iniciar Sesión';
+                } else {
+                    registerSection.style.display = 'block';
+                    loginSection.style.display = 'none';
+                    document.getElementById('modalTitleRegistro').textContent = 'Crear Cuenta';
+                }
+
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function cerrarModalRegistro() {
+                document.getElementById('modalRegistro').classList.remove('active');
+                document.body.style.overflow = '';
+                document.getElementById('registerSection').style.display = 'block';
+                document.getElementById('registerSection').classList.remove('hidden');
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('loginSection').classList.remove('active');
+                document.getElementById('verificacionSection').style.display = 'none';
+                esModoLogin = false;
+            }
+
+            // ============================================================
+            // SWITCH ENTRE REGISTRO Y LOGIN
+            // ============================================================
+            document.getElementById('switchToLogin').addEventListener('click', function(e) {
+                e.preventDefault();
+                esModoLogin = true;
+                document.getElementById('registerSection').style.display = 'none';
+                document.getElementById('loginSection').style.display = 'block';
+                document.getElementById('loginSection').classList.add('active');
+                document.getElementById('modalTitleRegistro').textContent = 'Iniciar Sesión';
+                document.getElementById('authMessage1').style.display = 'none';
+                document.getElementById('authMessageLogin').style.display = 'none';
+            });
+
+            document.getElementById('switchToRegister').addEventListener('click', function(e) {
+                e.preventDefault();
+                esModoLogin = false;
+                document.getElementById('registerSection').style.display = 'block';
+                document.getElementById('registerSection').classList.remove('hidden');
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('loginSection').classList.remove('active');
+                document.getElementById('modalTitleRegistro').textContent = 'Crear Cuenta';
+                document.getElementById('authMessage1').style.display = 'none';
+                document.getElementById('authMessageLogin').style.display = 'none';
+            });
+
+            document.getElementById('switchBackToRegister').addEventListener('click', function(e) {
+                e.preventDefault();
+                esModoLogin = false;
+                document.getElementById('registerSection').style.display = 'block';
+                document.getElementById('verificacionSection').style.display = 'none';
+                document.getElementById('modalTitleRegistro').textContent = 'Crear Cuenta';
+            });
+
+            document.getElementById('modalRegistroClose').addEventListener('click', function(e) {
+                e.stopPropagation();
+                cerrarModalRegistro();
+            });
+
+            document.getElementById('modalRegistro').addEventListener('click', function(e) {
+                const verificacionSection = document.getElementById('verificacionSection');
+                if (e.target === this && verificacionSection.style.display !== 'block') {
+                    cerrarModalRegistro();
+                }
+            });
+
+            // ============================================================
+            // REGISTRO - VALIDACIÓN
+            // ============================================================
+            function validarRegistro() {
+                const nombre = document.getElementById('authNombre');
+                const email = document.getElementById('authEmail');
+                const terminos = document.getElementById('authTerminos');
+
+                let valido = true;
+
+                document.querySelectorAll('#registerSection .form-control').forEach(el => {
+                    el.classList.remove('error', 'success');
+                });
+                document.querySelectorAll('#registerSection .validation-hint').forEach(el => {
+                    el.className = 'validation-hint';
+                });
+                document.querySelectorAll('#registerSection .status-icon').forEach(el => {
+                    el.className = 'status-icon';
+                });
+                document.getElementById('authTerminosLabel').classList.remove('error');
+
+                if (!nombre.value.trim() || nombre.value.trim().length < 2) {
+                    nombre.classList.add('error');
+                    document.getElementById('authNombreIcon').className = 'status-icon error';
+                    document.getElementById('authNombreIcon').innerHTML = '<i class="fas fa-times-circle" aria-hidden="true"></i>';
+                    document.getElementById('authNombreHint').className = 'validation-hint error';
+                    document.getElementById('authNombreHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> El nombre es obligatorio (mínimo 2 caracteres).';
+                    valido = false;
+                } else {
+                    nombre.classList.add('success');
+                    document.getElementById('authNombreIcon').className = 'status-icon success';
+                    document.getElementById('authNombreIcon').innerHTML = '<i class="fas fa-check-circle" aria-hidden="true"></i>';
+                }
+
+                if (!email.value.trim() || !email.value.includes('@') || !email.value.includes('.')) {
+                    email.classList.add('error');
+                    document.getElementById('authEmailIcon').className = 'status-icon error';
+                    document.getElementById('authEmailIcon').innerHTML = '<i class="fas fa-times-circle" aria-hidden="true"></i>';
+                    document.getElementById('authEmailHint').className = 'validation-hint error';
+                    document.getElementById('authEmailHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Ingresa un correo electrónico válido.';
+                    valido = false;
+                } else {
+                    email.classList.add('success');
+                    document.getElementById('authEmailIcon').className = 'status-icon success';
+                    document.getElementById('authEmailIcon').innerHTML = '<i class="fas fa-check-circle" aria-hidden="true"></i>';
+                }
+
+                if (!terminos.checked) {
+                    document.getElementById('authTerminosLabel').classList.add('error');
+                    document.getElementById('authTerminosHint').className = 'validation-hint error';
+                    document.getElementById('authTerminosHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Debes aceptar los Términos y Condiciones.';
+                    valido = false;
+                }
+
+                if (!valido) {
+                    const primerError = document.querySelector(
+                        '#registerSection .form-control.error, #registerSection .terminos-group label.error');
+                    if (primerError) {
+                        primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return { valido: false };
+                }
+
+                return {
+                    valido: true,
+                    datos: {
+                        nombre: nombre.value.trim(),
+                        email: email.value.trim()
+                    }
+                };
+            }
+
+            // ============================================================
+            // REGISTRO - ENVÍO
+            // ============================================================
+            document.getElementById('authForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                if (esModoLogin) {
+                    return;
+                }
+
+                const validacion = validarRegistro();
+                if (!validacion.valido) return;
+
+                const { nombre, email } = validacion.datos;
+                const codigo = Math.floor(100000 + Math.random() * 900000).toString();
+
+                const btn = document.getElementById('btnSolicitarCodigo');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="spinner"></span> Enviando...';
+                btn.disabled = true;
+
+                try {
+                    const res = await fetch('/api/registro/guardar-codigo', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, nombre, codigo })
+                    });
+                    const data = await res.json();
+
+                    if (res.ok) {
+                        const resultado = await enviarCodigoEmailJS(email, nombre, codigo);
+
+                        if (resultado.success) {
+                            emailRegistro = email;
+                            mostrarMensajeAuth1('success',
+                                '✅ Código enviado a tu correo. Revisa tu bandeja de entrada o spam.');
+
+                            document.getElementById('registerSection').style.display = 'none';
+                            document.getElementById('verificacionSection').style.display = 'block';
+                            document.querySelector('#verificacionSection h2').textContent =
+                            'Verificar Código - Registro';
+                            document.getElementById('verificacionSection').dataset.modo = 'registro';
+                            document.getElementById('authCodigo').value = '';
+                            document.getElementById('authCodigo').focus();
+
+                            document.getElementById('authMessage2').style.display = 'none';
+                        } else {
+                            mostrarMensajeAuth1('error', '❌ Error al enviar el código: ' + resultado.error);
+                        }
+                    } else {
+                        if (data.error && (data.error.includes('ya está registrado') || data.error.includes(
+                                'ya registrado'))) {
+                            mostrarMensajeAuth1('error',
+                                `❌ ${data.error}<br><br>Si ya tienes cuenta, <a href="#" onclick="document.getElementById('switchToLogin').click();" style="color:var(--gold);text-decoration:underline;">inicia sesión aquí</a>.`
+                                );
+                        } else {
+                            mostrarMensajeAuth1('error', '❌ ' + (data.error || 'Error al guardar el código'));
+                        }
+                    }
+                } catch (error) {
+                    mostrarMensajeAuth1('error', '❌ Error de conexión. Inténtalo de nuevo.');
+                } finally {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            });
+
+            // ============================================================
+            // VERIFICAR CÓDIGO
+            // ============================================================
+            document.getElementById('authVerificarForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const codigo = document.getElementById('authCodigo').value.trim();
+                const modo = document.getElementById('verificacionSection').dataset.modo || 'registro';
+
+                if (!codigo || codigo.length !== 6 || !/^\d{6}$/.test(codigo)) {
+                    document.getElementById('authCodigo').classList.add('error');
+                    document.getElementById('authCodigoIcon').className = 'status-icon error';
+                    document.getElementById('authCodigoIcon').innerHTML = '<i class="fas fa-times-circle" aria-hidden="true"></i>';
+                    document.getElementById('authCodigoHint').className = 'validation-hint error';
+                    document.getElementById('authCodigoHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> El código debe tener exactamente 6 dígitos.';
+                    return;
+                }
+
+                const btn = document.getElementById('btnVerificarCodigo');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="spinner"></span> Verificando...';
+                btn.disabled = true;
+
+                try {
+                    const res = await fetch('/api/registro/verificar-codigo', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: emailRegistro, codigo })
+                    });
+                    const data = await res.json();
+
+                    if (res.ok) {
+                        mostrarMensajeAuth2('success', '✅ ¡Verificación exitosa! Redirigiendo...');
+
+                        setToken(data.token);
+                        setUserData(data.usuario.nombre, data.usuario.email, data.usuario.avatar || null);
+
+                        usuarioLogueado = true;
+                        nombreUsuario = data.usuario.nombre;
+                        emailUsuario = data.usuario.email;
+                        actualizarHeader();
+
+                        setTimeout(() => {
+                            cerrarModalRegistro();
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        mostrarMensajeAuth2('error', `❌ ${data.error || 'Código incorrecto.'}`);
+                        document.getElementById('authCodigo').value = '';
+                        document.getElementById('authCodigo').focus();
+                    }
+                } catch (error) {
+                    mostrarMensajeAuth2('error', '❌ Error de conexión.');
+                } finally {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            });
+
+            // ============================================================
+            // REENVIAR CÓDIGO
+            // ============================================================
+            document.getElementById('btnReenviarCodigo').addEventListener('click', async () => {
+                const modo = document.getElementById('verificacionSection').dataset.modo || 'registro';
+                document.getElementById('verificacionSection').style.display = 'none';
+
+                if (modo === 'login') {
+                    document.getElementById('loginSection').style.display = 'block';
+                    document.getElementById('loginSection').classList.add('active');
+                    document.getElementById('authMessageLogin').style.display = 'none';
+                    document.getElementById('loginEmail').value = emailRegistro;
+                    document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+                } else {
+                    document.getElementById('registerSection').style.display = 'block';
+                    document.getElementById('registerSection').classList.remove('hidden');
+                    document.getElementById('authMessage1').style.display = 'none';
+                    document.getElementById('authEmail').value = emailRegistro;
+                    document.getElementById('authForm').dispatchEvent(new Event('submit'));
+                }
+            });
+
+            // ============================================================
+            // FUNCIONES DE MENSAJES MODAL
+            // ============================================================
+            function mostrarMensajeAuth1(tipo, texto) {
+                const msg = document.getElementById('authMessage1');
+                msg.className = `auth-message ${tipo}`;
+                msg.innerHTML = texto;
+                msg.style.display = 'block';
+            }
+
+            function mostrarMensajeAuth2(tipo, texto) {
+                const msg = document.getElementById('authMessage2');
+                msg.className = `auth-message ${tipo}`;
+                msg.innerHTML = texto;
+                msg.style.display = 'block';
+            }
+
+            function mostrarMensajeLogin(tipo, texto) {
+                const msg = document.getElementById('authMessageLogin');
+                msg.className = `auth-message ${tipo}`;
+                msg.innerHTML = texto;
+                msg.style.display = 'block';
+            }
+
+            // ============================================================
+            // LOGIN
+            // ============================================================
+            document.getElementById('loginForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const email = document.getElementById('loginEmail').value.trim();
+
+                if (!email || !email.includes('@') || !email.includes('.')) {
+                    document.getElementById('loginEmail').classList.add('error');
+                    document.getElementById('loginEmailIcon').className = 'status-icon error';
+                    document.getElementById('loginEmailIcon').innerHTML = '<i class="fas fa-times-circle" aria-hidden="true"></i>';
+                    document.getElementById('loginEmailHint').className = 'validation-hint error';
+                    document.getElementById('loginEmailHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Ingresa un correo electrónico válido.';
+                    return;
+                }
+
+                const btn = document.getElementById('btnLogin');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="spinner"></span> Verificando...';
+                btn.disabled = true;
+
+                try {
+                    const res = await fetch(`${REGISTRO_API}/login-solicitar-codigo`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email })
+                    });
+                    const data = await res.json();
+
+                    if (res.ok) {
+                        const codigo = data.codigo;
+                        const nombre = data.nombre || 'Usuario';
+
+                        try {
+                            const emailResult = await enviarCodigoEmailJS(email, nombre, codigo);
+                            if (emailResult.success) {
+                                emailRegistro = email;
+                                mostrarMensajeLogin('success',
+                                    '✅ Código enviado a tu correo. Revisa tu bandeja de entrada o spam.');
+
+                                document.getElementById('loginSection').style.display = 'none';
+                                document.getElementById('verificacionSection').style.display = 'block';
+                                document.querySelector('#verificacionSection h2').textContent =
+                                    'Verificar Código - Inicio de Sesión';
+                                document.getElementById('verificacionSection').dataset.modo = 'login';
+                                document.getElementById('authCodigo').value = '';
+                                document.getElementById('authCodigo').focus();
+
+                                document.getElementById('authMessage2').style.display = 'none';
+                            } else {
+                                mostrarMensajeLogin('error', '❌ Error al enviar el código: ' + (emailResult
+                                .error || 'Error desconocido'));
+                            }
+                        } catch (emailError) {
+                            console.error('Error enviando email:', emailError);
+                            mostrarMensajeLogin('error', '❌ Error al enviar el código. Verifica tu conexión.');
+                        }
+                    } else {
+                        if (data.error && data.error.includes('no está registrado')) {
+                            mostrarMensajeLogin('error',
+                                `❌ ${data.error}<br><br>¿No tienes cuenta? <a href="#" onclick="document.getElementById('switchToRegister').click();" style="color:var(--gold);text-decoration:underline;">Regístrate aquí</a>.`
+                                );
+                        } else if (data.error && data.error.includes('bloqueada')) {
+                            mostrarMensajeLogin('error', `❌ ${data.error}`);
+                        } else {
+                            mostrarMensajeLogin('error', `❌ ${data.error || 'Error al enviar el código.'}`);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error en login:', error);
+                    mostrarMensajeLogin('error', '❌ Error de conexión. Inténtalo de nuevo.');
+                } finally {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            });
+
+            // ============================================================
+            // CARGA DE DATOS
+            // ============================================================
+            async function cargarUbicacionSalon() {
+                try {
+                    const response = await fetch(PAISES_API);
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.ubicacionSalon) {
+                            ubicacionSalon = data.ubicacionSalon;
+                            const display = document.getElementById('direccionSalonDisplay');
+                            const texto = document.getElementById('direccionSalonTexto');
+                            display.style.display = 'flex';
+                            texto.textContent = ubicacionSalon;
+                        }
+                    }
+                } catch (e) { console.warn('Error cargando ubicación:', e); }
+            }
+
+            async function cargarModalidades() {
+                try {
+                    const response = await fetch(MODALIDADES_API);
+                    const data = await response.json();
+                    modalidadesActivas = {
+                        salon: data.salon?.activo !== false,
+                        domicilio: data.domicilio?.activo !== false
+                    };
+                    const domicilioLabel = document.getElementById('domicilioLabel');
+                    if (domicilioLabel) {
+                        domicilioLabel.style.display = modalidadesActivas.domicilio ? 'flex' : 'none';
+                    }
+                    const salonRadio = document.querySelector('input[name="tipoServicio"][value="salon"]');
+                    const domicilioRadio = document.querySelector('input[name="tipoServicio"][value="domicilio"]');
+                    if (!modalidadesActivas.salon && modalidadesActivas.domicilio) {
+                        if (domicilioRadio) domicilioRadio.checked = true;
+                        if (salonRadio) salonRadio.disabled = true;
+                    } else if (!modalidadesActivas.domicilio && modalidadesActivas.salon) {
+                        if (salonRadio) salonRadio.checked = true;
+                        if (domicilioRadio) domicilioRadio.disabled = true;
+                    } else {
+                        if (salonRadio) salonRadio.disabled = false;
+                        if (domicilioRadio) domicilioRadio.disabled = false;
+                    }
+                } catch (e) { console.warn('Error cargando modalidades:', e); }
+            }
+
+            async function cargarHorarios() {
+                try {
+                    const data = await fetchWithCache(HORARIOS_API, 'horarios', 120000);
+                    horariosGlobal = {
+                        dias: data.dias || ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'],
+                        horarios: data.horarios || ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00',
+                            '16:00', '17:00', '18:00', '19:00'
+                        ],
+                        inicio: data.inicio || 8,
+                        fin: data.fin || 20
+                    };
+                    renderCalendar();
+                } catch (e) {
+                    console.warn('Error cargando horarios:', e);
+                    horariosGlobal = {
+                        dias: ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'],
+                        horarios: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00',
+                            '18:00', '19:00'
+                        ],
+                        inicio: 8,
+                        fin: 20
+                    };
+                    renderCalendar();
+                }
+            }
+
+            async function cargarTurnos() {
+                try {
+                    turnosExistentes = await fetchWithCache(API_URL, 'turnos', 60000);
+                    renderCalendar();
+                } catch (e) {
+                    console.warn('Error cargando turnos:', e);
+                    turnosExistentes = [];
+                    renderCalendar();
+                }
+            }
+
+            async function cargarServicios() {
+                try {
+                    serviciosDisponibles = await fetchWithCache(SERVICIOS_API, 'servicios', 120000);
+                    const select = document.getElementById('tipoMasaje');
+                    if (select) {
+                        select.innerHTML = '<option value="">-- Selecciona un masaje --</option>';
+                        serviciosDisponibles.forEach(s => {
+                            const opt = document.createElement('option');
+                            opt.value = s.nombre;
+                            opt.textContent = `${s.nombre} - ${s.precio}`;
+                            select.appendChild(opt);
+                        });
+                    }
+                    renderServices();
+                } catch (e) {
+                    console.warn('Error cargando servicios:', e);
+                    serviciosDisponibles = [];
+                    renderServices();
+                }
+            }
+
+            async function cargarTestimonios() {
+                try {
+                    const testimonios = await fetchWithCache(TESTIMONIOS_API, 'testimonios', 120000);
+                    renderTestimonios(testimonios);
+                } catch (e) {
+                    console.warn('Error cargando testimonios:', e);
+                    document.getElementById('testimoniosGrid').innerHTML =
+                        '<div style="text-align:center;padding:2rem;color:var(--text-muted);">No se pudieron cargar las reseñas.</div>';
+                }
+            }
+
+            // ============================================================
+            // RENDER SERVICES
+            // ============================================================
+            function renderServices() {
+                const grid = document.getElementById('servicesGrid');
+                if (!grid) return;
+                if (!serviciosDisponibles || serviciosDisponibles.length === 0) {
+                    grid.innerHTML =
+                        '<div style="text-align:center;padding:2rem;color:var(--text-muted);">No hay servicios disponibles.</div>';
+                    return;
+                }
+                grid.innerHTML = serviciosDisponibles.map(s => {
+                    const imagenUrl = s.imagenWeb || "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800";
+                    return `
+                        <div class="card scroll-reveal" data-id="${s.id}" data-nombre="${escapeHtml(s.nombre)}" role="listitem">
+                            <img src="${imagenUrl}" alt="${escapeHtml(s.nombre)}" class="card-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800'">
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <h3>${escapeHtml(s.nombre)}</h3>
+                                    <span class="price"><i class="fas fa-tag" aria-hidden="true"></i> ${escapeHtml(s.precio)}</span>
+                                </div>
+                                <p class="description">${escapeHtml(s.descripcion)}</p>
+                                <ul class="benefits-list">
+                                    ${(s.beneficios || []).map(b => `<li><i class="fas fa-check-circle" aria-hidden="true"></i> ${escapeHtml(b)}</li>`).join('')}
+                                </ul>
+                                <div class="card-cta">
+                                    <a href="#reservas" class="btn-details" onclick="document.getElementById('tipoMasaje').value='${escapeHtml(s.nombre)}'">Reservar <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </div>`;
+                }).join('');
+
+                document.querySelectorAll('.card-img').forEach(img => {
+                    img.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const card = this.closest('.card');
+                        const id = card.dataset.id;
+                        const servicio = serviciosDisponibles.find(s => s.id === id);
+                        if (servicio) {
+                            abrirModalServicioDetalles(servicio);
+                        }
+                    });
+                });
+                initScrollReveal();
+            }
+
+            // ============================================================
+            // RENDER TESTIMONIOS
+            // ============================================================
+            function renderTestimonios(testimonios) {
+                const grid = document.getElementById('testimoniosGrid');
+                if (!grid) return;
+                if (!testimonios || !Array.isArray(testimonios) || testimonios.length === 0) {
+                    grid.innerHTML =
+                        '<div style="text-align:center;padding:2rem;color:var(--text-muted);">Aún no hay reseñas. ¡Sé el primero en compartir tu experiencia!</div>';
+                    return;
+                }
+                const publicos = testimonios.filter(t => t.publico !== false);
+                if (publicos.length === 0) {
+                    grid.innerHTML =
+                        '<div style="text-align:center;padding:2rem;color:var(--text-muted);">No hay reseñas públicas disponibles.</div>';
+                    return;
+                }
+                grid.innerHTML = publicos.map(t => {
+                    const nombre = t.nombre || 'Anónimo';
+                    const comentario = t.comentario || 'Sin comentario';
+                    const avatarSrc = t.imagen || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(nombre) +
+                        '&background=C9A961&color=fff&size=40';
+                    const estrellas = '⭐'.repeat(Math.min(t.calificacion || 0, 5)) + '☆'.repeat(Math.max(0, 5 - (t
+                        .calificacion || 0)));
+                    const fecha = t.fecha ? new Date(t.fecha).toLocaleDateString() : '';
+                    return `
+                        <div class="testimonio-card" role="listitem">
+                            <div class="testimonio-header">
+                                <div class="testimonio-avatar">
+                                    <img src="${avatarSrc}" alt="${escapeHtml(nombre)}" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-user\\' style=\\'color:var(--gold);\\'></i>'">
+                                </div>
+                                <span class="testimonio-nombre">${escapeHtml(nombre)}</span>
+                                <span class="testimonio-estrellas">${estrellas}</span>
+                                ${fecha ? `<span class="testimonio-fecha">${fecha}</span>` : ''}
+                            </div>
+                            <div class="testimonio-comentario">
+                                "${escapeHtml(comentario)}"
+                            </div>
+                        </div>`;
+                }).join('');
+                initScrollReveal();
+            }
+
+            // ============================================================
+            // MODAL SERVICIO DETALLES
+            // ============================================================
+            function abrirModalServicioDetalles(servicio) {
+                const modal = document.getElementById('modalServicioDetalles');
+                const img = document.getElementById('modalServicioImg');
+                const videoContainer = document.getElementById('modalServicioVideoContainer');
+                const videoFrame = document.getElementById('modalServicioVideo');
+
+                document.getElementById('modalServicioNombre').textContent = servicio.nombre || 'Servicio';
+                document.getElementById('modalServicioPrecio').textContent = servicio.precio || '';
+                document.getElementById('modalServicioDesc').textContent = servicio.descripcion || '';
+
+                const tieneVideo = servicio.videoUrl && servicio.videoUrl.trim() !== '';
+                if (tieneVideo) {
+                    videoContainer.style.display = 'block';
+                    videoFrame.src = servicio.videoUrl;
+                    img.style.display = 'none';
+                } else {
+                    videoContainer.style.display = 'none';
+                    videoFrame.src = '';
+                    img.style.display = 'block';
+                    const imgUrl = servicio.imagenWeb || "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800";
+                    img.src = imgUrl;
+                    img.alt = servicio.nombre || 'Imagen del servicio';
+                }
+
+                const beneficiosContainer = document.getElementById('modalServicioBeneficios');
+                if (servicio.beneficios && Array.isArray(servicio.beneficios) && servicio.beneficios.length > 0) {
+                    beneficiosContainer.innerHTML = servicio.beneficios.map(b =>
+                        `<span style="background:var(--gold-dim);border:1px solid var(--gold-line);color:var(--gold);padding:.3rem .8rem;border-radius:20px;font-size:.75rem;">${escapeHtml(b)}</span>`
+                    ).join('');
+                } else {
+                    beneficiosContainer.innerHTML =
+                        '<span style="color:var(--text-muted);font-size:.75rem;">Sin beneficios listados</span>';
+                }
+
+                const efectosContainer = document.getElementById('modalServicioEfectos');
+                if (servicio.efectos && Array.isArray(servicio.efectos) && servicio.efectos.length > 0) {
+                    efectosContainer.innerHTML = servicio.efectos.map(e =>
+                        `<span style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:#10b981;padding:.3rem .8rem;border-radius:20px;font-size:.75rem;">✨ ${escapeHtml(e)}</span>`
+                    ).join('');
+                } else {
+                    efectosContainer.innerHTML = '';
+                }
+
+                const btnReservar = document.getElementById('modalServicioReservar');
+                btnReservar.onclick = function(e) {
+                    e.preventDefault();
+                    const select = document.getElementById('tipoMasaje');
+                    select.value = servicio.nombre;
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                    document.getElementById('reservas').scrollIntoView({ behavior: 'smooth' });
+                };
+
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            document.getElementById('modalServicioClose').addEventListener('click', function() {
+                document.getElementById('modalServicioDetalles').classList.remove('active');
+                document.body.style.overflow = '';
+                document.getElementById('modalServicioVideo').src = '';
+            });
+
+            document.getElementById('modalServicioDetalles').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                    document.body.style.overflow = '';
+                    document.getElementById('modalServicioVideo').src = '';
+                }
+            });
+
+            // ============================================================
+            // UTILIDADES
+            // ============================================================
+            function escapeHtml(str) {
+                if (!str) return '';
+                const d = document.createElement('div');
+                d.textContent = str;
+                return d.innerHTML;
+            }
+
+            function initScrollReveal() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add(
+                        'visible'); });
+                }, { threshold: 0.1 });
+                document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+            }
+
+            function formatearFecha(fecha) {
+                if (!fecha) return '';
+                const dias = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+                const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre',
+                    'octubre', 'noviembre', 'diciembre'
+                ];
+                return `${dias[fecha.getDay()]} ${fecha.getDate()} de ${meses[fecha.getMonth()]}`;
+            }
+
+            function formatearFechaCorta(fecha) {
+                if (!fecha) return '';
+                const y = fecha.getFullYear();
+                const m = String(fecha.getMonth() + 1).padStart(2, '0');
+                const d = String(fecha.getDate()).padStart(2, '0');
+                return `${y}-${m}-${d}`;
+            }
+
+            function getDiaSemana(fecha) {
+                const dias = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+                return dias[fecha.getDay()];
+            }
+
+            function esFechaFuturaODiaActual(fecha) {
+                const hoy = new Date();
+                hoy.setHours(0, 0, 0, 0);
+                const fechaComparar = new Date(fecha);
+                fechaComparar.setHours(0, 0, 0, 0);
+                return fechaComparar >= hoy;
+            }
+
+            // ============================================================
+            // CALENDARIO
+            // ============================================================
+            function renderCalendar() {
+                const grid = document.getElementById('calendarGrid');
+                const display = document.getElementById('monthYearDisplay');
+                if (!grid) return;
+
+                const hoy = new Date();
+                const hoyStr = formatearFechaCorta(hoy);
+                const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre',
+                    'Octubre', 'Noviembre', 'Diciembre'
+                ];
+                display.textContent = `${meses[mesActual]} ${anioActual}`;
+
+                const primerDia = new Date(anioActual, mesActual, 1);
+                const ultimoDia = new Date(anioActual, mesActual + 1, 0);
+                const diasEnMes = ultimoDia.getDate();
+                const diaInicioSemana = primerDia.getDay();
+
+                const diasSemana = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
+                let html = diasSemana.map(d => `<div class="day-name">${d}</div>`).join('');
+
+                let diasLaborales = horariosGlobal.dias || ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+
+                for (let i = 0; i < diaInicioSemana; i++) {
+                    html += `<div class="day-cell empty"></div>`;
+                }
+
+                for (let d = 1; d <= diasEnMes; d++) {
+                    const fecha = new Date(anioActual, mesActual, d);
+                    const fechaStr = formatearFechaCorta(fecha);
+                    const diaSemana = getDiaSemana(fecha);
+                    const esHoy = fechaStr === hoyStr;
+                    const esFutura = esFechaFuturaODiaActual(fecha);
+                    const esLaboral = diasLaborales.includes(diaSemana);
+
+                    let clases = 'day-cell';
+                    if (esHoy) clases += ' today';
+
+                    if (!esFutura) {
+                        clases += ' past';
+                    } else if (!esLaboral) {
+                        clases += ' full';
+                    } else {
+                        const ocupados = turnosExistentes
+                            .filter(t => t.dia === diaSemana && t.fecha === fechaStr)
+                            .map(t => t.hora);
+                        const horariosDelDia = horariosGlobal.horarios || [];
+                        const disponibles = horariosDelDia.filter(h => {
+                            const horaNum = parseInt(h.split(':')[0]);
+                            return !ocupados.includes(horaNum);
+                        });
+                        if (disponibles.length > 0) {
+                            clases += ' available';
+                        } else {
+                            clases += ' full';
+                        }
+                    }
+
+                    if (fechaSeleccionada && fechaStr === formatearFechaCorta(fechaSeleccionada)) {
+                        clases += ' selected';
+                    }
+
+                    html += `<div class="${clases}" data-fecha="${fechaStr}" data-dia="${diaSemana}" role="gridcell">${d}</div>`;
+                }
+
+                grid.innerHTML = html;
+
+                document.querySelectorAll('.day-cell.available, .day-cell.selected').forEach(cell => {
+                    cell.addEventListener('click', function() {
+                        const fechaStr = this.dataset.fecha;
+                        const dia = this.dataset.dia;
+                        if (!fechaStr) return;
+                        const [y, m, d] = fechaStr.split('-').map(Number);
+                        const fechaObj = new Date(y, m - 1, d);
+                        seleccionarFecha(fechaObj, dia);
+                    });
+                    cell.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.click();
+                        }
+                    });
+                    cell.setAttribute('tabindex', '0');
+                    cell.setAttribute('role', 'gridcell');
+                });
+
+                const hoyDate = new Date();
+                document.getElementById('prevMonth').disabled = (anioActual === hoyDate.getFullYear() && mesActual <=
+                    hoyDate.getMonth());
+                document.getElementById('nextMonth').disabled = (anioActual === hoyDate.getFullYear() && mesActual >=
+                    hoyDate.getMonth() + 2);
+            }
+
+            function seleccionarFecha(fecha, dia) {
+                fechaSeleccionada = fecha;
+                diaSeleccionado = dia;
+
+                document.getElementById('fechaSeleccionada').value = formatearFechaCorta(fecha);
+                document.getElementById('diaSeleccionado').value = dia;
+                document.getElementById('fechaSeleccionadaDisplay').textContent = `📅 Fecha seleccionada: ${formatearFecha(fecha)}`;
+
+                document.getElementById('calendarWrapper').classList.remove('error', 'success');
+                document.getElementById('fechaHint').className = 'validation-hint';
+
+                renderCalendar();
+                mostrarHorariosDisponibles(fecha, dia);
+            }
+
+            async function mostrarHorariosDisponibles(fecha, dia) {
+                const container = document.getElementById('horariosContainer');
+                const group = document.getElementById('horariosGroup');
+                const horaInput = document.getElementById('horaSeleccionada');
+                horaInput.value = '';
+
+                if (!fecha || !dia) {
+                    group.style.display = 'none';
+                    return;
+                }
+
+                const tipoServicio = document.querySelector('input[name="tipoServicio"]:checked');
+                const modalidad = tipoServicio ? tipoServicio.value : 'salon';
+                const fechaStr = formatearFechaCorta(fecha);
+
+                try {
+                    const response = await fetch(
+                        `/api/horarios-disponibles?fecha=${fechaStr}&dia=${dia}&modalidad=${modalidad}`);
+                    const data = await response.json();
+
+                    if (data.mensaje === 'Día no laboral' || data.mensaje === 'Servicio a domicilio no disponible' ||
+                        data.mensaje === 'Servicio en salón no disponible') {
+                        group.style.display = 'block';
+                        container.innerHTML = `<span style="color:#e74c3c;font-size:.9rem;">${data.mensaje}</span>`;
+                        return;
+                    }
+
+                    if (!data.disponibles || data.disponibles.length === 0) {
+                        group.style.display = 'block';
+                        container.innerHTML =
+                            `<span style="color:#e74c3c;font-size:.9rem;">No hay horarios disponibles para ${dia}.</span>`;
+                        return;
+                    }
+
+                    group.style.display = 'block';
+                    container.innerHTML = data.disponibles.map(h => {
+                        const estaSeleccionado = (horaSeleccionada === h.hora);
+                        return `<button type="button" class="hora-btn ${estaSeleccionado ? 'selected' : ''}" data-hora="${h.hora}" role="button">
+                            ${h.horaStr}
+                        </button>`;
+                    }).join('');
+
+                    container.querySelectorAll('.hora-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            container.querySelectorAll('.hora-btn').forEach(b => b.classList.remove(
+                            'selected'));
+                            this.classList.add('selected');
+                            horaSeleccionada = parseInt(this.dataset.hora);
+                            document.getElementById('horaSeleccionada').value = horaSeleccionada;
+                            document.getElementById('horaHint').className = 'validation-hint';
+                        });
+                        btn.addEventListener('keydown', function(e) {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                this.click();
+                            }
+                        });
+                        btn.setAttribute('tabindex', '0');
+                    });
+
+                    if (horaSeleccionada !== null) {
+                        container.querySelectorAll('.hora-btn').forEach(b => {
+                            if (parseInt(b.dataset.hora) === horaSeleccionada) {
+                                b.classList.add('selected');
+                            }
+                        });
+                    }
+
+                } catch (error) {
+                    console.error('Error cargando horarios:', error);
+                    group.style.display = 'block';
+                    container.innerHTML =
+                        '<span style="color:#e74c3c;font-size:.9rem;">Error al cargar horarios disponibles.</span>';
+                }
+            }
+
+            // ============================================================
+            // DOMICILIO CONDICIONAL
+            // ============================================================
+            document.querySelectorAll('input[name="tipoServicio"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const group = document.getElementById('direccionGroup');
+                    const input = document.getElementById('direccionDomicilio');
+                    const display = document.getElementById('direccionSalonDisplay');
+
+                    if (this.value === 'domicilio') {
+                        group.style.display = 'block';
+                        input.required = true;
+                        display.style.display = 'none';
+                    } else {
+                        group.style.display = 'none';
+                        input.required = false;
+                        if (ubicacionSalon) {
+                            display.style.display = 'flex';
+                        }
+                    }
+
+                    if (fechaSeleccionada && diaSeleccionado) {
+                        mostrarHorariosDisponibles(fechaSeleccionada, diaSeleccionado);
+                    }
+                });
+            });
+
+            // ============================================================
+            // NAVEGACIÓN CALENDARIO
+            // ============================================================
+            document.getElementById('prevMonth').addEventListener('click', function() {
+                const hoy = new Date();
+                if (anioActual > hoy.getFullYear() || (anioActual === hoy.getFullYear() && mesActual > hoy.getMonth())) {
+                    mesActual--;
+                    if (mesActual < 0) { mesActual = 11;
+                        anioActual--; }
+                    renderCalendar();
+                }
+            });
+
+            document.getElementById('nextMonth').addEventListener('click', function() {
+                const hoy = new Date();
+                if (anioActual < hoy.getFullYear() || (anioActual === hoy.getFullYear() && mesActual < hoy.getMonth() +
+                    2)) {
+                    mesActual++;
+                    if (mesActual > 11) { mesActual = 0;
+                        anioActual++; }
+                    renderCalendar();
+                }
+            });
+
+            // ============================================================
+            // VALIDACIÓN Y ENVÍO DE RESERVA - CON TOKEN
+            // ============================================================
+            function validarFormularioReserva() {
+                const nombre = document.getElementById('clienteNombre');
+                const telefono = document.getElementById('clienteTelefono');
+                const massageType = document.getElementById('tipoMasaje');
+                const fechaInput = document.getElementById('fechaSeleccionada');
+                const diaInput = document.getElementById('diaSeleccionado');
+                const horaInput = document.getElementById('horaSeleccionada');
+                const terminos = document.getElementById('aceptarTerminos');
+                const tipoServicio = document.querySelector('input[name="tipoServicio"]:checked');
+                const direccion = document.getElementById('direccionDomicilio');
+
+                let esValido = true;
+
+                document.querySelectorAll('.form-control').forEach(el => {
+                    el.classList.remove('error', 'success');
+                });
+                document.querySelectorAll('.validation-hint').forEach(el => {
+                    el.className = 'validation-hint';
+                });
+                document.querySelectorAll('.status-icon').forEach(el => {
+                    el.className = 'status-icon';
+                });
+                document.getElementById('calendarWrapper').classList.remove('error', 'success');
+                document.getElementById('terminosLabel').classList.remove('error');
+
+                if (!nombre.value.trim() || nombre.value.trim().length < 2) {
+                    nombre.classList.add('error');
+                    document.getElementById('nombreIcon').className = 'status-icon error';
+                    document.getElementById('nombreIcon').innerHTML = '<i class="fas fa-times-circle" aria-hidden="true"></i>';
+                    document.getElementById('nombreHint').className = 'validation-hint error';
+                    document.getElementById('nombreHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> El nombre es obligatorio (mínimo 2 caracteres).';
+                    esValido = false;
+                } else {
+                    nombre.classList.add('success');
+                    document.getElementById('nombreIcon').className = 'status-icon success';
+                    document.getElementById('nombreIcon').innerHTML = '<i class="fas fa-check-circle" aria-hidden="true"></i>';
+                }
+
+                const telefonoLimpio = telefono.value.replace(/\D/g, '');
+                if (!telefono.value.trim() || telefonoLimpio.length < 7) {
+                    telefono.classList.add('error');
+                    document.getElementById('telefonoIcon').className = 'status-icon error';
+                    document.getElementById('telefonoIcon').innerHTML = '<i class="fas fa-times-circle" aria-hidden="true"></i>';
+                    document.getElementById('telefonoHint').className = 'validation-hint error';
+                    document.getElementById('telefonoHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> El teléfono debe tener al menos 7 dígitos.';
+                    esValido = false;
+                } else {
+                    telefono.classList.add('success');
+                    document.getElementById('telefonoIcon').className = 'status-icon success';
+                    document.getElementById('telefonoIcon').innerHTML = '<i class="fas fa-check-circle" aria-hidden="true"></i>';
+                }
+
+                if (!massageType.value) {
+                    massageType.classList.add('error');
+                    document.getElementById('masajeHint').className = 'validation-hint error';
+                    document.getElementById('masajeHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Debes seleccionar un tipo de masaje.';
+                    esValido = false;
+                } else {
+                    massageType.classList.add('success');
+                }
+
+                if (!fechaInput.value || !diaInput.value) {
+                    document.getElementById('calendarWrapper').classList.add('error');
+                    document.getElementById('fechaHint').className = 'validation-hint error';
+                    document.getElementById('fechaHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Debes seleccionar una fecha disponible.';
+                    esValido = false;
+                } else {
+                    document.getElementById('calendarWrapper').classList.add('success');
+                }
+
+                if (!horaInput.value) {
+                    document.getElementById('horaHint').className = 'validation-hint error';
+                    document.getElementById('horaHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Debes seleccionar un horario disponible.';
+                    esValido = false;
+                }
+
+                if (tipoServicio && tipoServicio.value === 'domicilio') {
+                    if (!direccion.value.trim() || direccion.value.trim().length < 5) {
+                        direccion.classList.add('error');
+                        document.getElementById('direccionIcon').className = 'status-icon error';
+                        document.getElementById('direccionIcon').innerHTML = '<i class="fas fa-times-circle" aria-hidden="true"></i>';
+                        document.getElementById('direccionHint').className = 'validation-hint error';
+                        document.getElementById('direccionHint').innerHTML =
+                            '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Para el servicio a domicilio, ingresa una dirección completa.';
+                        esValido = false;
+                    } else {
+                        direccion.classList.add('success');
+                        document.getElementById('direccionIcon').className = 'status-icon success';
+                        document.getElementById('direccionIcon').innerHTML = '<i class="fas fa-check-circle" aria-hidden="true"></i>';
+                    }
+                }
+
+                if (!terminos.checked) {
+                    document.getElementById('terminosLabel').classList.add('error');
+                    document.getElementById('terminosHint').className = 'validation-hint error';
+                    document.getElementById('terminosHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Debes aceptar los Términos y Condiciones.';
+                    esValido = false;
+                }
+
+                if (!esValido) {
+                    const primerError = document.querySelector(
+                        '.form-control.error, .calendar-wrapper.error, .terminos-group label.error');
+                    if (primerError) {
+                        primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return { valido: false, errores: [] };
+                }
+
+                return {
+                    valido: true,
+                    datos: {
+                        nombre: nombre.value.trim(),
+                        telefono: telefonoLimpio,
+                        massageType: massageType.value,
+                        fecha: fechaInput.value,
+                        dia: diaInput.value,
+                        hora: parseInt(horaInput.value),
+                        tipoServicio: tipoServicio.value,
+                        terminos: terminos.checked
+                    }
+                };
+            }
+
+            document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                document.getElementById('mensajeResultado').style.display = 'none';
+
+                const validacion = validarFormularioReserva();
+                if (!validacion.valido) return;
+
+                if (!usuarioLogueado) {
+                    sessionStorage.setItem('reservaPendiente', JSON.stringify(validacion.datos));
+                    abrirModalRegistro();
+                    mostrarMensajeAuth1('info',
+                        '📝 Para completar tu reserva, primero debes registrarte o iniciar sesión.');
+                    return;
+                }
+
+                await procesarReserva(validacion.datos);
+            });
+
+            // ============================================================
+            // PROCESAR RESERVA CON TOKEN - CORREGIDO CON NOTIFICACIÓN
+            // ============================================================
+            async function procesarReserva(datos) {
+                const { nombre, telefono, massageType, fecha, dia, hora, tipoServicio } = datos;
+                const pais = document.getElementById('clientePais').value;
+                const direccion = document.getElementById('direccionDomicilio').value.trim();
+
+                const ocupado = turnosExistentes.some(t => {
+                    if (t.fecha) {
+                        return t.dia === dia && t.fecha === fecha && t.hora === hora;
+                    }
+                    return t.dia === dia && t.hora === hora;
+                });
+
+                if (ocupado) {
+                    document.getElementById('calendarWrapper').classList.add('error');
+                    document.getElementById('fechaHint').className = 'validation-hint error';
+                    document.getElementById('fechaHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Este horario ya fue reservado. Selecciona otro.';
+                    await cargarTurnos();
+                    if (fechaSeleccionada && diaSeleccionado) {
+                        mostrarHorariosDisponibles(fechaSeleccionada, diaSeleccionado);
+                    }
+                    return;
+                }
+
+                const ubicacionFinal = tipoServicio === 'domicilio' ? direccion : (ubicacionSalon || 'Salón Serenity Spa');
+                const datosEnvio = {
+                    nombre: nombre,
+                    dia: dia,
+                    fecha: fecha,
+                    hora: hora,
+                    massageType: massageType,
+                    telefono: telefono,
+                    codigoPais: pais || '53',
+                    ubicacion: ubicacionFinal,
+                    tipoServicio: tipoServicio
+                };
+
+                const btn = document.getElementById('submitReserva');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="spinner"></span> Procesando...';
+                btn.disabled = true;
+
+                try {
+                    const token = getToken();
+                    const headers = { 'Content-Type': 'application/json' };
+                    if (token) {
+                        headers['Authorization'] = 'Bearer ' + token;
+                        console.log('✅ Token incluido en la reserva');
+                    }
+
+                    const response = await fetch('/turnos', {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify(datosEnvio)
+                    });
+                    const data = await response.json();
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+
+                    if (response.ok) {
+                        const tipoTexto = datosEnvio.tipoServicio === 'domicilio' ?
+                            `📍 Dirección: ${datosEnvio.ubicacion}` :
+                            `📍 En nuestro salón: ${ubicacionSalon || 'Serenity Spa'}`;
+
+                        mostrarMensaje('success', `
+                            ✅ <strong>¡TURNO CONFIRMADO!</strong><br><br>
+                            📅 <strong>Día:</strong> ${dia}<br>
+                            📆 <strong>Fecha:</strong> ${fecha}<br>
+                            ⏰ <strong>Hora:</strong> ${datosEnvio.hora}:00 hs<br>
+                            💆 <strong>Masaje:</strong> ${datosEnvio.massageType}<br>
+                            ${tipoTexto}<br>
+                            📱 <strong>Teléfono:</strong> +${datosEnvio.codigoPais} ${datosEnvio.telefono}<br><br>
+                            🔑 <strong>Código de cancelación:</strong> <strong>${data.codigoCancelacion || 'N/A'}</strong><br><br>
+                            🌿 <strong>Te esperamos en Serenity Spa</strong>
+                        `);
+
+                        // ⭐⭐⭐ MOSTRAR NOTIFICACIÓN DE RESERVA ⭐⭐⭐
+                        mostrarNotificacionReserva();
+
+                        // Actualizar el subtítulo del header si está logueado
+                        if (usuarioLogueado) {
+                            try {
+                                const userDisplay = document.getElementById('userDisplay');
+                                if (userDisplay && nombreUsuario) {
+                                    userDisplay.textContent = `👤 ${nombreUsuario} • Nuevo turno ✅`;
+                                    userDisplay.style.display = 'flex';
+                                    setTimeout(() => {
+                                        userDisplay.textContent = `👤 ${nombreUsuario}`;
+                                    }, 5000);
+                                }
+                            } catch (e) {}
+                        }
+
+                        fechaSeleccionada = null;
+                        diaSeleccionado = null;
+                        horaSeleccionada = null;
+                        document.getElementById('fechaSeleccionada').value = '';
+                        document.getElementById('diaSeleccionado').value = '';
+                        document.getElementById('horaSeleccionada').value = '';
+                        document.getElementById('fechaSeleccionadaDisplay').textContent = '';
+                        document.getElementById('horariosGroup').style.display = 'none';
+                        document.getElementById('horariosContainer').innerHTML = '';
+
+                        document.querySelectorAll('.form-control').forEach(el => {
+                            el.classList.remove('success');
+                        });
+                        document.getElementById('calendarWrapper').classList.remove('success');
+
+                        renderCalendar();
+                        await cargarTurnos();
+                    } else {
+                        mostrarMensaje('error', `❌ ${data.error || 'No se pudo completar la reserva.'}`);
+                        await cargarTurnos();
+                        if (fechaSeleccionada && diaSeleccionado) {
+                            mostrarHorariosDisponibles(fechaSeleccionada, diaSeleccionado);
+                        }
+                    }
+                } catch (error) {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    mostrarMensaje('error', '❌ Error de conexión. Verifica tu internet e intenta nuevamente.');
+                }
+            }
+
+            function mostrarMensaje(tipo, texto) {
+                const mensaje = document.getElementById('mensajeResultado');
+                const contenido = document.getElementById('mensajeContenido');
+                mensaje.className = `mensaje-reserva ${tipo}`;
+                contenido.innerHTML = texto;
+                mensaje.style.display = 'block';
+                mensaje.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            document.getElementById('cerrarMensajeBtn').addEventListener('click', function() {
+                const mensaje = document.getElementById('mensajeResultado');
+                mensaje.style.display = 'none';
+                mensaje.className = 'mensaje-reserva';
+                document.getElementById('mensajeContenido').textContent = '';
+            });
+
+            // ============================================================
+            // COMPARTIR
+            // ============================================================
+            document.querySelectorAll('.share-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const social = this.dataset.social;
+                    const url = encodeURIComponent(window.location.href);
+                    const text = encodeURIComponent('🌿 Descubre Serenity Spa - Masajes Profesionales');
+                    let shareUrl = '';
+                    switch (social) {
+                        case 'facebook':
+                            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                            break;
+                        case 'whatsapp':
+                            shareUrl = `https://api.whatsapp.com/send?text=${text}%20${url}`;
+                            break;
+                        case 'instagram':
+                            shareUrl = `https://www.instagram.com/`;
+                            break;
+                    }
+                    if (shareUrl) {
+                        window.open(shareUrl, '_blank', 'width=600,height=400');
+                    }
+                });
+            });
+
+            // ============================================================
+            // INICIALIZACIÓN
+            // ============================================================
+            async function init() {
+                console.log('🚀 Iniciando Serenity Spa...');
+
+                // Tema
+                const savedTheme = getTheme();
+                setTheme(savedTheme);
+                document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+                // EmailJS
+                await cargarConfigEmailJS();
+
+                // Sesión
+                await verificarSesion();
+
+                // ⭐ Mostrar notificación al cargar
+                setTimeout(mostrarNotificacionReserva, 500);
+
+                // Carga de datos
+                const startTime = Date.now();
+                await Promise.all([
+                    cargarUbicacionSalon(),
+                    cargarModalidades(),
+                    cargarHorarios(),
+                    cargarTurnos(),
+                    cargarServicios(),
+                    cargarTestimonios()
+                ]);
+
+                const elapsed = Date.now() - startTime;
+                console.log(`✅ Datos cargados en ${elapsed}ms`);
+
+                const hoy = new Date();
+                mesActual = hoy.getMonth();
+                anioActual = hoy.getFullYear();
+                renderCalendar();
+
+                initScrollReveal();
+
+                setInterval(() => {
+                    if (!document.hidden) {
+                        Promise.all([
+                            cargarTurnos(),
+                            cargarTestimonios()
+                        ]).catch(e => console.warn('Refresco:', e));
+                    }
+                }, 30000);
+
+                console.log('🌸 Serenity Spa listo');
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+        })();
+    </script>
+
+</body>
+</html>
