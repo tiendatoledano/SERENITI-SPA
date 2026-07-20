@@ -1,2111 +1,2625 @@
-// ============================================================
-// server.js - SERVIDOR PRINCIPAL CON SUPABASE (VERSIÓN FINAL)
-// ============================================================
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
+    <title>Serenity Spa | Masajes Profesionales - Bienestar y Relajación</title>
+    <meta name="description" content="Descubre la mejor experiencia de bienestar en Serenity Spa. Masajes personalizados en un entorno profesional y relajante. Reserva tu turno ahora." />
+    <meta name="keywords" content="masajes, spa, bienestar, relajación, masaje terapéutico, serenity spa" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://serenity-spa-2utz.onrender.com" />
+    
+    <meta property="og:title" content="Serenity Spa | Masajes Profesionales" />
+    <meta property="og:description" content="Descubre la mejor experiencia de bienestar en Serenity Spa. Masajes personalizados en un entorno profesional y relajante." />
+    <meta property="og:image" content="https://i.postimg.cc/DzDdPdjP/1781383382370.webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://serenity-spa-2utz.onrender.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="Serenity Spa" />
 
-const express = require('express');
-const path = require('path');
-const crypto = require('crypto');
-const fs = require('fs');
-require('dotenv').config();
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Serenity Spa | Masajes Profesionales" />
+    <meta name="twitter:description" content="Descubre la mejor experiencia de bienestar en Serenity Spa. Masajes personalizados en un entorno profesional y relajante." />
+    <meta name="twitter:image" content="https://i.postimg.cc/DzDdPdjP/1781383382370.webp" />
 
-const app = express();
-const PORT = process.env.PORT || 5001;
+    <link rel="icon" href="https://i.postimg.cc/hz1zW7dg/1781383382370.webp" type="image/webp" />
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/hz1zW7dg/1781383382370.webp" />
 
-// ============================================================
-// ⭐ DETECTAR CARPETA BASE DONDE ESTÁN LOS HTML
-// ============================================================
-function detectBaseDir() {
-    const possiblePaths = [
-        __dirname,
-        path.join(__dirname, 'src'),
-        path.join(__dirname, 'public'),
-        path.join(__dirname, '..'),
-        path.join(__dirname, 'dist'),
-        path.join(__dirname, 'build'),
-    ];
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Serenity Spa",
+        "description": "Masajes profesionales y bienestar en un entorno relajante.",
+        "image": "https://i.postimg.cc/DzDdPdjP/1781383382370.webp",
+        "url": "https://serenity-spa-2utz.onrender.com",
+        "telephone": "+53 53571569",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Cuba"
+        },
+        "priceRange": "$$",
+        "openingHours": "Mo-Sa 08:00-20:00"
+    }
+    </script>
 
-    for (const dir of possiblePaths) {
-        const testPath = path.join(dir, 'index.html');
-        if (fs.existsSync(testPath)) {
-            console.log(`✅ Archivos HTML encontrados en: ${dir}`);
-            return dir;
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+
+    <style>
+        /* ===== RESET Y VARIABLES ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --ink: #0d0804;
+            --deep: #150d07;
+            --dark: #1c1009;
+            --surface: #251408;
+            --surface2: #2e1a0c;
+            --gold: #c9a87a;
+            --gold-light: #e8c98a;
+            --gold-dim: rgba(201, 168, 122, 0.18);
+            --gold-line: rgba(201, 168, 122, 0.30);
+            --gold-glow: rgba(201, 168, 122, 0.22);
+            --cream: #f0e6d3;
+            --text: #e8d5b8;
+            --text-muted: #a8906e;
+            --white: #ffffff;
+            --radius-pill: 999px;
+            --radius-card: 18px;
+            --radius-lg: 26px;
+            --transition: all 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+            --focus-ring: 0 0 0 3px rgba(201, 168, 122, 0.5);
         }
-    }
 
-    console.warn(`⚠️ No se encontró index.html, usando: ${__dirname}`);
-    return __dirname;
-}
+        [data-theme="light"] {
+            --ink: #F7F3EC;
+            --deep: #EDE8DF;
+            --dark: #E8E0D6;
+            --surface: #FFFFFF;
+            --surface2: #F5F0E8;
+            --gold: #C9A96E;
+            --gold-light: #3D5A2A;
+            --gold-dim: rgba(61, 90, 42, 0.10);
+            --gold-line: rgba(61, 90, 42, 0.25);
+            --gold-glow: rgba(61, 90, 42, 0.12);
+            --cream: #F7F3EC;
+            --text: #2C2C2C;
+            --text-muted: #5A5A4A;
+            --white: #FFFFFF;
+        }
 
-const BASE_DIR = detectBaseDir();
-console.log(`📂 Sirviendo archivos desde: ${BASE_DIR}`);
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'Lato', sans-serif;
+            background: var(--ink);
+            color: var(--text);
+            line-height: 1.65;
+            overflow-x: hidden;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+        h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; font-weight: 400; line-height: 1.2; }
 
-// ============================================================
-// ⭐ IMPORTAR SUPABASE
-// ============================================================
-const { createClient } = require('@supabase/supabase-js');
+        :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-    auth: {
-        autoRefreshToken: false,
-        persistSession: false
-    }
-});
-console.log('✅ Supabase inicializado en server.js');
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--ink); }
+        ::-webkit-scrollbar-thumb { background: var(--gold-line); border-radius: 3px; }
 
-// Importar servicios
-const db = require('./supabase-service');
-const security = require('./security');
+        .skip-link {
+            position: absolute; top: -100%; left: 50%; transform: translateX(-50%);
+            background: var(--gold); color: var(--ink); padding: 0.5rem 1.5rem;
+            border-radius: 0 0 8px 8px; z-index: 9999; font-weight: 700;
+            text-decoration: none; transition: top 0.3s ease;
+        }
+        .skip-link:focus { top: 0; }
 
-// ============================================================
-// VERIFICAR CONFIGURACIÓN DE ENTORNO
-// ============================================================
-console.log('🔐 ==========================================');
-console.log('🔐 VERIFICANDO VARIABLES DE ENTORNO');
-console.log('🔐 ==========================================');
-console.log('📌 SUPABASE_URL:', process.env.SUPABASE_URL ? '✅ Configurada' : '❌ No configurada');
-console.log('📌 SUPABASE_SERVICE_ROLE_KEY:', process.env.SUPABASE_SERVICE_ROLE_KEY ? '✅ Configurada' : '❌ No configurada');
-console.log('📌 EMAILJS_PUBLIC_KEY:', process.env.EMAILJS_PUBLIC_KEY ? '✅ Configurada' : '❌ No configurada');
-console.log('📌 EMAILJS_SERVICE_ID:', process.env.EMAILJS_SERVICE_ID ? '✅ Configurada' : '❌ No configurada');
-console.log('📌 EMAILJS_TEMPLATE_ID:', process.env.EMAILJS_TEMPLATE_ID ? '✅ Configurada' : '❌ No configurada');
-console.log('📌 PORT:', process.env.PORT || '5001');
-console.log('📌 BASE_DIR:', BASE_DIR);
-console.log('🔐 ==========================================');
+        header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(13, 8, 4, 0.82); backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--gold-line); z-index: 1000;
+            padding: 0.8rem 5%; display: flex; justify-content: space-between;
+            align-items: center; transition: var(--transition);
+        }
+        header.scrolled { padding: 0.6rem 5%; background: rgba(13, 8, 4, 0.95); box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
 
-// ============================================================
-// MIDDLEWARE BÁSICO
-// ============================================================
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+        .header-left { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.85rem; 
+            text-decoration: none;
+        }
+        .logo-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--gold-line); }
+        .logo-text-container { display: flex; flex-direction: column; }
+        .logo-title {
+            font-family: 'Cinzel', serif; font-size: 1.0rem; font-weight: 600;
+            color: var(--gold-light); letter-spacing: .12em; display: flex; align-items: center; gap: .5rem;
+        }
+        .logo-title i { color: var(--gold); font-size: 0.9rem; }
+        .logo-subtitle {
+            font-family: 'Lato', sans-serif; font-size: 0.55rem; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: .15em; margin-top: -2px;
+            transition: var(--transition); display: flex; align-items: center; gap: 4px;
+        }
+        .logo-subtitle.user-logged { color: var(--gold-light); font-weight: 600; letter-spacing: .1em; cursor: pointer; text-transform: none; font-size: 0.65rem; }
 
-// Middleware anti-cache
-app.use((req, res, next) => {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    next();
-});
+        .user-info-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+        }
+        #notificacionReserva {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: #e74c3c;
+            color: #fff;
+            border-radius: 50%;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 5px;
+            font-size: 0.55rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+            border: 2px solid var(--ink);
+            animation: pulseNotif 0.6s ease;
+            line-height: 1;
+            text-align: center;
+        }
+        #notificacionReserva.show {
+            display: inline-flex;
+        }
 
-// ============================================================
-// INICIALIZAR SEGURIDAD
-// ============================================================
-(async () => {
-    await security.initSecurityFiles();
-    console.log('🛡️ Sistema de seguridad blindado iniciado');
-})();
+        @keyframes pulseNotif {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
 
-// ============================================================
-// RUTA DE BLOQUEO
-// ============================================================
-app.get('/bloqueado', (req, res) => {
-    res.send(`
-        <!DOCTYPE html>
-        <html lang="es">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Acceso Denegado</title>
-            <style>
-                * { margin: 0; padding: 0; box-sizing: border-box; }
-                body {
-                    background: #0a0a0a;
-                    min-height: 100vh;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-family: 'Inter', sans-serif;
-                    color: #ffffff;
-                    padding: 1.5rem;
-                    margin: 0;
-                }
-                .bloqueo-container {
-                    text-align: center;
-                    max-width: 500px;
-                    padding: 3rem 2rem;
-                    border: 1px solid rgba(220, 38, 38, 0.3);
-                    border-radius: 20px;
-                    background: rgba(20, 10, 5, 0.95);
-                    box-shadow: 0 0 60px rgba(220, 38, 38, 0.1);
-                }
-                .bloqueo-icon { font-size: 4rem; color: #dc2626; margin-bottom: 1.5rem; display: block; }
-                .bloqueo-titulo { font-size: 1.8rem; font-weight: 700; color: #dc2626; margin-bottom: 1rem; }
-                .bloqueo-mensaje { font-size: 1rem; color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 1.5rem; }
-                .bloqueo-codigo { font-size: 0.7rem; color: rgba(255,255,255,0.3); letter-spacing: 0.1em; padding: 0.5rem 1rem; border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; display: inline-block; }
-                .bloqueo-separador { width: 40px; height: 2px; background: rgba(220,38,38,0.3); margin: 1rem auto; }
-                .bloqueo-footer { margin-top: 1.5rem; font-size: 0.6rem; color: rgba(255,255,255,0.15); letter-spacing: 0.2em; }
-            </style>
-        </head>
-        <body>
-            <div class="bloqueo-container">
-                <span class="bloqueo-icon">⛔</span>
-                <h1 class="bloqueo-titulo">Acceso Cancelado</h1>
-                <div class="bloqueo-separador"></div>
-                <p class="bloqueo-mensaje">Su acceso ha sido cancelado en nuestro sistema por violación de los términos de uso.</p>
-                <span class="bloqueo-codigo">🔒 BLOQUEADO · SERENITY SPA</span>
-                <div class="bloqueo-footer">Sistema de seguridad activo</div>
+        nav ul { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
+        nav a {
+            font-size: 0.75rem; font-weight: 400; letter-spacing: .08em; text-transform: uppercase;
+            color: var(--text-muted); text-decoration: none; padding: .4rem 0;
+            position: relative; transition: color .25s;
+        }
+        nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--gold); transition: width .3s; }
+        nav a:hover { color: var(--gold-light); }
+        nav a:hover::after { width: 100%; }
+        nav a:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 4px; }
+
+        .btn-registro-header {
+            background: var(--gold); color: var(--ink); padding: 0.4rem 1.2rem;
+            border-radius: var(--radius-pill); font-weight: 700; font-size: 0.8rem;
+            text-decoration: none; transition: var(--transition); border: 1px solid var(--gold);
+            cursor: pointer; font-family: 'Lato', sans-serif;
+        }
+        .btn-registro-header:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(201,168,122,0.3); }
+        .btn-registro-header:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+        .btn-mi-cuenta {
+            background: transparent; border: 1px solid var(--gold-line); color: var(--gold-light);
+            padding: 0.4rem 1.2rem; border-radius: var(--radius-pill); font-weight: 500;
+            font-size: 0.8rem; text-decoration: none; transition: var(--transition);
+            cursor: pointer; font-family: 'Lato', sans-serif; display: flex; align-items: center; gap: 0.4rem;
+        }
+        .btn-mi-cuenta:hover { border-color: var(--gold); background: var(--gold-dim); transform: translateY(-2px); }
+        .btn-salir {
+            background: transparent; border: 1px solid rgba(220,38,38,0.3); color: #f87171;
+            padding: 0.3rem 0.9rem; border-radius: var(--radius-pill); font-weight: 500;
+            font-size: 0.7rem; text-decoration: none; transition: var(--transition);
+            cursor: pointer; font-family: 'Lato', sans-serif;
+        }
+        .btn-salir:hover { background: rgba(220,38,38,0.1); border-color: #dc2626; color: #dc2626; }
+
+        .theme-toggle-floating {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 2px solid var(--gold-line);
+            color: var(--gold-light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            backdrop-filter: blur(8px);
+        }
+        .theme-toggle-floating:hover {
+            transform: scale(1.1);
+            border-color: var(--gold);
+            background: var(--gold-dim);
+            box-shadow: 0 6px 30px rgba(201,168,122,0.3);
+        }
+        .theme-toggle-floating:focus-visible {
+            outline: 3px solid var(--gold);
+            outline-offset: 2px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--surface);
+            border: 1px solid var(--gold-line);
+            color: var(--text);
+            padding: 0.8rem 2rem;
+            border-radius: var(--radius-pill);
+            font-size: 0.9rem;
+            z-index: 10000;
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            backdrop-filter: blur(20px);
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            font-family: 'Lato', sans-serif;
+        }
+        .toast.show {
+            display: flex;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast i {
+            color: var(--gold);
+        }
+        .toast.error i { color: #ff6b6b; }
+        .toast.warning i { color: #ffd93d; }
+        .toast.success i { color: #6bcb77; }
+
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;
+            background: linear-gradient(160deg, rgba(26,35,50,0.9) 0%, rgba(44,62,80,0.82) 50%, rgba(201,169,97,0.6) 100%),
+                url('https://i.postimg.cc/DzDdPdjP/1781383382370.webp');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            color: white; position: relative; transition: background 0.4s ease;
+        }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(160deg, rgba(10,5,2,0.88) 0%, rgba(20,10,4,0.75) 50%, rgba(201,168,122,0.35) 100%);
+            transition: background 0.4s ease;
+        }
+        .hero-content { max-width: 760px; padding: 2rem; position: relative; z-index: 1; animation: fadeUp .9s cubic-bezier(.22,1,.36,1); }
+        .hero-lotus { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 1.4rem; opacity: .75; }
+        .hero-lotus::before, .hero-lotus::after { content: ''; display: block; width: 60px; height: 1px; background: var(--gold); }
+        .hero-lotus i { color: var(--gold); font-size: .9rem; }
+        .hero-content h1 {
+            font-family: 'Cinzel', serif; font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 400;
+            letter-spacing: .12em; color: var(--gold-light); margin-bottom: .8rem;
+            text-shadow: 0 2px 40px rgba(0,0,0,0.6);
+        }
+        .hero-tagline { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.2rem, 2.5vw, 1.6rem); color: var(--text); opacity: .85; margin-bottom: 2.2rem; }
+        .hero-swirl { color: var(--gold); font-size: 1.5rem; letter-spacing: -4px; display: block; margin-bottom: 2rem; opacity: .7; }
+        .btn-hero {
+            display: inline-flex; align-items: center; gap: .65rem; padding: .9rem 2.2rem;
+            background: rgba(13,8,4,0.65); border: 1.5px solid var(--gold-line); border-radius: var(--radius-pill);
+            color: var(--gold-light); font-family: 'Lato', sans-serif; font-size: .9rem; font-weight: 700;
+            letter-spacing: .06em; text-decoration: none; text-transform: uppercase;
+            transition: var(--transition); backdrop-filter: blur(8px);
+        }
+        .btn-hero:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 8px 28px rgba(201,168,122,0.35); }
+        .btn-hero:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .services { padding: 7rem 5%; background: var(--deep); transition: background 0.4s ease; }
+        .section-title { text-align: center; margin-bottom: 3.5rem; }
+        .section-eyebrow { display: block; font-family: 'Lato', sans-serif; font-size: .65rem; font-weight: 700; letter-spacing: .35em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+        .section-title h2 { font-family: 'Cinzel', serif; font-size: clamp(1.6rem, 4vw, 2.4rem); color: var(--gold-light); letter-spacing: .08em; position: relative; display: inline-block; transition: color 0.4s ease; }
+        .section-title h2::after { content: ''; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); width: 40px; height: 1px; background: var(--gold); transition: background 0.4s ease; }
+        .section-title p { color: var(--text-muted); max-width: 580px; margin: 1.8rem auto 0; font-size: .9rem; transition: color 0.4s ease; }
+
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        .card {
+            background: var(--surface); border: 1px solid var(--gold-line); border-radius: var(--radius-card);
+            overflow: hidden; cursor: pointer; transition: var(--transition);
+        }
+        .card:hover { transform: translateY(-6px); border-color: rgba(201,168,122,0.55); box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,122,0.08); }
+        .card:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+        .card-img { width: 100%; height: 210px; object-fit: cover; transition: transform .6s cubic-bezier(.22,1,.36,1); filter: brightness(0.88) saturate(0.9); cursor: pointer; }
+        .card:hover .card-img { transform: scale(1.05); filter: brightness(0.95) saturate(1.05); }
+        .card-content { padding: 1.4rem; }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; margin-bottom: .75rem; flex-wrap: wrap; }
+        .card-header h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--gold-light); transition: color 0.4s ease; }
+        .price { background: var(--gold-dim); border: 1px solid var(--gold-line); color: var(--gold); padding: .25rem .9rem; border-radius: var(--radius-pill); font-size: .78rem; font-weight: 700; white-space: nowrap; transition: all 0.4s ease; }
+        .description { color: var(--text-muted); font-size: .86rem; line-height: 1.55; margin-bottom: .75rem; transition: color 0.4s ease; }
+        .benefits-list { list-style: none; margin-top: .75rem; }
+        .benefits-list li { display: flex; align-items: center; gap: .55rem; margin-bottom: .45rem; font-size: .8rem; color: var(--text-muted); transition: color 0.4s ease; }
+        .benefits-list i { color: var(--gold); font-size: .65rem; flex-shrink: 0; }
+        .card-cta { margin-top: 1rem; padding-top: .8rem; border-top: 1px solid var(--gold-line); display: flex; justify-content: flex-end; }
+        .btn-details { color: var(--text-muted); font-size: .82rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; display: flex; align-items: center; gap: .4rem; text-decoration: none; transition: var(--transition); }
+        .btn-details:hover { color: var(--gold); gap: .65rem; }
+
+        .testimonios-section {
+            padding: 5rem 5%; background: var(--dark); border-top: 1px solid var(--gold-line);
+            transition: background 0.4s ease, border-color 0.4s ease;
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+        }
+        .testimonios-grid-wrapper { flex: 1; display: flex; flex-direction: column; max-height: 70vh; min-height: 400px; overflow: hidden; position: relative; }
+        .testimonios-grid { flex: 1; overflow-y: auto; padding-right: 0.5rem; display: flex; flex-direction: column; gap: 0.6rem; scroll-behavior: smooth; }
+        .testimonios-grid::-webkit-scrollbar { width: 4px; }
+        .testimonios-grid::-webkit-scrollbar-track { background: transparent; }
+        .testimonios-grid::-webkit-scrollbar-thumb { background: var(--gold-line); border-radius: 2px; }
+        .testimonio-card { padding: 0.8rem 1.2rem; border-radius: 12px; background: var(--surface); border: 1px solid var(--gold-line); transition: var(--transition); flex-shrink: 0; }
+        .testimonio-card:hover { border-color: var(--gold); background: var(--surface2); }
+        .testimonio-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.2rem; flex-wrap: wrap; }
+        .testimonio-avatar { width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 2px solid var(--gold-line); flex-shrink: 0; background: var(--gold-dim); }
+        .testimonio-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .testimonio-nombre { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; color: var(--gold-light); transition: color 0.4s ease; }
+        .testimonio-estrellas { color: var(--gold); font-size: 0.7rem; margin-left: 0.2rem; }
+        .testimonio-fecha { margin-left: auto; font-size: 0.55rem; color: var(--text-muted); opacity: 0.5; }
+        .testimonio-comentario { color: var(--text-muted); font-style: italic; font-size: 0.85rem; line-height: 1.5; padding-left: 0.8rem; border-left: 2px solid var(--gold-line); transition: color 0.4s ease, border-color 0.4s ease; }
+        .testimonios-section .section-title { margin-bottom: 2rem; }
+        .testimonios-section .section-title p { margin-top: 1rem; }
+
+        .booking-section { padding: 5rem 5%; background: var(--deep); transition: background 0.4s ease; }
+        .booking-container { max-width: 900px; margin: 0 auto; background: var(--surface); border: 1px solid var(--gold-line); border-radius: var(--radius-lg); padding: 2.5rem; position: relative; transition: all 0.4s ease; }
+        .booking-container h2 { font-family: 'Cinzel', serif; font-size: 1.6rem; color: var(--gold-light); text-align: center; margin-bottom: 2rem; letter-spacing: .08em; transition: color 0.4s ease; }
+
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-size: .85rem; font-weight: 700; color: var(--gold-light); margin-bottom: .5rem; letter-spacing: .06em; transition: color 0.4s ease; }
+        .form-group label .required { color: #ff6b6b; margin-left: 2px; }
+
+        .form-control {
+            width: 100%; padding: .85rem 1rem; background: var(--deep); border: 2px solid var(--gold-line);
+            border-radius: var(--radius-card); color: var(--text); font-size: .95rem;
+            font-family: 'Lato', sans-serif; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none; position: relative;
+        }
+        .form-control:focus { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(201,168,122,0.15); transform: scale(1.01); }
+        .form-control:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+
+        .form-control.error { border-color: #ff6b6b; background: rgba(255,107,107,0.12); box-shadow: 0 0 0 4px rgba(255,107,107,0.15); animation: shake 0.5s cubic-bezier(0.36,0.07,0.19,0.97) both; }
+        @keyframes shake { 0%,100% { transform: translateX(0); } 10%,30%,50%,70%,90% { transform: translateX(-6px); } 20%,40%,60%,80% { transform: translateX(6px); } }
+        .form-control.success { border-color: #51cf66; background: rgba(81,207,102,0.12); box-shadow: 0 0 0 4px rgba(81,207,102,0.15); }
+
+        .form-control-wrapper { position: relative; }
+        .form-control-wrapper .status-icon { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.1rem; opacity: 0; transition: all 0.3s ease; pointer-events: none; }
+        .form-control-wrapper .status-icon.error { opacity: 1; color: #ff6b6b; }
+        .form-control-wrapper .status-icon.success { opacity: 1; color: #51cf66; }
+
+        .validation-hint { font-size: .75rem; margin-top: .4rem; padding-left: .2rem; display: none; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        .validation-hint.error { display: flex; align-items: center; gap: .4rem; color: #ff6b6b; }
+        .validation-hint.success { display: flex; align-items: center; gap: .4rem; color: #51cf66; }
+        .validation-hint i { font-size: .8rem; }
+
+        .terminos-group { margin: 1rem 0; }
+        .terminos-group label { display: flex; align-items: center; gap: .5rem; font-size: .85rem; color: var(--text-muted); cursor: pointer; transition: all 0.3s ease; }
+        .terminos-group input[type="checkbox"] { accent-color: var(--gold); width: 18px; height: 18px; cursor: pointer; }
+        .terminos-group label.error { color: #ff6b6b; }
+        .terminos-group label.error input[type="checkbox"] { outline: 2px solid #ff6b6b; outline-offset: 2px; animation: shake 0.5s cubic-bezier(0.36,0.07,0.19,0.97) both; }
+        .terminos-group a { color: var(--gold); text-decoration: underline; transition: color 0.4s ease; }
+
+        .calendar-wrapper {
+            background: var(--deep); border-radius: var(--radius-card); border: 2px solid var(--gold-line);
+            padding: 1.5rem; margin: 1rem 0 1.5rem 0; transition: all 0.3s ease;
+        }
+        .calendar-wrapper.error { border-color: #ff6b6b; background: rgba(255,107,107,0.12); box-shadow: 0 0 0 4px rgba(255,107,107,0.15); animation: shake 0.5s cubic-bezier(0.36,0.07,0.19,0.97) both; }
+        .calendar-wrapper.success { border-color: #51cf66; background: rgba(81,207,102,0.12); box-shadow: 0 0 0 4px rgba(81,207,102,0.15); }
+
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .calendar-header .month-year { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold-light); letter-spacing: .06em; transition: color 0.4s ease; }
+        .calendar-nav { display: flex; gap: .5rem; }
+        .calendar-nav button { background: var(--surface); border: 1px solid var(--gold-line); color: var(--gold); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; font-size: .85rem; }
+        .calendar-nav button:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+        .calendar-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+        .calendar-nav button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+        .calendar-grid .day-name { text-align: center; font-size: .7rem; font-weight: 700; color: var(--text-muted); padding: .4rem 0; text-transform: uppercase; letter-spacing: .08em; transition: color 0.4s ease; }
+        .calendar-grid .day-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: .9rem; font-weight: 500; cursor: pointer; transition: var(--transition); color: var(--text-muted); border: 2px solid transparent; background: transparent; position: relative; }
+        .calendar-grid .day-cell:hover:not(.empty):not(.disabled):not(.past):not(.full) { background: var(--gold-dim); border-color: var(--gold-line); }
+        .calendar-grid .day-cell.selected { background: var(--gold); color: var(--ink); font-weight: 700; border-color: var(--gold); }
+        .calendar-grid .day-cell.available { color: var(--text); }
+        .calendar-grid .day-cell.available:hover { background: var(--gold-dim); border-color: var(--gold-line); }
+        .calendar-grid .day-cell.full { color: #e74c3c; cursor: not-allowed; opacity: 0.6; text-decoration: line-through; }
+        .calendar-grid .day-cell.empty { cursor: default; opacity: 0; }
+        .calendar-grid .day-cell.past { color: #555; cursor: not-allowed; opacity: 0.35; }
+        .calendar-grid .day-cell.today { border-color: var(--gold); color: var(--gold-light); }
+
+        .horarios-disponibles { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .8rem; }
+        .hora-btn {
+            padding: .5rem 1.2rem; background: var(--surface); border: 2px solid var(--gold-line);
+            border-radius: var(--radius-pill); color: var(--text-muted); font-size: .8rem;
+            font-weight: 600; cursor: pointer; transition: var(--transition); font-family: 'Lato', sans-serif;
+        }
+        .hora-btn:hover:not(.disabled):not(.full) { background: var(--gold-dim); border-color: var(--gold); color: var(--gold-light); }
+        .hora-btn.selected { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+        .hora-btn.disabled { opacity: .3; cursor: not-allowed; text-decoration: line-through; }
+        .hora-btn.full { color: #e74c3c; border-color: rgba(231,76,60,0.3); cursor: not-allowed; opacity: 0.5; }
+        .hora-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+        .leyenda-calendario { display: flex; gap: 1.5rem; justify-content: center; margin-top: 1rem; font-size: .75rem; color: var(--text-muted); flex-wrap: wrap; transition: color 0.4s ease; }
+        .leyenda-calendario span { display: flex; align-items: center; gap: .4rem; }
+        .leyenda-calendario .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+        .dot.available { background: var(--gold); }
+        .dot.full { background: #e74c3c; }
+        .dot.past { background: #555; }
+        .dot.selected { background: var(--gold-light); }
+
+        .btn-submit-reserva {
+            width: 100%; padding: 1rem; background: var(--gold); border: none;
+            border-radius: var(--radius-pill); color: var(--ink); font-size: 1rem;
+            font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+            cursor: pointer; transition: var(--transition); font-family: 'Lato', sans-serif; margin-top: 1rem;
+        }
+        .btn-submit-reserva:hover:not(:disabled) { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,122,0.35); }
+        .btn-submit-reserva:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+        .btn-submit-reserva:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+        .mensaje-reserva { padding: 1rem 1.5rem; border-radius: var(--radius-card); margin-top: 1.5rem; display: none; font-size: .95rem; position: relative; backdrop-filter: blur(8px); }
+        .mensaje-reserva .cerrar-mensaje { position: absolute; top: 0.5rem; right: 0.8rem; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: inherit; opacity: 0.6; transition: var(--transition); }
+        .mensaje-reserva .cerrar-mensaje:hover { opacity: 1; transform: rotate(90deg); }
+        .mensaje-reserva.success { display: block; background: rgba(46,204,113,0.12); border: 1px solid rgba(46,204,113,0.3); color: #2ecc71; }
+        .mensaje-reserva.error { display: block; background: rgba(255,107,107,0.12); border: 1px solid rgba(255,107,107,0.3); color: #ff6b6b; }
+        .mensaje-reserva.info { display: block; background: rgba(52,152,219,0.12); border: 1px solid rgba(52,152,219,0.3); color: #3498db; }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            z-index: 2000; display: none; align-items: center; justify-content: center;
+            padding: 1.5rem; transition: background 0.4s ease;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            max-width: 550px; width: 100%; max-height: 90vh; overflow-y: auto;
+            background: var(--surface); border: 1px solid var(--gold-line);
+            border-radius: var(--radius-lg); padding: 2rem; position: relative;
+            animation: fadeUp .4s cubic-bezier(.22,1,.36,1); transition: all 0.4s ease;
+        }
+        .modal::-webkit-scrollbar { width: 4px; }
+        .modal::-webkit-scrollbar-track { background: transparent; }
+        .modal::-webkit-scrollbar-thumb { background: var(--gold-line); border-radius: 2px; }
+
+        .modal-close {
+            position: absolute; top: 1rem; right: 1.2rem; background: none; border: none;
+            color: var(--text-muted); font-size: 1.4rem; cursor: pointer; transition: var(--transition);
+        }
+        .modal-close:hover { color: var(--gold); transform: rotate(90deg); }
+        .modal h2 {
+            font-family: 'Cinzel', serif; color: var(--gold-light); margin-bottom: 1.5rem;
+            text-align: center; transition: color 0.4s ease;
+        }
+
+        .modal .form-group { margin-bottom: 1.2rem; }
+        .modal .form-group label { display: block; font-size: .85rem; font-weight: 700; color: var(--gold-light); margin-bottom: .5rem; letter-spacing: .06em; transition: color 0.4s ease; }
+        .modal .form-control {
+            width: 100%; padding: .8rem 1rem; background: var(--deep); border: 1px solid var(--gold-line);
+            border-radius: var(--radius-card); color: var(--text); font-size: .95rem;
+            font-family: 'Lato', sans-serif; transition: var(--transition); outline: none;
+        }
+        .modal .form-control:focus { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(201,168,122,0.15); }
+        .modal .form-control.error { border-color: #ff6b6b; background: rgba(255,107,107,0.12); }
+        .modal .form-control.success { border-color: #51cf66; background: rgba(81,207,102,0.12); }
+
+        .modal .btn-submit {
+            width: 100%; padding: .9rem; background: var(--gold); border: none;
+            border-radius: var(--radius-pill); color: var(--ink); font-size: .9rem;
+            font-weight: 700; cursor: pointer; transition: var(--transition); font-family: 'Lato', sans-serif;
+        }
+        .modal .btn-submit:hover:not(:disabled) { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,122,0.35); }
+        .modal .btn-submit:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+        .modal .auth-message { display: none; margin-bottom: 1rem; padding: .8rem; border-radius: var(--radius-card); font-size: .9rem; }
+        .modal .auth-message.error { display: block; background: rgba(231,76,60,0.15); border: 1px solid rgba(231,76,60,0.3); color: #e74c3c; }
+        .modal .auth-message.success { display: block; background: rgba(46,204,113,0.15); border: 1px solid rgba(46,204,113,0.3); color: #2ecc71; }
+        .modal .auth-message.info { display: block; background: rgba(52,152,219,0.15); border: 1px solid rgba(52,152,219,0.3); color: #3498db; }
+
+        .modal .validation-hint { font-size: .7rem; margin-top: .3rem; display: none; }
+        .modal .validation-hint.error { display: block; color: #e74c3c; }
+        .modal .validation-hint.success { display: block; color: #2ecc71; }
+
+        .spinner {
+            display: inline-block; width: 16px; height: 16px;
+            border: 2px solid rgba(0,0,0,0.1); border-top-color: var(--ink);
+            border-radius: 50%; animation: spin .6s linear infinite; margin-right: 8px; vertical-align: middle;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .auth-switch { text-align: center; margin-top: 1rem; font-size: .85rem; color: var(--text-muted); }
+        .auth-switch a { color: var(--gold); cursor: pointer; text-decoration: underline; font-weight: 600; transition: color 0.4s ease; }
+        .auth-switch a:hover { color: var(--gold-light); }
+
+        .login-section { display: none; }
+        .login-section.active { display: block; }
+        .register-section { display: block; }
+        .register-section.hidden { display: none; }
+
+        .modal-servicio-img { display: none; width: 100%; height: auto; max-height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; }
+
+        .share-section { padding: 3.5rem 5%; background: var(--deep); text-align: center; border-top: 1px solid var(--gold-line); transition: background 0.4s ease, border-color 0.4s ease; }
+        .share-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.4rem; color: var(--gold-light); margin-bottom: 1.4rem; transition: color 0.4s ease; }
+        .share-bar { display: flex; justify-content: center; gap: .75rem; }
+        .share-btn { width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 1rem; border: none; cursor: pointer; transition: var(--transition); }
+        .share-btn.facebook { background: #1877F2; }
+        .share-btn.whatsapp { background: #25D366; }
+        .share-btn.instagram { background: radial-gradient(circle at 30% 110%, #ffdb8a, #f46f30, #d62976); }
+        .share-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
+        .share-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+        .scroll-reveal { opacity: 0; transform: translateY(22px); transition: all .7s cubic-bezier(.22,1,.36,1); }
+        .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
+
+        footer { text-align: center; padding: 1.5rem; background: var(--ink); border-top: 1px solid var(--gold-line); font-size: .72rem; color: var(--text-muted); letter-spacing: .1em; transition: all 0.4s ease; }
+        footer span { color: var(--gold); transition: color 0.4s ease; }
+
+        .intervalo-info { margin-top: 0.5rem; padding: 0.4rem 0.8rem; background: rgba(201,169,97,0.08); border-radius: 8px; font-size: 0.7rem; color: var(--text-muted); }
+        .intervalo-info i { margin-right: 0.3rem; }
+
+        .direccion-salon-display { display: none; align-items: center; gap: 0.5rem; margin-top: 0.5rem; padding: 0.5rem 0.8rem; background: rgba(201,169,97,0.06); border-radius: 8px; border: 1px solid var(--gold-line); font-size: 0.8rem; color: var(--text-muted); }
+        .direccion-salon-display i { color: var(--gold); }
+        .direccion-salon-display .direccion-texto { color: var(--text); }
+
+        @media (max-width: 768px) {
+            header { padding: .6rem 1.5rem; }
+            nav ul { gap: .8rem; }
+            nav a { font-size: .65rem; }
+            .services-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .booking-container { padding: 1.5rem; }
+            .calendar-grid .day-cell { font-size: .8rem; }
+            .horarios-disponibles { gap: .4rem; }
+            .hora-btn { padding: .4rem .9rem; font-size: .7rem; }
+            .testimonios-grid-wrapper { max-height: 60vh; min-height: 300px; }
+            .testimonios-section { min-height: 80vh; padding: 3rem 5%; }
+            .testimonio-card { padding: 0.6rem 0.8rem; }
+            .hero-content h1 { font-size: clamp(1.8rem, 5vw, 2.8rem); }
+            .theme-toggle-floating { width: 44px; height: 44px; font-size: 1rem; bottom: 1.5rem; right: 1.5rem; }
+            .modal { padding: 1.5rem; max-width: 95%; }
+            .toast { font-size: 0.8rem; padding: 0.6rem 1.2rem; bottom: 70px; }
+        }
+        @media (max-width: 480px) {
+            .logo-title { font-size: 0.7rem; }
+            .logo-img { width: 30px; height: 30px; }
+            .btn-hero { padding: .7rem 1.5rem; font-size: .75rem; }
+            .card-header h3 { font-size: 1.1rem; }
+            .booking-container { padding: 1rem; }
+            .calendar-grid .day-cell { font-size: .7rem; }
+            .hora-btn { padding: .3rem .7rem; font-size: .65rem; }
+            .theme-toggle-floating { width: 40px; height: 40px; font-size: .9rem; bottom: 1rem; right: 1rem; }
+            #notificacionReserva { min-width: 16px; height: 16px; font-size: 0.45rem; padding: 0 3px; }
+            .toast { font-size: 0.7rem; padding: 0.4rem 1rem; bottom: 60px; width: 90%; }
+        }
+
+        [data-theme="light"] .hero {
+            background: linear-gradient(160deg, rgba(247,243,236,0.92) 0%, rgba(237,232,223,0.88) 50%, rgba(201,169,110,0.30) 100%),
+                url('https://i.postimg.cc/DzDdPdjP/1781383382370.webp');
+            background-size: cover; background-position: center; background-attachment: fixed; color: #2C2C2C;
+        }
+        [data-theme="light"] .hero::before { background: linear-gradient(160deg, rgba(247,243,236,0.85) 0%, rgba(237,232,223,0.70) 50%, rgba(201,169,110,0.20) 100%); }
+        [data-theme="light"] .hero-content h1 { color: #3D5A2A; text-shadow: 0 2px 40px rgba(0,0,0,0.10); }
+        [data-theme="light"] .hero-tagline { color: #5A5A4A; }
+        [data-theme="light"] .btn-hero { background: rgba(255,255,255,0.85); border: 1.5px solid #3D5A2A; color: #3D5A2A; backdrop-filter: blur(8px); }
+        [data-theme="light"] .btn-hero:hover { background: #3D5A2A; color: #FFFFFF; border-color: #3D5A2A; }
+        [data-theme="light"] header { background: rgba(247,243,236,0.92); backdrop-filter: blur(18px); border-bottom: 1px solid rgba(61,90,42,0.20); }
+        [data-theme="light"] header.scrolled { background: rgba(247,243,236,0.97); box-shadow: 0 4px 24px rgba(61,90,42,0.12); }
+        [data-theme="light"] .logo-title { color: #3D5A2A; }
+        [data-theme="light"] .logo-subtitle { color: #5A5A4A; }
+        [data-theme="light"] nav a { color: #5A5A4A; }
+        [data-theme="light"] nav a:hover { color: #3D5A2A; }
+        [data-theme="light"] nav a::after { background: #C9A96E; }
+        [data-theme="light"] .btn-registro-header { background: #3D5A2A; color: #FFFFFF; border: 1px solid #3D5A2A; }
+        [data-theme="light"] .btn-registro-header:hover { background: #5C7A42; box-shadow: 0 4px 12px rgba(61,90,42,0.30); }
+        [data-theme="light"] .btn-mi-cuenta { border: 1px solid rgba(61,90,42,0.25); color: #3D5A2A; }
+        [data-theme="light"] .btn-mi-cuenta:hover { border-color: #3D5A2A; background: rgba(61,90,42,0.08); }
+        [data-theme="light"] .btn-salir { border: 1px solid rgba(220,38,38,0.25); color: #dc2626; }
+        [data-theme="light"] .btn-salir:hover { background: rgba(220,38,38,0.08); border-color: #dc2626; }
+        [data-theme="light"] .toast { background: #FFFFFF; border-color: rgba(61,90,42,0.2); color: #2C2C2C; }
+    </style>
+</head>
+<body>
+
+    <!-- ===== SKIP LINK ===== -->
+    <a class="skip-link" href="#inicio">Saltar al contenido principal</a>
+
+    <!-- ===== HEADER ===== -->
+    <header id="header" role="banner">
+        <a href="#" class="header-left" aria-label="Serenity Spa - Inicio">
+            <img class="logo-img" src="https://i.postimg.cc/hz1zW7dg/1781383382370.webp" alt="Serenity Spa Logo" width="40" height="40">
+            <div class="logo-text-container">
+                <div class="logo-title">
+                    <i class="fas fa-feather-alt" aria-hidden="true"></i> SERENITY SPA
+                </div>
+                <span class="logo-subtitle" id="userDisplay">by FGStudio</span>
             </div>
-        </body>
-        </html>
-    `);
-});
+        </a>
 
-// ============================================================
-// FUNCIÓN PARA VERIFICAR SI UNA IP ESTÁ BLOQUEADA
-// ============================================================
-async function isIPBloqueada(ip) {
-    try {
-        if (ip === '127.0.0.1' || ip === '::1' || ip.startsWith('192.168.') || ip.startsWith('10.') || ip.startsWith('169.254.')) {
-            return false;
-        }
-        const bloqueos = await security.getBloqueosActivos();
-        return bloqueos.activos.some(b => b.ip === ip && !b.expirado);
-    } catch (error) {
-        console.error('❌ Error verificando bloqueo:', error);
-        return false;
-    }
-}
+        <nav role="navigation" aria-label="Navegación principal">
+            <ul>
+                <li id="navUserAuth">
+                    <button class="btn-registro-header" id="btnRegistroHeader">Registrarse</button>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
-// ============================================================
-// MIDDLEWARE DE BLOQUEO DE IP
-// ============================================================
-app.use(async (req, res, next) => {
-    const excludedPaths = ['/bloqueado', '/api/seguridad', '/api/verify', '/api/login', '/api/config-emailjs', '/api/usuario'];
-    if (excludedPaths.some(path => req.path.startsWith(path))) {
-        return next();
-    }
+    <!-- ===== BOTÓN TEMA FLOTANTE ===== -->
+    <button class="theme-toggle-floating" id="themeToggle" aria-label="Cambiar tema claro/oscuro" title="Cambiar tema">
+        <i class="fas fa-moon" id="themeIcon" aria-hidden="true"></i>
+    </button>
 
-    try {
-        const ip = security.getClientIP(req);
-        const bloqueado = await isIPBloqueada(ip);
-        
-        if (bloqueado) {
-            console.log(`🛡️ IP BLOQUEADA: ${ip} - Acceso denegado a ${req.path}`);
-            if (req.headers.accept && req.headers.accept.includes('application/json')) {
-                return res.status(403).json({ error: 'Acceso cancelado', bloqueado: true });
-            }
-            return res.redirect('/bloqueado');
-        }
-        next();
-    } catch (error) {
-        console.error('❌ Error en middleware de bloqueo:', error);
-        next();
-    }
-});
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast">
+        <i class="fas fa-info-circle" aria-hidden="true"></i>
+        <span id="toastMsg"></span>
+    </div>
 
-// ============================================================
-// SERVIR ARCHIVOS ESTÁTICOS
-// ============================================================
-app.use(express.static(BASE_DIR));
-app.use(express.static(__dirname));
+    <main>
+        <section id="inicio" class="hero" aria-labelledby="heroTitulo">
+            <div class="hero-content">
+                <div class="hero-lotus" aria-hidden="true"><i class="fas fa-spa"></i></div>
+                <h1 id="heroTitulo">Renueva tu Energía</h1>
+                <p class="hero-tagline" id="heroSubtitulo">Experiencias de bienestar</p>
+                <span class="hero-swirl" aria-hidden="true">∞</span>
+                <a href="#reservas" class="btn-hero" id="heroBoton" aria-label="Reservar tu turno">
+                    <i class="fas fa-calendar-plus" aria-hidden="true"></i> Reserva tu Turno
+                </a>
+            </div>
+        </section>
 
-// ============================================================
-// RUTAS HTML EXPLÍCITAS
-// ============================================================
-function sendFileSafe(fileName) {
-    return (req, res) => {
-        const filePath = path.join(BASE_DIR, fileName);
-        if (fs.existsSync(filePath)) {
-            res.sendFile(filePath);
-        } else {
-            const fallbackPath = path.join(__dirname, fileName);
-            if (fs.existsSync(fallbackPath)) {
-                res.sendFile(fallbackPath);
-            } else {
-                res.status(404).send(`Archivo ${fileName} no encontrado`);
-            }
-        }
-    };
-}
+        <section id="servicios" class="services" aria-labelledby="serviciosTitulo">
+            <div class="section-title scroll-reveal">
+                <span class="section-eyebrow" id="serviciosEtiqueta">Nuestros Servicios</span>
+                <h2 id="serviciosTitulo">Elige tu Masaje Ideal</h2>
+                <p id="serviciosDescripcion">Turnos disponibles según horarios</p>
+            </div>
+            <div class="services-grid" id="servicesGrid" role="list">
+                <div style="text-align:center;padding:2rem;color:var(--text-muted);" role="status">Cargando servicios...</div>
+            </div>
+        </section>
 
-app.get('/', sendFileSafe('index.html'));
-app.get('/admin', sendFileSafe('admin.html'));
-app.get('/admin.html', sendFileSafe('admin.html'));
-app.get('/login', sendFileSafe('login.html'));
-app.get('/login.html', sendFileSafe('login.html'));
-app.get('/registro', sendFileSafe('registro.html'));
-app.get('/registro.html', sendFileSafe('registro.html'));
-app.get('/asistente', sendFileSafe('asistente.html'));
-app.get('/asistente.html', sendFileSafe('asistente.html'));
-app.get('/terminos', sendFileSafe('terminos.html'));
+        <section id="testimonios" class="testimonios-section" aria-labelledby="testimoniosTitulo">
+            <div class="section-title scroll-reveal">
+                <span class="section-eyebrow">Lo que dicen nuestros clientes</span>
+                <h2 id="testimoniosTitulo">Reseñas y Experiencias</h2>
+                <p>Opiniones reales de quienes ya disfrutaron de Serenity Spa</p>
+            </div>
+            <div class="testimonios-grid-wrapper">
+                <div class="testimonios-grid" id="testimoniosGrid" role="list">
+                    <div style="text-align:center;padding:2rem;color:var(--text-muted);" role="status">Cargando reseñas...</div>
+                </div>
+            </div>
+        </section>
 
-// ============================================================
-// FUNCIONES UTILITARIAS
-// ============================================================
-function generarId() {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2) + crypto.randomBytes(4).toString('hex');
-}
+        <section id="reservas" class="booking-section" aria-labelledby="reservasTitulo">
+            <div class="section-title scroll-reveal">
+                <span class="section-eyebrow">Reserva tu Turno</span>
+                <h2 id="reservasTitulo">Agenda tu Masaje</h2>
+                <p>Completa el formulario y selecciona la fecha disponible en el calendario</p>
+            </div>
 
-function escapeHtml(s) {
-    if (!s) return '';
-    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
+            <div class="booking-container scroll-reveal">
+                <h2><i class="fas fa-spa" style="color:var(--gold);margin-right:.5rem;" aria-hidden="true"></i> Reservar Turno</h2>
 
-// ============================================================
-// CONFIGURACIÓN EMAILJS
-// ============================================================
-app.get('/api/config-emailjs', (req, res) => {
-    res.json({
-        publicKey: process.env.EMAILJS_PUBLIC_KEY || '',
-        serviceId: process.env.EMAILJS_SERVICE_ID || 'service_oq2z6r7',
-        templateId: process.env.EMAILJS_TEMPLATE_ID || ''
-    });
-});
+                <form id="bookingForm" novalidate>
+                    <div class="form-group">
+                        <label for="clienteNombre">Nombre completo <span class="required" aria-hidden="true">*</span></label>
+                        <div class="form-control-wrapper">
+                            <input type="text" id="clienteNombre" class="form-control" placeholder="Ej: María González" required autocomplete="name" aria-describedby="nombreHint">
+                            <span class="status-icon" id="nombreIcon" aria-hidden="true"></span>
+                        </div>
+                        <div class="validation-hint" id="nombreHint" role="alert"></div>
+                    </div>
 
-// ============================================================
-// AUTENTICACIÓN ADMIN
-// ============================================================
-const adminTokens = new Map();
+                    <div class="form-row" style="display:grid;grid-template-columns:1fr 2fr;gap:1rem;">
+                        <div class="form-group">
+                            <label for="clientePais">País <span class="required" aria-hidden="true">*</span></label>
+                            <select id="clientePais" class="form-control" required>
+                                <option value="53">🇨🇺 Cuba (+53)</option>
+                                <option value="54">🇦🇷 Argentina (+54)</option>
+                                <option value="52">🇲🇽 México (+52)</option>
+                                <option value="57">🇨🇴 Colombia (+57)</option>
+                                <option value="56">🇨🇱 Chile (+56)</option>
+                                <option value="51">🇵🇪 Perú (+51)</option>
+                                <option value="34">🇪🇸 España (+34)</option>
+                                <option value="58">🇻🇪 Venezuela (+58)</option>
+                                <option value="593">🇪🇨 Ecuador (+593)</option>
+                                <option value="598">🇺🇾 Uruguay (+598)</option>
+                                <option value="591">🇧🇴 Bolivia (+591)</option>
+                                <option value="595">🇵🇾 Paraguay (+595)</option>
+                                <option value="1">🇺🇸 Estados Unidos (+1)</option>
+                                <option value="55">🇧🇷 Brasil (+55)</option>
+                                <option value="39">🇮🇹 Italia (+39)</option>
+                                <option value="33">🇫🇷 Francia (+33)</option>
+                                <option value="44">🇬🇧 Reino Unido (+44)</option>
+                                <option value="49">🇩🇪 Alemania (+49)</option>
+                            </select>
+                            <div class="validation-hint" id="paisHint" role="alert"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="clienteTelefono">Teléfono <span class="required" aria-hidden="true">*</span></label>
+                            <div class="form-control-wrapper">
+                                <input type="tel" id="clienteTelefono" class="form-control" placeholder="Ej: 5551234567" required autocomplete="tel" aria-describedby="telefonoHint">
+                                <span class="status-icon" id="telefonoIcon" aria-hidden="true"></span>
+                            </div>
+                            <div class="validation-hint" id="telefonoHint" role="alert"></div>
+                        </div>
+                    </div>
 
-app.post('/api/login', async (req, res) => {
-    try {
-        const { password } = req.body;
-        const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
-        
-        if (!password) {
-            return res.status(400).json({ success: false, mensaje: 'Contraseña requerida' });
-        }
-        
-        const ip = security.getClientIP(req);
-        const intentos = security.incrementarIntentosLogin(ip);
-        
-        if (intentos > 5) {
-            await security.bloquearIP(ip, 'Demasiados intentos de login', 'BRUTE_FORCE', null, '/api/login');
-            return res.status(429).json({ success: false, mensaje: 'Demasiados intentos. IP bloqueada temporalmente.' });
-        }
-        
-        if (password === adminPassword) {
-            const token = crypto.randomBytes(64).toString('hex');
-            adminTokens.set(token, Date.now() + 28800000);
-            return res.json({ success: true, token, mensaje: 'Login exitoso' });
-        } else {
-            return res.status(401).json({ success: false, mensaje: 'Contraseña incorrecta' });
-        }
-    } catch (error) {
-        console.error('❌ Error en login admin:', error);
-        res.status(500).json({ success: false, mensaje: 'Error interno' });
-    }
-});
+                    <div class="form-group">
+                        <label for="tipoMasaje">Selecciona el masaje <span class="required" aria-hidden="true">*</span></label>
+                        <select id="tipoMasaje" class="form-control" required aria-describedby="masajeHint">
+                            <option value="">-- Selecciona un masaje --</option>
+                        </select>
+                        <div class="validation-hint" id="masajeHint" role="alert"></div>
+                    </div>
 
-app.get('/api/verify', (req, res) => {
-    const h = req.headers.authorization;
-    if (!h || !h.startsWith('Bearer ')) {
-        return res.json({ valid: false });
-    }
-    const token = h.substring(7);
-    const isValid = adminTokens.has(token) && adminTokens.get(token) > Date.now();
-    res.json({ valid: isValid });
-});
+                    <div class="form-group">
+                        <label>¿Dónde prefieres recibir el masaje? <span class="required" aria-hidden="true">*</span></label>
+                        <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:.3rem;" role="radiogroup" aria-label="Lugar del servicio">
+                            <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.9rem;color:var(--text);">
+                                <input type="radio" name="tipoServicio" value="salon" checked style="accent-color:var(--gold);width:18px;height:18px;" aria-label="En el salón">
+                                <i class="fas fa-building" style="color:var(--gold);" aria-hidden="true"></i> En el salón
+                            </label>
+                            <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer;font-size:.9rem;color:var(--text);" id="domicilioLabel">
+                                <input type="radio" name="tipoServicio" value="domicilio" style="accent-color:var(--gold);width:18px;height:18px;" aria-label="A domicilio">
+                                <i class="fas fa-home" style="color:var(--gold);" aria-hidden="true"></i> A domicilio
+                            </label>
+                        </div>
+                        <div class="direccion-salon-display" id="direccionSalonDisplay">
+                            <i class="fas fa-map-pin" aria-hidden="true"></i>
+                            <span class="direccion-texto" id="direccionSalonTexto">Cargando dirección...</span>
+                        </div>
+                    </div>
 
-function verifyAuth(req, res, next) {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(401).json({ error: 'No autorizado' });
-    }
-    const token = authHeader.substring(7);
-    if (!adminTokens.has(token) || adminTokens.get(token) < Date.now()) {
-        return res.status(401).json({ error: 'Sesión expirada' });
-    }
-    next();
-}
+                    <div class="form-group" id="direccionGroup" style="display:none;">
+                        <label for="direccionDomicilio">Dirección completa <span class="required" aria-hidden="true">*</span></label>
+                        <div class="form-control-wrapper">
+                            <input type="text" id="direccionDomicilio" class="form-control" placeholder="Calle, número, ciudad, etc." aria-describedby="direccionHint">
+                            <span class="status-icon" id="direccionIcon" aria-hidden="true"></span>
+                        </div>
+                        <div class="validation-hint" id="direccionHint" role="alert"></div>
+                    </div>
 
-// ============================================================
-// AUTENTICACIÓN DE USUARIOS
-// ============================================================
+                    <div class="form-group">
+                        <label>Selecciona la fecha <span class="required" aria-hidden="true">*</span></label>
+                        <div id="calendarWrapper" class="calendar-wrapper" role="application" aria-label="Calendario de fechas disponibles">
+                            <div class="calendar-header">
+                                <button type="button" class="calendar-nav" id="prevMonth" aria-label="Mes anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+                                <span class="month-year" id="monthYearDisplay" aria-live="polite">Enero 2026</span>
+                                <button type="button" class="calendar-nav" id="nextMonth" aria-label="Mes siguiente"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+                            </div>
+                            <div class="calendar-grid" id="calendarGrid" role="grid"></div>
+                            <div class="leyenda-calendario" role="group" aria-label="Leyenda del calendario">
+                                <span><span class="dot available" aria-hidden="true"></span> Disponible</span>
+                                <span><span class="dot full" aria-hidden="true"></span> Ocupado / No laboral</span>
+                                <span><span class="dot past" aria-hidden="true"></span> No disponible</span>
+                                <span><span class="dot selected" aria-hidden="true"></span> Seleccionado</span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="fechaSeleccionada" value="">
+                        <input type="hidden" id="diaSeleccionado" value="">
+                        <div id="fechaSeleccionadaDisplay" style="color:var(--gold-light);font-size:.9rem;margin-top:.3rem;min-height:1.5rem;" aria-live="polite"></div>
+                        <div class="validation-hint" id="fechaHint" role="alert"></div>
+                    </div>
 
-app.get('/api/usuario/actual', async (req, res) => {
-    const h = req.headers.authorization;
-    if (!h || !h.startsWith('Bearer ')) {
-        return res.status(401).json({ error: 'No autorizado' });
-    }
-    const token = h.substring(7);
-    try {
-        const usuario = await db.getUsuarioByToken(token);
-        if (usuario) {
-            res.json({
-                id: usuario.id,
-                nombre: usuario.nombre,
-                email: usuario.email,
-                avatar: usuario.avatar || null
-            });
-        } else {
-            res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-    } catch (e) {
-        console.error('Error obteniendo usuario actual:', e);
-        res.status(500).json({ error: 'Error interno' });
-    }
-});
+                    <div class="form-group" id="horariosGroup" style="display:none;">
+                        <label>Horarios disponibles para esta fecha:</label>
+                        <div class="horarios-disponibles" id="horariosContainer" role="group" aria-label="Horarios disponibles"></div>
+                        <input type="hidden" id="horaSeleccionada" value="">
+                        <div class="validation-hint" id="horaHint" role="alert"></div>
+                    </div>
 
-app.get('/api/verify/user', async (req, res) => {
-    const h = req.headers.authorization;
-    if (!h || !h.startsWith('Bearer ')) {
-        return res.json({ valid: false });
-    }
-    const token = h.substring(7);
-    try {
-        const usuario = await db.getUsuarioByToken(token);
-        if (usuario) {
-            return res.json({ 
-                valid: true, 
-                usuario: { 
-                    nombre: usuario.nombre, 
-                    email: usuario.email,
-                    avatar: usuario.avatar || null
-                } 
-            });
-        }
-    } catch (e) {
-        console.error('Error verificando token:', e);
-    }
-    res.json({ valid: false });
-});
+                    <div class="terminos-group">
+                        <label id="terminosLabel">
+                            <input type="checkbox" id="aceptarTerminos" required aria-describedby="terminosHint">
+                            Acepto los <a href="/terminos" target="_blank">Términos</a> y las <a href="/terminos" target="_blank">Políticas</a>
+                            <span class="required" aria-hidden="true"></span>
+                        </label>
+                        <div class="validation-hint" id="terminosHint" role="alert"></div>
+                    </div>
 
-// ============================================================
-// REGISTRO DE USUARIOS
-// ============================================================
+                    <button type="submit" class="btn-submit-reserva" id="submitReserva">
+                        <i class="fas fa-calendar-check" aria-hidden="true"></i> Reservar Turno
+                    </button>
+                </form>
 
-app.post('/api/registro/guardar-codigo', async (req, res) => {
-    try {
-        const { email, nombre, codigo } = req.body;
-        
-        if (!email || !nombre || !codigo) {
-            return res.status(400).json({ error: 'Datos incompletos' });
-        }
-        
-        const usuarioExistente = await db.getUsuarioByEmail(email);
-        if (usuarioExistente && usuarioExistente.verificado) {
-            return res.status(400).json({ error: 'Este email ya está registrado y verificado.' });
-        }
-        
-        const expiracion = Date.now() + 3 * 60 * 1000;
-        
-        await db.upsertCodigoVerificacion(email, {
-            codigo: codigo,
-            expiracion: expiracion,
-            intentos: 0,
-            nombre: nombre
-        });
-        
-        console.log(`✅ Código guardado para ${email}`);
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Error guardando código:', error);
-        res.status(500).json({ error: 'Error al guardar código' });
-    }
-});
+                <div id="mensajeResultado" class="mensaje-reserva" role="alert">
+                    <button class="cerrar-mensaje" id="cerrarMensajeBtn" title="Cerrar mensaje" aria-label="Cerrar mensaje">×</button>
+                    <div id="mensajeContenido"></div>
+                </div>
+            </div>
+        </section>
 
-app.post('/api/registro/login-solicitar-codigo', async (req, res) => {
-    try {
-        const { email } = req.body;
-        
-        if (!email) {
-            return res.status(400).json({ error: 'El correo es requerido' });
-        }
-        
-        const usuarioExistente = await db.getUsuarioByEmail(email);
-        
-        if (!usuarioExistente) {
-            return res.status(404).json({ error: 'El correo no está registrado' });
-        }
-        
-        if (usuarioExistente.bloqueado === true) {
-            return res.status(403).json({ error: 'Esta cuenta ha sido bloqueada. Contacta al administrador.' });
-        }
-        
-        if (usuarioExistente.verificado !== true) {
-            return res.status(400).json({ error: 'Esta cuenta no ha sido verificada. Regístrate nuevamente.' });
-        }
-        
-        const codigo = Math.floor(100000 + Math.random() * 900000).toString();
-        const expiracion = Date.now() + 3 * 60 * 1000;
-        
-        await db.upsertCodigoVerificacion(email, {
-            codigo: codigo,
-            expiracion: expiracion,
-            intentos: 0,
-            nombre: usuarioExistente.nombre
-        });
-        
-        console.log(`✅ Código de login generado para ${email}: ${codigo}`);
-        res.json({ 
-            success: true,
-            codigo: codigo,
-            nombre: usuarioExistente.nombre
-        });
-        
-    } catch (error) {
-        console.error('❌ Error en login-solicitar-codigo:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
-    }
-});
+        <section class="share-section" aria-labelledby="shareTitulo">
+            <h3 class="share-title" id="shareTitulo">Comparte Serenity Spa</h3>
+            <div class="share-bar" role="group" aria-label="Compartir en redes sociales">
+                <button class="share-btn facebook" data-social="facebook" aria-label="Compartir en Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></button>
+                <button class="share-btn whatsapp" data-social="whatsapp" aria-label="Compartir en WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></button>
+                <button class="share-btn instagram" data-social="instagram" aria-label="Compartir en Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></button>
+            </div>
+        </section>
+    </main>
 
-app.post('/api/registro/verificar-codigo', async (req, res) => {
-    try {
-        const { email, codigo } = req.body;
-        
-        if (!email || !codigo) {
-            return res.status(400).json({ error: 'Email y código son requeridos' });
-        }
-        
-        const registro = await db.getCodigoVerificacion(email);
-        if (!registro) {
-            return res.status(400).json({ error: 'Código inválido o expirado.' });
-        }
-        
-        if (Date.now() > registro.expiracion) {
-            await db.deleteCodigoVerificacion(email);
-            return res.status(400).json({ error: 'El código ha expirado.' });
-        }
-        
-        if (registro.intentos >= 5) {
-            await db.deleteCodigoVerificacion(email);
-            return res.status(400).json({ error: 'Demasiados intentos.' });
-        }
-        
-        if (registro.codigo !== codigo) {
-            await db.upsertCodigoVerificacion(email, {
-                ...registro,
-                intentos: (registro.intentos || 0) + 1
-            });
-            return res.status(400).json({ error: `Código incorrecto. Te quedan ${5 - (registro.intentos || 0) - 1} intentos.` });
-        }
-        
-        let usuarioExistente = await db.getUsuarioByEmail(email);
-        
-        const nuevoUsuario = {
-            id: generarId(),
-            nombre: registro.nombre,
-            email: email,
-            verificado: true,
-            fecha_registro: new Date().toISOString(),
-            bloqueado: false,
-            motivo_bloqueo: null,
-            avatar: null
-        };
-        
-        if (usuarioExistente) {
-            await db.updateUsuario(usuarioExistente.id, {
-                ...usuarioExistente,
-                nombre: registro.nombre,
-                verificado: true
-            });
-        } else {
-            await db.createUsuario(nuevoUsuario);
-        }
-        
-        await db.deleteCodigoVerificacion(email);
-        
-        const token = crypto.randomBytes(64).toString('hex');
-        await db.createTokenUsuario(token, email);
-        
-        const usuario = await db.getUsuarioByEmail(email);
-        
-        res.json({
-            success: true,
-            token: token,
-            usuario: {
-                id: usuario.id,
-                nombre: usuario.nombre,
-                email: usuario.email,
-                avatar: usuario.avatar || null
-            }
-        });
-    } catch (error) {
-        console.error('Error en verificar-codigo:', error);
-        res.status(500).json({ error: 'Error interno del servidor.' });
-    }
-});
+    <footer role="contentinfo">
+        <span aria-hidden="true">✦</span> Bienestar que se siente, donde estés. <span aria-hidden="true">✦</span>
+    </footer>
 
-// ============================================================
-// TESTIMONIOS
-// ============================================================
-app.get('/api/testimonios', async (req, res) => {
-    try {
-        const testimonios = await db.getTestimonios(true);
-        res.json(testimonios);
-    } catch (e) {
-        console.error('❌ Error cargando testimonios:', e);
-        res.json([]);
-    }
-});
+    <!-- ===== MODAL REGISTRO ===== -->
+    <div class="modal-overlay" id="modalRegistro" role="dialog" aria-modal="true" aria-labelledby="modalTitleRegistro">
+        <div class="modal">
+            <button class="modal-close" id="modalRegistroClose" aria-label="Cerrar"><i class="fas fa-times" aria-hidden="true"></i></button>
 
-app.post('/api/testimonios', async (req, res) => {
-    try {
-        const { nombre, calificacion, comentario, imagen, publico } = req.body;
-        
-        if (!nombre || !nombre.trim() || nombre.trim().length < 2) {
-            return res.status(400).json({ error: 'El nombre debe tener al menos 2 caracteres' });
-        }
-        if (!calificacion || isNaN(parseInt(calificacion)) || parseInt(calificacion) < 1 || parseInt(calificacion) > 5) {
-            return res.status(400).json({ error: 'La calificación debe ser entre 1 y 5 estrellas' });
-        }
-        if (!comentario || !comentario.trim() || comentario.trim().length < 3) {
-            return res.status(400).json({ error: 'El comentario debe tener al menos 3 caracteres' });
-        }
-        
-        const testimonio = {
-            id: generarId(),
-            nombre: escapeHtml(nombre.trim()),
-            calificacion: parseInt(calificacion),
-            comentario: escapeHtml(comentario.trim()),
-            imagen: imagen || null,
-            publico: publico !== undefined ? publico === true : true,
-            fecha: new Date().toISOString()
-        };
-        
-        await db.createTestimonio(testimonio);
-        
-        res.status(201).json({ 
-            success: true, 
-            testimonio: testimonio,
-            message: 'Testimonio guardado exitosamente'
-        });
-        
-    } catch (e) {
-        console.error('❌ Error guardando testimonio:', e);
-        res.status(500).json({ error: 'Error al guardar el testimonio: ' + e.message });
-    }
-});
+            <div id="registerSection" class="register-section">
+                <h2 id="modalTitleRegistro"><i class="fas fa-user-plus" aria-hidden="true"></i> Crear Cuenta</h2>
+                <div id="authMessage1" class="auth-message" role="alert"></div>
 
-// ADMIN - Testimonios
-app.get('/api/admin/testimonios', verifyAuth, async (req, res) => {
-    try {
-        const testimonios = await db.getTestimonios(false);
-        res.json(testimonios);
-    } catch (error) {
-        console.error('❌ Error cargando testimonios para admin:', error);
-        res.status(500).json({ error: 'Error al cargar testimonios' });
-    }
-});
+                <form id="authForm" novalidate>
+                    <div class="form-group">
+                        <label for="authNombre">Nombre completo <span class="required" aria-hidden="true">*</span></label>
+                        <div class="form-control-wrapper">
+                            <input type="text" id="authNombre" class="form-control" placeholder="Ej: María González" autocomplete="name" aria-describedby="authNombreHint" required>
+                            <span class="status-icon" id="authNombreIcon" aria-hidden="true"></span>
+                        </div>
+                        <div class="validation-hint" id="authNombreHint" role="alert"></div>
+                    </div>
 
-app.delete('/api/admin/testimonios/:id', verifyAuth, async (req, res) => {
-    try {
-        const id = req.params.id;
-        await db.deleteTestimonio(id);
-        res.json({ success: true, message: 'Testimonio eliminado' });
-    } catch (error) {
-        console.error('❌ Error eliminando testimonio:', error);
-        res.status(500).json({ error: 'Error al eliminar testimonio' });
-    }
-});
+                    <div class="form-group">
+                        <label for="authEmail">Correo electrónico <span class="required" aria-hidden="true">*</span></label>
+                        <div class="form-control-wrapper">
+                            <input type="email" id="authEmail" class="form-control" placeholder="ejemplo@correo.com" autocomplete="email" aria-describedby="authEmailHint" required>
+                            <span class="status-icon" id="authEmailIcon" aria-hidden="true"></span>
+                        </div>
+                        <div class="validation-hint" id="authEmailHint" role="alert"></div>
+                    </div>
 
-app.put('/api/admin/testimonios/:id/publico', verifyAuth, async (req, res) => {
-    try {
-        const id = req.params.id;
-        const { publico } = req.body;
-        
-        const testimonio = await db.getTestimonioById(id);
-        if (!testimonio) {
-            return res.status(404).json({ error: 'Testimonio no encontrado' });
-        }
-        
-        await db.updateTestimonio(id, { publico: publico === true });
-        res.json({ success: true });
-    } catch (error) {
-        console.error('❌ Error actualizando testimonio:', error);
-        res.status(500).json({ error: 'Error al actualizar testimonio' });
-    }
-});
+                    <div class="terminos-group">
+                        <label id="authTerminosLabel">
+                            <input type="checkbox" id="authTerminos" required aria-describedby="authTerminosHint">
+                            Acepto los <a href="/terminos" target="_blank">Términos y Condiciones</a>
+                            <span class="required" aria-hidden="true">*</span>
+                        </label>
+                        <div class="validation-hint" id="authTerminosHint" role="alert"></div>
+                    </div>
 
-// ============================================================
-// TURNOS
-// ============================================================
-app.get('/turnos', async (req, res) => {
-    try {
-        const turnos = await db.getTurnos();
-        res.json(turnos);
-    } catch (error) {
-        console.error('Error obteniendo turnos:', error);
-        res.json([]);
-    }
-});
+                    <button type="submit" class="btn-submit" id="btnSolicitarCodigo">
+                        <i class="fas fa-envelope" aria-hidden="true"></i> Enviar Código de Verificación
+                    </button>
+                </form>
 
-app.post('/turnos', async (req, res) => {
-    try {
-        const { nombre, telefono, massageType, dia, hora, codigoPais, ubicacion, tipoServicio, fecha, ip, precio } = req.body;
-        
-        if (!nombre || !telefono || !massageType || !dia || hora === undefined || hora === null) {
-            return res.status(400).json({ error: 'Faltan campos obligatorios' });
-        }
-        
-        const horaNumerica = parseInt(hora);
-        if (isNaN(horaNumerica) || horaNumerica < 0 || horaNumerica > 23) {
-            return res.status(400).json({ error: 'Hora inválida' });
-        }
-        
-        const horariosConfig = await db.getHorarios();
-        const diaLower = dia.toLowerCase();
-        if (!horariosConfig.dias || !horariosConfig.dias.includes(diaLower)) {
-            return res.status(400).json({ error: 'El día seleccionado no es laboral' });
-        }
-        
-        const inicio = horariosConfig.inicio || 8;
-        const fin = horariosConfig.fin || 20;
-        if (horaNumerica < inicio || horaNumerica >= fin) {
-            return res.status(400).json({ error: `Horario fuera del rango laboral (${inicio}:00 - ${fin}:00)` });
-        }
-        
-        const fechaTurno = fecha || new Date().toISOString().split('T')[0];
-        
-        const turnosExistentes = await db.getTurnosByFecha(fechaTurno);
-        const ocupado = turnosExistentes.some(t => {
-            return t.dia === diaLower && t.hora === horaNumerica;
-        });
-        
-        if (ocupado) {
-            return res.status(409).json({ error: 'Horario ocupado' });
-        }
-        
-        const telefonoLimpio = telefono.replace(/\D/g, '');
-        const turnosDelUsuario = turnosExistentes.filter(t => 
-            t.telefono === telefonoLimpio && 
-            t.dia === diaLower
-        );
-        
-        if (turnosDelUsuario.length >= 2) {
-            return res.status(429).json({ 
-                error: '⚠️ Límite alcanzado: Solo puedes reservar 2 masajes por día. Ya tienes ' + turnosDelUsuario.length + ' turnos para hoy.' 
-            });
-        }
-        
-        const codigoCancelacion = Math.random().toString(36).substring(2, 8).toUpperCase();
-        const clientIP = ip || security.getClientIP(req) || 'N/A';
-        
-        // ⭐ OBTENER USUARIO AUTENTICADO Y GUARDAR usuario_id
-        let usuarioId = null;
-        let usuarioNombre = null;
-        const authHeader = req.headers.authorization;
-        if (authHeader && authHeader.startsWith('Bearer ')) {
-            const token = authHeader.substring(7);
-            try {
-                const usuario = await db.getUsuarioByToken(token);
-                if (usuario) {
-                    usuarioId = usuario.id;
-                    usuarioNombre = usuario.nombre;
-                    console.log(`✅ Turno asociado al usuario: ${usuario.nombre} (${usuario.id})`);
+                <div class="auth-switch">
+                    ¿Ya tienes cuenta? <a id="switchToLogin" role="button" tabindex="0">Iniciar Sesión</a>
+                </div>
+            </div>
+
+            <div id="verificacionSection" style="display:none;">
+                <h2><i class="fas fa-shield-alt" aria-hidden="true"></i> Verificar Código</h2>
+                <div id="authMessage2" class="auth-message" role="alert"></div>
+
+                <form id="authVerificarForm">
+                    <div class="form-group">
+                        <label for="authCodigo">Código de 6 dígitos <span class="required" aria-hidden="true">*</span></label>
+                        <div class="form-control-wrapper">
+                            <input type="text" id="authCodigo" class="form-control" placeholder="123456" maxlength="6" inputmode="numeric" aria-describedby="authCodigoHint" required>
+                            <span class="status-icon" id="authCodigoIcon" aria-hidden="true"></span>
+                        </div>
+                        <div class="validation-hint" id="authCodigoHint" role="alert"></div>
+                        <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.3rem;">
+                            <i class="fas fa-clock" aria-hidden="true"></i> El código fue enviado a tu correo. Expira en 3 minutos.
+                        </p>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="btnVerificarCodigo">
+                        <i class="fas fa-check-circle" aria-hidden="true"></i> Verificar y Registrar
+                    </button>
+                </form>
+
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button class="btn-reenviar" id="btnReenviarCodigo" aria-label="Reenviar código" style="background:transparent;border:1px solid var(--gold-line);color:var(--text-muted);padding:0.4rem 1.2rem;border-radius:var(--radius-pill);cursor:pointer;font-family:'Lato',sans-serif;font-size:0.8rem;transition:var(--transition);">
+                        <i class="fas fa-sync" aria-hidden="true"></i> Reenviar código
+                    </button>
+                </div>
+
+                <div class="auth-switch" style="margin-top: 1rem;">
+                    <a id="switchBackToRegister" role="button" tabindex="0">← Volver al registro</a>
+                </div>
+            </div>
+
+            <div id="loginSection" class="login-section">
+                <h2><i class="fas fa-sign-in-alt" aria-hidden="true"></i> Iniciar Sesión</h2>
+                <div id="authMessageLogin" class="auth-message" role="alert"></div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Correo electrónico <span class="required" aria-hidden="true">*</span></label>
+                        <div class="form-control-wrapper">
+                            <input type="email" id="loginEmail" class="form-control" placeholder="ejemplo@correo.com" autocomplete="email" aria-describedby="loginEmailHint" required>
+                            <span class="status-icon" id="loginEmailIcon" aria-hidden="true"></span>
+                        </div>
+                        <div class="validation-hint" id="loginEmailHint" role="alert"></div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="btnLogin">
+                        <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Iniciar Sesión
+                    </button>
+                </form>
+
+                <div class="auth-switch">
+                    ¿No tienes cuenta? <a id="switchToRegister" role="button" tabindex="0">Registrarse</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL DETALLES SERVICIO ===== -->
+    <div class="modal-overlay" id="modalServicioDetalles" role="dialog" aria-modal="true" aria-labelledby="modalServicioNombre">
+        <div class="modal" style="max-width: 700px;">
+            <button class="modal-close" id="modalServicioClose" aria-label="Cerrar"><i class="fas fa-times" aria-hidden="true"></i></button>
+            <div class="modal-servicio-content">
+                <img class="modal-servicio-img" id="modalServicioImg" src="" alt="Imagen del servicio" style="display:none; width:100%; height:auto; max-height:300px; object-fit:cover; border-radius:8px; margin-bottom:1rem;">
+                <div id="modalServicioVideoContainer" style="display:none; width:100%; margin-bottom:1rem;">
+                    <iframe id="modalServicioVideo" width="100%" height="300" frameborder="0" allowfullscreen style="border-radius:8px; display:block; width:100%;" title="Video del servicio"></iframe>
+                </div>
+                <h2 id="modalServicioNombre" style="font-family:'Cinzel',serif;font-size:1.6rem;color:var(--gold-light);margin-bottom:.5rem;"></h2>
+                <div class="modal-precio" id="modalServicioPrecio" style="color:var(--gold);font-size:1.2rem;font-weight:700;margin-bottom:.8rem;"></div>
+                <p class="modal-desc" id="modalServicioDesc" style="color:var(--text-muted);font-size:.95rem;line-height:1.6;margin-bottom:1rem;"></p>
+                <div style="margin-bottom:1rem;">
+                    <strong style="color:var(--gold-light);font-size:.9rem;">Beneficios:</strong>
+                    <div class="modal-beneficios" id="modalServicioBeneficios" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.3rem;"></div>
+                </div>
+                <div style="margin-bottom:1.5rem;">
+                    <strong style="color:var(--gold-light);font-size:.9rem;">Efectos:</strong>
+                    <div class="modal-efectos" id="modalServicioEfectos" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.3rem;"></div>
+                </div>
+                <a href="#reservas" class="btn-reservar-modal" id="modalServicioReservar" style="display:inline-flex;align-items:center;gap:.6rem;padding:.8rem 2rem;background:var(--gold);border:none;border-radius:var(--radius-pill);color:var(--ink);font-weight:700;font-size:.9rem;cursor:pointer;transition:var(--transition);text-decoration:none;">
+                    <i class="fas fa-calendar-plus" aria-hidden="true"></i> Reservar este masaje
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    SCRIPT PRINCIPAL - CORREGIDO DEFINITIVAMENTE
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // CONFIGURACIÓN
+            // ============================================================
+            const API_URL = '/turnos';
+            const SERVICIOS_API = '/api/servicios';
+            const HORARIOS_API = '/api/config/horarios';
+            const MODALIDADES_API = '/api/config/modalidades';
+            const PAISES_API = '/api/seguridad/paises';
+            const TESTIMONIOS_API = '/api/testimonios';
+            const REGISTRO_API = '/api/registro';
+
+            // ============================================================
+            // TOAST
+            // ============================================================
+            function showToast(msg, type = 'info') {
+                const toast = document.getElementById('toast');
+                const msgEl = document.getElementById('toastMsg');
+                if (!toast || !msgEl) {
+                    console.log(`📢 Toast: ${type} - ${msg}`);
+                    return;
                 }
-            } catch (e) {
-                console.warn('⚠️ No se pudo obtener usuario del token:', e);
-            }
-        }
-        
-        // Buscar precio del servicio
-        let precioFinal = precio || '';
-        if (!precioFinal && massageType) {
-            try {
-                const { data: servicios } = await supabase
-                    .from('servicios')
-                    .select('precio')
-                    .ilike('nombre', `%${massageType}%`)
-                    .limit(1);
-                if (servicios && servicios.length > 0 && servicios[0].precio) {
-                    precioFinal = servicios[0].precio;
+                msgEl.textContent = msg;
+                toast.className = 'toast ' + type;
+                const icon = toast.querySelector('i');
+                if (icon) {
+                    icon.className = type === 'error' ? 'fas fa-exclamation-circle' :
+                                    type === 'warning' ? 'fas fa-exclamation-triangle' :
+                                    type === 'success' ? 'fas fa-check-circle' :
+                                    'fas fa-info-circle';
                 }
-            } catch (e) {}
-        }
-        
-        // ⭐ CONSTRUIR EL TURNO CON usuario_id
-        const nuevoTurno = {
-            id: generarId(),
-            nombre: escapeHtml(nombre.trim()),
-            dia: diaLower,
-            fecha: fechaTurno,
-            hora: horaNumerica,
-            massage_type: massageType,
-            telefono: telefonoLimpio,
-            codigo_pais: codigoPais || '53',
-            ubicacion: ubicacion || 'Salón Serenity Spa',
-            tipo_servicio: tipoServicio || 'salon',
-            confirmado_whatsapp: false,
-            fecha_creacion: new Date().toISOString(),
-            codigo_cancelacion: codigoCancelacion,
-            ip: clientIP,
-            conteo_bloqueos: 0,
-            bloqueado: false,
-            estado: 'pendiente',
-            confirmado: false,
-            precio: precioFinal
-        };
-        
-        // ⭐ SIEMPRE guardar usuario_id si existe
-        if (usuarioId) {
-            nuevoTurno.usuario_id = usuarioId;
-        } else {
-            console.warn('⚠️ Turno creado sin usuario_id (usuario no autenticado)');
-        }
-        
-        try {
-            await db.createTurno(nuevoTurno);
-            return res.status(201).json({
-                mensaje: 'Turno reservado exitosamente',
-                turno: nuevoTurno,
-                codigoCancelacion: codigoCancelacion,
-                usuario_id: usuarioId
-            });
-        } catch (error) {
-            // Si el error es porque la columna no existe, reintentar sin usuario_id
-            if (error.code === 'PGRST204' && error.message && error.message.includes('column')) {
-                console.log('⚠️ La columna usuario_id no existe, reintentando sin ella...');
-                delete nuevoTurno.usuario_id;
-                await db.createTurno(nuevoTurno);
-                return res.status(201).json({
-                    mensaje: 'Turno reservado exitosamente (sin asociación de usuario)',
-                    turno: nuevoTurno,
-                    codigoCancelacion: codigoCancelacion
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 4000);
+            }
+
+            // ============================================================
+            // LOGS PARA CONSOLA DE RENDER
+            // ============================================================
+            function debugLog(message, type = 'info', data = null) {
+                const time = new Date().toLocaleTimeString();
+                let logMsg = `[${time}] ${message}`;
+                if (data !== null) {
+                    try {
+                        logMsg += ' → ' + (typeof data === 'object' ? JSON.stringify(data) : data);
+                    } catch(e) {
+                        logMsg += ' [objeto circular]';
+                    }
+                }
+                if (type === 'error') console.error('❌', logMsg);
+                else if (type === 'warning') console.warn('⚠️', logMsg);
+                else if (type === 'success') console.log('✅', logMsg);
+                else console.log('📌', logMsg);
+            }
+
+            // ============================================================
+            // FECHA ACTUAL
+            // ============================================================
+            function getFechaActual() {
+                const now = new Date();
+                debugLog(`📅 FECHA ACTUAL: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`, 'info');
+                return now;
+            }
+
+            // ============================================================
+            // CACHE EN MEMORIA
+            // ============================================================
+            const memoryCache = new Map();
+
+            function getCached(key, ttlMs = 60000) {
+                const entry = memoryCache.get(key);
+                if (!entry) return null;
+                if (Date.now() - entry.timestamp > ttlMs) {
+                    memoryCache.delete(key);
+                    return null;
+                }
+                return entry.data;
+            }
+
+            function setCache(key, data) {
+                memoryCache.set(key, { data, timestamp: Date.now() });
+            }
+
+            // ============================================================
+            // FETCH CON CACHE
+            // ============================================================
+            async function fetchWithCache(url, cacheKey, ttlMs = 60000) {
+                const cached = getCached(cacheKey, ttlMs);
+                if (cached) {
+                    debugLog(`⚡ Cache hit: ${cacheKey}`, 'success', { items: cached.length || Object.keys(cached).length });
+                    return cached;
+                }
+                debugLog(`⏳ Fetching: ${url}`, 'info');
+                try {
+                    const resp = await fetch(url);
+                    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                    const data = await resp.json();
+                    setCache(cacheKey, data);
+                    debugLog(`✅ Cargado ${cacheKey}`, 'success', { items: data.length || Object.keys(data).length });
+                    return data;
+                } catch (e) {
+                    debugLog(`❌ Error en fetch ${url}: ${e.message}`, 'error');
+                    const stale = memoryCache.get(cacheKey);
+                    if (stale) {
+                        debugLog(`♻️ Usando stale cache para ${cacheKey}`, 'warning');
+                        return stale.data;
+                    }
+                    throw e;
+                }
+            }
+
+            // ============================================================
+            // EMAILJS
+            // ============================================================
+            let emailjsConfig = { publicKey: '', serviceId: '', templateId: '' };
+
+            async function cargarConfigEmailJS() {
+                try {
+                    const response = await fetch('/api/config-emailjs');
+                    const data = await response.json();
+                    emailjsConfig = data;
+                    if (emailjsConfig.publicKey) {
+                        emailjs.init(emailjsConfig.publicKey);
+                        debugLog('✅ EmailJS inicializado', 'success');
+                    }
+                } catch (error) {
+                    debugLog('⚠️ Error cargando EmailJS: ' + error.message, 'warning');
+                }
+            }
+
+            // ============================================================
+            // AUTENTICACIÓN
+            // ============================================================
+            function getToken() {
+                return sessionStorage.getItem('userToken') || localStorage.getItem('userToken') || null;
+            }
+
+            function setToken(token) {
+                if (token) {
+                    sessionStorage.setItem('userToken', token);
+                    localStorage.setItem('userToken', token);
+                } else {
+                    sessionStorage.removeItem('userToken');
+                    localStorage.removeItem('userToken');
+                }
+            }
+
+            function getUserData() {
+                const nombre = sessionStorage.getItem('userNombre') || localStorage.getItem('userNombre') || null;
+                const email = sessionStorage.getItem('userEmail') || localStorage.getItem('userEmail') || null;
+                const avatar = sessionStorage.getItem('userAvatar') || localStorage.getItem('userAvatar') || null;
+                return { nombre, email, avatar };
+            }
+
+            function setUserData(nombre, email, avatar) {
+                if (nombre) {
+                    sessionStorage.setItem('userNombre', nombre);
+                    localStorage.setItem('userNombre', nombre);
+                }
+                if (email) {
+                    sessionStorage.setItem('userEmail', email);
+                    localStorage.setItem('userEmail', email);
+                }
+                if (avatar) {
+                    sessionStorage.setItem('userAvatar', avatar);
+                    localStorage.setItem('userAvatar', avatar);
+                }
+            }
+
+            function clearUserData() {
+                sessionStorage.removeItem('userToken');
+                sessionStorage.removeItem('userNombre');
+                sessionStorage.removeItem('userEmail');
+                sessionStorage.removeItem('userAvatar');
+                localStorage.removeItem('userToken');
+                localStorage.removeItem('userNombre');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userAvatar');
+            }
+
+            // ============================================================
+            // VERIFICAR SESIÓN
+            // ============================================================
+            async function verificarSesion() {
+                const token = getToken();
+                debugLog('🔐 Verificando sesión', 'info', { token: token ? 'presente' : 'ausente' });
+                if (!token) {
+                    usuarioLogueado = false;
+                    nombreUsuario = '';
+                    emailUsuario = '';
+                    actualizarHeader();
+                    debugLog('🔐 Sin sesión activa', 'warning');
+                    return false;
+                }
+                try {
+                    const res = await fetch('/api/verify/user', {
+                        headers: { 'Authorization': 'Bearer ' + token }
+                    });
+                    const data = await res.json();
+                    if (data.valid) {
+                        const userData = getUserData();
+                        if (userData.nombre) {
+                            usuarioLogueado = true;
+                            nombreUsuario = userData.nombre;
+                            emailUsuario = userData.email || '';
+                            debugLog(`✅ Usuario autenticado: ${nombreUsuario}`, 'success');
+                            actualizarHeader();
+                            return true;
+                        } else {
+                            try {
+                                const userRes = await fetch('/api/usuario/actual', {
+                                    headers: { 'Authorization': 'Bearer ' + token }
+                                });
+                                if (userRes.ok) {
+                                    const userData2 = await userRes.json();
+                                    if (userData2.nombre) {
+                                        setUserData(userData2.nombre, userData2.email, userData2.avatar);
+                                        usuarioLogueado = true;
+                                        nombreUsuario = userData2.nombre;
+                                        emailUsuario = userData2.email || '';
+                                        debugLog(`✅ Usuario autenticado (fallback): ${nombreUsuario}`, 'success');
+                                        actualizarHeader();
+                                        return true;
+                                    }
+                                }
+                            } catch (e) {
+                                debugLog('⚠️ Error obteniendo datos del usuario: ' + e.message, 'warning');
+                            }
+                            clearUserData();
+                            usuarioLogueado = false;
+                            nombreUsuario = '';
+                            emailUsuario = '';
+                            actualizarHeader();
+                            return false;
+                        }
+                    } else {
+                        debugLog('⚠️ Token inválido o expirado', 'warning');
+                        clearUserData();
+                        usuarioLogueado = false;
+                        nombreUsuario = '';
+                        emailUsuario = '';
+                        actualizarHeader();
+                        return false;
+                    }
+                } catch (e) {
+                    debugLog('❌ Error verificando sesión: ' + e.message, 'error');
+                    usuarioLogueado = false;
+                    nombreUsuario = '';
+                    emailUsuario = '';
+                    actualizarHeader();
+                    return false;
+                }
+            }
+
+            // ============================================================
+            // VARIABLES GLOBALES
+            // ============================================================
+            let horariosGlobal = { dias: [], horarios: [], inicio: 8, fin: 20 };
+            let turnosExistentes = [];
+            let serviciosDisponibles = [];
+            let fechaSeleccionada = null;
+            let diaSeleccionado = null;
+            let horaSeleccionada = null;
+            let mesActual = new Date().getMonth();
+            let anioActual = new Date().getFullYear();
+            let usuarioLogueado = false;
+            let nombreUsuario = '';
+            let emailUsuario = '';
+            let ubicacionSalon = '';
+            let emailRegistro = '';
+            let modalidadesActivas = { salon: true, domicilio: true };
+            let esModoLogin = false;
+
+            // ============================================================
+            // TEMA CLARO / OSCURO
+            // ============================================================
+            function getTheme() {
+                return localStorage.getItem('theme') || 'dark';
+            }
+
+            function setTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                const icon = document.getElementById('themeIcon');
+                if (icon) {
+                    icon.className = theme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            }
+
+            function toggleTheme() {
+                const current = getTheme();
+                setTheme(current === 'dark' ? 'light' : 'dark');
+                debugLog(`🌓 Tema cambiado a: ${current === 'dark' ? 'light' : 'dark'}`, 'info');
+            }
+
+            // ============================================================
+            // NOTIFICACIÓN DE RESERVA
+            // ============================================================
+            function mostrarNotificacionReserva() {
+                const notif = document.getElementById('notificacionReserva');
+                if (!notif) return;
+
+                try {
+                    const misReservas = JSON.parse(localStorage.getItem('misReservas') || '[]');
+                    const ahora = new Date();
+
+                    const activos = misReservas.filter(r => {
+                        if (r.estado === 'cancelado' || r.estado === 'cancelado_automatico') return false;
+                        if (!r.fecha || !r.hora) return false;
+                        try {
+                            const fechaTurno = new Date(r.fecha);
+                            if (isNaN(fechaTurno.getTime())) return false;
+                            const horaTurno = parseInt(r.hora) || 0;
+                            fechaTurno.setHours(horaTurno, 0, 0, 0);
+                            return fechaTurno.getTime() > ahora.getTime();
+                        } catch(e) { return false; }
+                    });
+
+                    if (activos.length > 0 && usuarioLogueado) {
+                        notif.textContent = activos.length;
+                        notif.classList.add('show');
+                        notif.style.animation = 'none';
+                        setTimeout(() => {
+                            notif.style.animation = 'pulseNotif 0.6s ease';
+                        }, 10);
+                        setTimeout(() => {
+                            notif.style.animation = '';
+                        }, 610);
+                    } else {
+                        notif.classList.remove('show');
+                        notif.textContent = '0';
+                    }
+                } catch (e) {
+                    debugLog('⚠️ Error mostrando notificación: ' + e.message, 'warning');
+                    notif.classList.remove('show');
+                }
+            }
+
+            // ============================================================
+            // HEADER
+            // ============================================================
+            function actualizarHeader() {
+                const userDisplay = document.getElementById('userDisplay');
+                const navUser = document.getElementById('navUserAuth');
+
+                if (usuarioLogueado && nombreUsuario) {
+                    const userData = getUserData();
+                    const avatar = userData.avatar;
+                    let avatarHtml = '';
+
+                    if (avatar && (avatar.startsWith('data:image') || avatar.startsWith('http'))) {
+                        avatarHtml = `<img src="${avatar}" alt="${nombreUsuario}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid var(--gold-line);">`;
+                    } else {
+                        const iniciales = nombreUsuario.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+                        avatarHtml =
+                            `<div style="width:28px;height:28px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.7rem;">${iniciales}</div>`;
+                    }
+
+                    userDisplay.innerHTML = '';
+                    userDisplay.className = 'logo-subtitle';
+                    userDisplay.style.display = 'none';
+
+                    navUser.innerHTML = `
+                        <div class="user-info-wrapper">
+                            <button class="btn-mi-cuenta" onclick="window.location.href='/asistente.html'" style="display:flex;align-items:center;gap:0.5rem;padding:0.3rem 1rem;" aria-label="Mi cuenta">
+                                ${avatarHtml}
+                                <span style="font-size:0.8rem;font-weight:500;color:var(--gold-light);">${nombreUsuario}</span>
+                            </button>
+                            <span id="notificacionReserva">0</span>
+                        </div>
+                        <button class="btn-salir" id="btnLogoutHeader" aria-label="Cerrar sesión">
+                            <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Salir
+                        </button>
+                    `;
+
+                    const notif = document.getElementById('notificacionReserva');
+                    if (notif) {
+                        setTimeout(() => mostrarNotificacionReserva(), 50);
+                    }
+
+                    const logoutBtn = document.getElementById('btnLogoutHeader');
+                    if (logoutBtn) {
+                        logoutBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            clearUserData();
+                            usuarioLogueado = false;
+                            nombreUsuario = '';
+                            emailUsuario = '';
+                            actualizarHeader();
+                            debugLog('🔓 Sesión cerrada', 'info');
+                            setTimeout(() => location.reload(), 100);
+                        });
+                    }
+                } else {
+                    userDisplay.innerHTML = `by FGStudio`;
+                    userDisplay.className = 'logo-subtitle';
+                    userDisplay.style.display = 'flex';
+                    userDisplay.style.cursor = 'default';
+                    userDisplay.onclick = null;
+
+                    navUser.innerHTML = `
+                        <button class="btn-registro-header" id="btnRegistroHeader">Registrarse</button>
+                    `;
+                    const registerBtn = document.getElementById('btnRegistroHeader');
+                    if (registerBtn) {
+                        registerBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            abrirModalRegistro();
+                        });
+                    }
+                }
+
+                setTimeout(mostrarNotificacionReserva, 100);
+            }
+
+            // ============================================================
+            // MODAL REGISTRO (resumido)
+            // ============================================================
+            function abrirModalRegistro(modo) {
+                const modal = document.getElementById('modalRegistro');
+                const registerSection = document.getElementById('registerSection');
+                const loginSection = document.getElementById('loginSection');
+                const verificacionSection = document.getElementById('verificacionSection');
+
+                esModoLogin = (modo === 'login');
+
+                registerSection.classList.remove('hidden');
+                registerSection.style.display = 'block';
+                loginSection.classList.remove('active');
+                loginSection.style.display = 'none';
+                verificacionSection.style.display = 'none';
+
+                document.getElementById('authMessage1').className = 'auth-message';
+                document.getElementById('authMessage1').style.display = 'none';
+                document.getElementById('authMessageLogin').className = 'auth-message';
+                document.getElementById('authMessageLogin').style.display = 'none';
+                document.getElementById('authMessage2').className = 'auth-message';
+                document.getElementById('authMessage2').style.display = 'none';
+
+                document.getElementById('authNombre').value = '';
+                document.getElementById('authEmail').value = '';
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('authCodigo').value = '';
+                document.getElementById('authTerminos').checked = false;
+
+                document.querySelectorAll('#modalRegistro .form-control').forEach(el => {
+                    el.classList.remove('error', 'success');
                 });
-            }
-            throw error;
-        }
-        
-    } catch (error) {
-        console.error('❌ Error creando turno:', error);
-        res.status(500).json({ error: 'Error al crear el turno: ' + error.message });
-    }
-});
-
-// ============================================================
-// ELIMINAR TURNO - ADMIN
-// ============================================================
-app.delete('/turnos/:id', verifyAuth, async (req, res) => {
-    try {
-        const id = req.params.id;
-        
-        // Verificar que el turno existe
-        const turno = await db.getTurnoById(id);
-        if (!turno) {
-            return res.status(404).json({ error: 'Turno no encontrado' });
-        }
-        
-        console.log(`🗑️ Admin eliminando turno: ${id} - Cliente: ${turno.nombre} - Servicio: ${turno.massage_type}`);
-        
-        await db.deleteTurno(id);
-        res.json({ success: true, message: 'Turno eliminado', turnoId: id });
-        
-    } catch (error) {
-        console.error('❌ Error eliminando turno:', error);
-        res.status(500).json({ error: 'Error al eliminar turno: ' + error.message });
-    }
-});
-
-// ============================================================
-// ⭐ ADMIN - ELIMINAR TURNO (NUEVO ENDPOINT)
-// ============================================================
-app.delete('/api/admin/turnos/:id', verifyAuth, async (req, res) => {
-    try {
-        const id = req.params.id;
-        
-        const turno = await db.getTurnoById(id);
-        if (!turno) {
-            return res.status(404).json({ error: 'Turno no encontrado' });
-        }
-        
-        console.log(`🗑️ Admin eliminando turno (api/admin): ${id} - Cliente: ${turno.nombre}`);
-        
-        await db.deleteTurno(id);
-        
-        res.json({ 
-            success: true, 
-            message: 'Turno eliminado correctamente',
-            turnoId: id
-        });
-        
-    } catch (error) {
-        console.error('❌ Error eliminando turno (admin):', error);
-        res.status(500).json({ error: 'Error al eliminar turno: ' + error.message });
-    }
-});
-
-// ============================================================
-// WHATSAPP
-// ============================================================
-app.post('/api/enviar-whatsapp/:id', verifyAuth, async (req, res) => {
-    try {
-        const id = req.params.id;
-        const turno = await db.getTurnoById(id);
-        if (!turno) {
-            return res.status(404).json({ error: 'Turno no encontrado' });
-        }
-        
-        let imagenWhatsApp = '';
-        let nombreServicio = turno.massage_type || 'Masaje';
-        
-        try {
-            const { data: servicios } = await supabase
-                .from('servicios')
-                .select('imagen_whatsapp, imagen_web')
-                .ilike('nombre', `%${nombreServicio}%`)
-                .limit(1);
-            if (servicios && servicios.length > 0) {
-                imagenWhatsApp = servicios[0].imagen_whatsapp || servicios[0].imagen_web || '';
-            }
-        } catch (e) {
-            console.warn('⚠️ Error buscando imagen del servicio:', e);
-        }
-        
-        if (!imagenWhatsApp) {
-            imagenWhatsApp = 'https://i.postimg.cc/Hct3ps1K/photo-1519823551278-64ac92734fb1.jpg';
-        }
-        
-        const mensaje = `🌿 *SERENITY SPA*
-Hola *${turno.nombre}*, ¡Gracias por escoger nuestro servicio! ✨
-✅ *RESERVA CONFIRMADA*
-📅 *Día:* ${turno.dia}
-📆 *Fecha:* ${turno.fecha}
-⏰ *Hora:* ${turno.hora}:00 hs
-💆‍♂️ *Masaje:* ${turno.massage_type || 'Masaje'}
-📍 ${turno.ubicacion || 'Serenity Spa'}
-🌸 Te esperamos.
-⏱️ Cancelá con 4hs de anticipación.
-*Equipo Serenity Spa*`;
-        
-        const numero = `${turno.codigo_pais || '53'}${turno.telefono}`;
-        const whatsappUrl = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
-        
-        await db.updateTurno(id, { confirmado_whatsapp: true });
-        
-        res.json({ 
-            success: true, 
-            numero: numero,
-            mensaje: mensaje,
-            url: whatsappUrl,
-            imagen: imagenWhatsApp
-        });
-        
-    } catch (error) {
-        console.error('❌ Error preparando WhatsApp:', error);
-        res.status(500).json({ error: 'Error al preparar mensaje: ' + error.message });
-    }
-});
-
-// ============================================================
-// HORARIOS DISPONIBLES
-// ============================================================
-app.get('/api/horarios-disponibles', async (req, res) => {
-    try {
-        const { fecha, dia, modalidad } = req.query;
-        
-        if (!fecha || !dia) {
-            return res.status(400).json({ error: 'Fecha y día son requeridos' });
-        }
-        
-        const horariosConfig = await db.getHorarios();
-        const diaLower = dia.toLowerCase();
-        
-        if (!horariosConfig.dias || !horariosConfig.dias.includes(diaLower)) {
-            return res.json({ disponibles: [], mensaje: 'Día no laboral', esLaboral: false });
-        }
-        
-        const modalidadesConfig = await db.getModalidades();
-        let intervaloHoras = 1;
-        let tipoServicio = modalidad || 'salon';
-        
-        if (tipoServicio === 'domicilio') {
-            if (!modalidadesConfig.domicilio_activo) {
-                return res.json({ disponibles: [], mensaje: 'Servicio a domicilio no disponible', esLaboral: true });
-            }
-            intervaloHoras = 3;
-        } else {
-            if (!modalidadesConfig.salon_activo) {
-                return res.json({ disponibles: [], mensaje: 'Servicio en salón no disponible', esLaboral: true });
-            }
-        }
-        
-        const turnos = await db.getTurnosByFecha(fecha);
-        const ocupados = turnos.filter(t => t.dia === diaLower).map(t => t.hora);
-        
-        const disponibles = [];
-        const inicio = horariosConfig.inicio || 8;
-        const fin = horariosConfig.fin || 20;
-        
-        for (let h = inicio; h < fin; h += intervaloHoras) {
-            if (!ocupados.includes(h)) {
-                disponibles.push({
-                    hora: h,
-                    horaStr: `${h.toString().padStart(2, '0')}:00`,
-                    disponible: true
+                document.querySelectorAll('#modalRegistro .validation-hint').forEach(el => {
+                    el.className = 'validation-hint';
                 });
+                document.querySelectorAll('#modalRegistro .status-icon').forEach(el => {
+                    el.className = 'status-icon';
+                });
+                document.getElementById('authTerminosLabel').classList.remove('error');
+
+                if (modo === 'login') {
+                    registerSection.style.display = 'none';
+                    loginSection.style.display = 'block';
+                    loginSection.classList.add('active');
+                    document.getElementById('modalTitleRegistro').textContent = 'Iniciar Sesión';
+                } else {
+                    registerSection.style.display = 'block';
+                    loginSection.style.display = 'none';
+                    document.getElementById('modalTitleRegistro').textContent = 'Crear Cuenta';
+                }
+
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
             }
-        }
-        
-        res.json({
-            disponibles,
-            intervaloHoras,
-            modalidad: tipoServicio,
-            inicio,
-            fin,
-            diasLaborales: horariosConfig.dias,
-            esLaboral: true,
-            salonActivo: modalidadesConfig.salon_activo !== false,
-            domicilioActivo: modalidadesConfig.domicilio_activo !== false
-        });
-        
-    } catch (error) {
-        console.error('❌ Error calculando horarios:', error);
-        res.status(500).json({ error: 'Error al calcular horarios disponibles' });
-    }
-});
 
-// ============================================================
-// CONFIGURACIÓN
-// ============================================================
-app.get('/api/config', async (req, res) => {
-    try {
-        const config = await db.getConfiguracion('general');
-        res.json(config || {});
-    } catch (e) {
-        res.json({});
-    }
-});
-
-app.put('/api/config', verifyAuth, async (req, res) => {
-    try {
-        await db.setConfiguracion('general', req.body);
-        res.json({ success: true });
-    } catch (e) {
-        res.status(500).json({ error: 'Error al guardar configuración' });
-    }
-});
-
-app.get('/api/config/registro', async (req, res) => {
-    try {
-        const config = await db.getConfiguracionRegistro();
-        res.json(config);
-    } catch (e) {
-        res.json({});
-    }
-});
-
-app.put('/api/config/registro', verifyAuth, async (req, res) => {
-    try {
-        await db.setConfiguracionRegistro(req.body);
-        res.json({ success: true });
-    } catch (e) {
-        res.status(500).json({ error: 'Error al guardar configuración de registro' });
-    }
-});
-
-// ============================================================
-// HORARIOS
-// ============================================================
-app.get('/api/config/horarios', async (req, res) => {
-    try {
-        const horarios = await db.getHorarios();
-        res.json(horarios);
-    } catch (e) {
-        console.error('❌ Error obteniendo horarios:', e);
-        res.json({ 
-            dias: ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'], 
-            horarios: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'],
-            inicio: 8,
-            fin: 20
-        });
-    }
-});
-
-app.put('/api/config/horarios', verifyAuth, async (req, res) => {
-    try {
-        const data = req.body;
-        
-        if (!data.dias || !Array.isArray(data.dias) || data.dias.length === 0) {
-            return res.status(400).json({ error: 'Debes seleccionar al menos un día de atención' });
-        }
-        
-        if (!data.horarios || !Array.isArray(data.horarios) || data.horarios.length === 0) {
-            return res.status(400).json({ error: 'Debes tener al menos un horario disponible' });
-        }
-        
-        if (data.inicio === undefined || data.fin === undefined) {
-            return res.status(400).json({ error: 'El rango horario es incompleto' });
-        }
-        
-        if (data.inicio >= data.fin) {
-            return res.status(400).json({ error: 'La hora de inicio debe ser menor que la de cierre' });
-        }
-        
-        const datosLimpios = {
-            dias: data.dias.map(d => d.toLowerCase().trim()),
-            horarios: data.horarios.filter(h => h && h.trim()).sort(),
-            inicio: data.inicio,
-            fin: data.fin
-        };
-        
-        await db.setHorarios(datosLimpios);
-        
-        res.json({ 
-            success: true, 
-            data: datosLimpios,
-            message: 'Horarios guardados correctamente'
-        });
-        
-    } catch (e) {
-        console.error('❌ Error guardando horarios:', e);
-        res.status(500).json({ error: 'Error al guardar horarios: ' + e.message });
-    }
-});
-
-// ============================================================
-// MODALIDADES
-// ============================================================
-app.get('/api/config/modalidades', async (req, res) => {
-    try {
-        const modalidades = await db.getModalidades();
-        res.json({
-            salon: { activo: modalidades.salon_activo !== false },
-            domicilio: { activo: modalidades.domicilio_activo !== false }
-        });
-    } catch (e) {
-        res.json({ salon: { activo: true }, domicilio: { activo: true } });
-    }
-});
-
-app.put('/api/config/modalidades', verifyAuth, async (req, res) => {
-    try {
-        await db.setModalidades({
-            salon_activo: req.body.salon?.activo !== false,
-            domicilio_activo: req.body.domicilio?.activo !== false
-        });
-        res.json({ success: true });
-    } catch (e) {
-        res.status(500).json({ error: 'Error al guardar modalidades' });
-    }
-});
-
-// ============================================================
-// PAÍSES
-// ============================================================
-app.get('/api/seguridad/paises', async (req, res) => {
-    try {
-        const paises = await db.getPaises();
-        res.json({
-            autorizados: paises.autorizados || [],
-            bloqueados: paises.bloqueados || [],
-            modo: paises.modo || 'todos',
-            ubicacionSalon: paises.ubicacion_salon || 'Salón Serenity Spa'
-        });
-    } catch (e) {
-        res.json({ autorizados: [], bloqueados: [], modo: 'todos', ubicacionSalon: 'Salón Serenity Spa' });
-    }
-});
-
-app.put('/api/seguridad/paises', verifyAuth, async (req, res) => {
-    try {
-        const data = req.body;
-        
-        const paisesData = {
-            autorizados: data.autorizados || [],
-            bloqueados: data.bloqueados || [],
-            modo: data.modo || 'todos',
-            ubicacion_salon: data.ubicacionSalon || 'Salón Serenity Spa'
-        };
-        
-        await db.setPaises(paisesData);
-        res.json({ success: true, data: paisesData });
-    } catch (e) {
-        console.error('❌ Error guardando países:', e);
-        res.status(500).json({ error: 'Error al guardar países: ' + e.message });
-    }
-});
-
-app.put('/api/seguridad/ubicacion-salon', verifyAuth, async (req, res) => {
-    try {
-        const { ubicacion } = req.body;
-        
-        if (!ubicacion || ubicacion.trim() === '') {
-            return res.status(400).json({ error: 'La ubicación es requerida' });
-        }
-        
-        const paises = await db.getPaises();
-        await db.setPaises({
-            ...paises,
-            ubicacion_salon: ubicacion.trim()
-        });
-        
-        res.json({ success: true, ubicacion: ubicacion.trim() });
-    } catch (e) {
-        console.error('❌ Error guardando ubicación:', e);
-        res.status(500).json({ error: 'Error al guardar ubicación: ' + e.message });
-    }
-});
-
-// ============================================================
-// PALABRAS BANEADAS
-// ============================================================
-app.get('/api/palabras-baneadas', async (req, res) => {
-    try {
-        const palabras = await db.getPalabrasBaneadas();
-        res.json({ palabras });
-    } catch (e) {
-        res.json({ palabras: [] });
-    }
-});
-
-app.post('/api/palabras-baneadas', verifyAuth, async (req, res) => {
-    try {
-        const { palabra, accion } = req.body;
-        
-        if (!palabra || !palabra.trim()) {
-            return res.status(400).json({ error: 'La palabra es requerida' });
-        }
-        
-        const palabraLimpia = palabra.trim().toLowerCase();
-        
-        if (accion === 'agregar') {
-            await db.addPalabraBaneada(palabraLimpia);
-        } else if (accion === 'eliminar') {
-            await db.removePalabraBaneada(palabraLimpia);
-        } else {
-            return res.status(400).json({ error: 'Acción inválida' });
-        }
-        
-        const palabras = await db.getPalabrasBaneadas();
-        res.json({ success: true, palabras });
-    } catch (e) {
-        console.error('❌ Error modificando palabras baneadas:', e);
-        res.status(500).json({ error: 'Error al modificar palabras baneadas' });
-    }
-});
-
-// ============================================================
-// SERVICIOS
-// ============================================================
-app.get('/api/servicios', async (req, res) => {
-    try {
-        const servicios = await db.getServicios();
-        const serviciosFormateados = servicios.map(s => ({
-            id: s.id,
-            nombre: s.nombre,
-            precio: s.precio,
-            descripcion: s.descripcion,
-            beneficios: s.beneficios || [],
-            efectos: s.efectos || [],
-            imagenWeb: s.imagen_web || "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800",
-            imagenWhatsApp: s.imagen_whatsapp || '',
-            videoUrl: s.video_url || '',
-            orden: s.orden || 0
-        }));
-        res.json(serviciosFormateados);
-    } catch (e) {
-        console.error('❌ Error obteniendo servicios:', e);
-        res.status(500).json({ error: 'Error al obtener servicios' });
-    }
-});
-
-app.post('/api/servicios', verifyAuth, async (req, res) => {
-    try {
-        const { nombre, precio, descripcion, beneficios, efectos, imagenWeb, imagenWhatsApp, videoUrl } = req.body;
-        
-        if (!nombre || !precio || !descripcion) {
-            return res.status(400).json({ error: 'Nombre, precio y descripción son obligatorios' });
-        }
-        
-        const servicios = await db.getServicios();
-        
-        let imagenWebFinal = imagenWeb || "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800";
-        let imagenWhatsAppFinal = imagenWhatsApp || '';
-        
-        const nuevoServicio = {
-            id: generarId(),
-            nombre: nombre.trim(),
-            precio: precio.trim(),
-            descripcion: descripcion.trim(),
-            beneficios: beneficios || [],
-            efectos: efectos || [],
-            imagen_web: imagenWebFinal,
-            imagen_whatsapp: imagenWhatsAppFinal,
-            video_url: videoUrl || '',
-            orden: servicios.length + 1
-        };
-        
-        await db.createServicio(nuevoServicio);
-        
-        res.status(201).json({
-            id: nuevoServicio.id,
-            nombre: nuevoServicio.nombre,
-            precio: nuevoServicio.precio,
-            descripcion: nuevoServicio.descripcion,
-            beneficios: nuevoServicio.beneficios,
-            efectos: nuevoServicio.efectos,
-            imagenWeb: nuevoServicio.imagen_web,
-            imagenWhatsApp: nuevoServicio.imagen_whatsapp,
-            videoUrl: nuevoServicio.video_url,
-            orden: nuevoServicio.orden
-        });
-    } catch (e) {
-        console.error('❌ Error creando servicio:', e);
-        res.status(500).json({ error: 'Error al crear el servicio' });
-    }
-});
-
-app.put('/api/servicios/:id', verifyAuth, async (req, res) => {
-    try {
-        const id = req.params.id;
-        const { nombre, precio, descripcion, beneficios, efectos, imagenWeb, imagenWhatsApp, videoUrl } = req.body;
-        
-        if (!nombre || !precio || !descripcion) {
-            return res.status(400).json({ error: 'Nombre, precio y descripción son obligatorios' });
-        }
-        
-        const servicioExistente = await db.getServicioById(id);
-        if (!servicioExistente) {
-            return res.status(404).json({ error: 'Servicio no encontrado' });
-        }
-        
-        let imagenWebFinal = imagenWeb || servicioExistente.imagen_web || "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800";
-        let imagenWhatsAppFinal = imagenWhatsApp || servicioExistente.imagen_whatsapp || '';
-        
-        const servicioActualizado = {
-            nombre: nombre.trim(),
-            precio: precio.trim(),
-            descripcion: descripcion.trim(),
-            beneficios: beneficios || [],
-            efectos: efectos || [],
-            imagen_web: imagenWebFinal,
-            imagen_whatsapp: imagenWhatsAppFinal,
-            video_url: videoUrl || servicioExistente.video_url || ''
-        };
-        
-        await db.updateServicio(id, servicioActualizado);
-        
-        res.json({
-            id: id,
-            nombre: servicioActualizado.nombre,
-            precio: servicioActualizado.precio,
-            descripcion: servicioActualizado.descripcion,
-            beneficios: servicioActualizado.beneficios,
-            efectos: servicioActualizado.efectos,
-            imagenWeb: servicioActualizado.imagen_web,
-            imagenWhatsApp: servicioActualizado.imagen_whatsapp,
-            videoUrl: servicioActualizado.video_url,
-            orden: servicioExistente.orden || 0
-        });
-    } catch (e) {
-        console.error('❌ Error actualizando servicio:', e);
-        res.status(500).json({ error: 'Error al actualizar el servicio' });
-    }
-});
-
-app.delete('/api/servicios/:id', verifyAuth, async (req, res) => {
-    try {
-        const id = req.params.id;
-        await db.deleteServicio(id);
-        res.json({ success: true });
-    } catch (e) {
-        console.error('❌ Error eliminando servicio:', e);
-        res.status(500).json({ error: 'Error al eliminar el servicio' });
-    }
-});
-
-// ============================================================
-// BLOQUEO/DESBLOQUEO DE IPs
-// ============================================================
-
-app.post('/api/seguridad/bloquear-usuario-ip/:id', verifyAuth, async (req, res) => {
-    try {
-        const id = req.params.id;
-        const turno = await db.getTurnoById(id);
-        
-        if (!turno) {
-            return res.status(404).json({ error: 'Turno no encontrado' });
-        }
-        
-        const ipUsuario = turno.ip || 'IP desconocida';
-        
-        const esIPLocal = (ip) => {
-            if (ip === 'IP desconocida' || ip === 'N/A' || ip === '::1') return true;
-            if (ip.startsWith('127.')) return true;
-            if (ip.startsWith('192.168.')) return true;
-            if (ip.startsWith('10.')) return true;
-            if (ip.startsWith('169.254.')) return true;
-            if (ip.startsWith('172.16.') || ip.startsWith('172.17.') || ip.startsWith('172.18.') || 
-                ip.startsWith('172.19.') || ip.startsWith('172.20.') || ip.startsWith('172.21.') || 
-                ip.startsWith('172.22.') || ip.startsWith('172.23.') || ip.startsWith('172.24.') || 
-                ip.startsWith('172.25.') || ip.startsWith('172.26.') || ip.startsWith('172.27.') || 
-                ip.startsWith('172.28.') || ip.startsWith('172.29.') || ip.startsWith('172.30.') || 
-                ip.startsWith('172.31.')) return true;
-            return false;
-        };
-        
-        if (esIPLocal(ipUsuario)) {
-            return res.status(400).json({ 
-                error: 'No se puede bloquear esta IP (es local/interna)',
-                ip: ipUsuario
-            });
-        }
-        
-        const bloqueos = await security.getBloqueosActivos();
-        const yaBloqueada = bloqueos.activos.some(b => b.ip === ipUsuario);
-        
-        if (yaBloqueada) {
-            return res.status(400).json({ 
-                error: `La IP ${ipUsuario} ya está bloqueada`,
-                ip: ipUsuario,
-                yaBloqueada: true
-            });
-        }
-        
-        const nuevoConteo = (turno.conteo_bloqueos || 0) + 1;
-        await db.updateTurno(id, { 
-            conteo_bloqueos: nuevoConteo,
-            bloqueado: true
-        });
-        
-        await security.bloquearIP(
-            ipUsuario, 
-            `Bloqueado por admin desde turno de ${turno.nombre} - Conteo: ${nuevoConteo}`, 
-            'ADMIN_BLOCK', 
-            30 * 24 * 60 * 60 * 1000,
-            '/admin/turnos'
-        );
-        
-        console.log(`✅ IP ${ipUsuario} bloqueada exitosamente por admin`);
-        
-        res.json({ 
-            success: true, 
-            ip: ipUsuario,
-            conteo: nuevoConteo,
-            mensaje: `IP ${ipUsuario} bloqueada exitosamente - El usuario no podrá acceder al sitio`
-        });
-        
-    } catch (error) {
-        console.error('❌ Error bloqueando IP de usuario:', error);
-        res.status(500).json({ error: 'Error al bloquear IP: ' + error.message });
-    }
-});
-
-app.post('/api/seguridad/desbloquear-ip/:ip', verifyAuth, async (req, res) => {
-    try {
-        const ip = decodeURIComponent(req.params.ip);
-        
-        if (!ip || ip === 'IP desconocida' || ip === 'N/A') {
-            return res.status(400).json({ error: 'IP inválida' });
-        }
-        
-        const resultado = await security.desbloquearIPAdmin(ip);
-        
-        if (resultado) {
-            console.log(`✅ IP ${ip} desbloqueada exitosamente por admin`);
-            res.json({ 
-                success: true, 
-                ip: ip,
-                mensaje: `IP ${ip} desbloqueada exitosamente - El usuario ya puede acceder al sitio`
-            });
-        } else {
-            res.status(404).json({ error: `IP ${ip} no encontrada en bloqueos` });
-        }
-        
-    } catch (error) {
-        console.error('❌ Error desbloqueando IP:', error);
-        res.status(500).json({ error: 'Error al desbloquear IP: ' + error.message });
-    }
-});
-
-app.post('/api/seguridad/bloquear-ip', verifyAuth, async (req, res) => {
-    try {
-        const { ip, motivo } = req.body;
-        
-        if (!ip || ip === 'IP desconocida' || ip === 'N/A') {
-            return res.status(400).json({ error: 'IP inválida' });
-        }
-        
-        const esIPLocal = (ip) => {
-            if (ip === '::1') return true;
-            if (ip.startsWith('127.')) return true;
-            if (ip.startsWith('192.168.')) return true;
-            if (ip.startsWith('10.')) return true;
-            if (ip.startsWith('169.254.')) return true;
-            if (ip.startsWith('172.16.') || ip.startsWith('172.17.') || ip.startsWith('172.18.') || 
-                ip.startsWith('172.19.') || ip.startsWith('172.20.') || ip.startsWith('172.21.') || 
-                ip.startsWith('172.22.') || ip.startsWith('172.23.') || ip.startsWith('172.24.') || 
-                ip.startsWith('172.25.') || ip.startsWith('172.26.') || ip.startsWith('172.27.') || 
-                ip.startsWith('172.28.') || ip.startsWith('172.29.') || ip.startsWith('172.30.') || 
-                ip.startsWith('172.31.')) return true;
-            return false;
-        };
-        
-        if (esIPLocal(ip)) {
-            return res.status(400).json({ error: 'No se puede bloquear una IP local/interna' });
-        }
-        
-        const bloqueos = await security.getBloqueosActivos();
-        const yaBloqueada = bloqueos.activos.some(b => b.ip === ip);
-        
-        if (yaBloqueada) {
-            return res.status(400).json({ 
-                error: `La IP ${ip} ya está bloqueada`,
-                yaBloqueada: true
-            });
-        }
-        
-        await security.bloquearIP(
-            ip, 
-            motivo || 'Bloqueado por administrador', 
-            'ADMIN_BLOCK', 
-            30 * 24 * 60 * 60 * 1000,
-            '/admin/seguridad'
-        );
-        
-        console.log(`✅ IP ${ip} bloqueada manualmente por admin`);
-        
-        res.json({ 
-            success: true, 
-            ip: ip,
-            mensaje: `IP ${ip} bloqueada exitosamente - El usuario no podrá acceder al sitio`
-        });
-        
-    } catch (error) {
-        console.error('❌ Error bloqueando IP:', error);
-        res.status(500).json({ error: 'Error al bloquear IP: ' + error.message });
-    }
-});
-
-// ============================================================
-// IA - PERSONALIDAD
-// ============================================================
-app.get('/api/ia/personalidad', async (req, res) => {
-    try {
-        const config = await db.getConfiguracion('ia');
-        res.json(config || {
-            nombre: 'Asistente Serenity',
-            tono: 'cálido y profesional',
-            estilo: '',
-            reglas: []
-        });
-    } catch (e) {
-        res.json({ 
-            nombre: 'Asistente Serenity',
-            tono: 'cálido y profesional',
-            estilo: '',
-            reglas: []
-        });
-    }
-});
-
-app.put('/api/ia/personalidad', verifyAuth, async (req, res) => {
-    try {
-        const iaConfig = {
-            nombre: req.body.nombre || 'Asistente Serenity',
-            tono: req.body.tono || 'cálido y profesional',
-            estilo: req.body.estilo || '',
-            reglas: req.body.reglas || []
-        };
-        await db.setConfiguracion('ia', iaConfig);
-        res.json({ success: true, data: iaConfig });
-    } catch (e) {
-        console.error('Error guardando personalidad IA:', e);
-        res.status(500).json({ error: 'Error al guardar' });
-    }
-});
-
-// ============================================================
-// ADMIN - GESTIÓN DE USUARIOS
-// ============================================================
-app.get('/api/usuarios', verifyAuth, async (req, res) => {
-    try {
-        const usuarios = await db.getUsuarios();
-        res.json(usuarios);
-    } catch (error) {
-        res.status(500).json({ error: 'Error al cargar usuarios' });
-    }
-});
-
-app.delete('/api/usuarios/:id', verifyAuth, async (req, res) => {
-    try {
-        const id = req.params.id;
-        await db.deleteUsuario(id);
-        res.json({ success: true, message: 'Usuario eliminado' });
-    } catch (error) {
-        res.status(500).json({ error: 'Error al eliminar usuario' });
-    }
-});
-
-app.put('/api/usuarios/:id/bloquear', verifyAuth, async (req, res) => {
-    try {
-        const id = req.params.id;
-        const { motivo } = req.body;
-        const usuario = await db.getUsuarioById(id);
-        if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
-        
-        const nuevoEstado = !usuario.bloqueado;
-        await db.updateUsuario(id, { 
-            bloqueado: nuevoEstado,
-            motivo_bloqueo: nuevoEstado ? (motivo || 'Bloqueado por admin') : null
-        });
-        
-        res.json({ 
-            success: true, 
-            message: `Usuario ${nuevoEstado ? 'bloqueado' : 'desbloqueado'}`,
-            usuario: { ...usuario, bloqueado: nuevoEstado }
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Error al cambiar estado del usuario' });
-    }
-});
-
-// ============================================================
-// ⭐ PROMOCIONES
-// ============================================================
-app.get('/api/promociones', async (req, res) => {
-    try {
-        const { data, error } = await supabase
-            .from('promociones')
-            .select('*')
-            .eq('activo', true)
-            .order('creado', { ascending: false });
-        
-        if (error) {
-            console.error('Error obteniendo promociones:', error);
-            return res.json([]);
-        }
-        res.json(data || []);
-    } catch (e) {
-        console.error('Error en /api/promociones:', e);
-        res.json([]);
-    }
-});
-
-// ============================================================
-// ⭐ NOVEDADES
-// ============================================================
-app.get('/api/novedades', async (req, res) => {
-    try {
-        const { data, error } = await supabase
-            .from('novedades')
-            .select('*')
-            .eq('activo', true)
-            .order('fecha', { ascending: false });
-        
-        if (error) {
-            console.error('Error obteniendo novedades:', error);
-            return res.json([]);
-        }
-        res.json(data || []);
-    } catch (e) {
-        console.error('Error en /api/novedades:', e);
-        res.json([]);
-    }
-});
-
-// ============================================================
-// ⭐ TURNOS DEL USUARIO (mis turnos) - CORREGIDO
-// ============================================================
-app.get('/api/turnos/mis-turnos', async (req, res) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(401).json({ error: 'No autorizado' });
-    }
-    
-    const token = authHeader.substring(7);
-    try {
-        const usuario = await db.getUsuarioByToken(token);
-        if (!usuario) {
-            return res.status(401).json({ error: 'Usuario no encontrado' });
-        }
-        
-        console.log(`🔍 Buscando turnos para usuario: ${usuario.nombre} (${usuario.id})`);
-        
-        // ⭐ PRIMERO: Buscar por usuario_id (más preciso)
-        let turnosData = [];
-        let error = null;
-        
-        // Intentar buscar por usuario_id
-        const { data: turnosPorId, error: errorPorId } = await supabase
-            .from('turnos')
-            .select('*')
-            .eq('usuario_id', usuario.id)
-            .order('fecha_creacion', { ascending: false });
-        
-        if (!errorPorId && turnosPorId && turnosPorId.length > 0) {
-            turnosData = turnosPorId;
-            console.log(`✅ Turnos encontrados por usuario_id: ${turnosData.length}`);
-        } else {
-            // ⭐ FALLBACK: Buscar por nombre + email (para compatibilidad con turnos antiguos)
-            console.log(`⚠️ No se encontraron turnos por usuario_id, buscando por nombre...`);
-            
-            const { data: turnosPorNombre, error: errorPorNombre } = await supabase
-                .from('turnos')
-                .select('*')
-                .eq('nombre', usuario.nombre)
-                .order('fecha_creacion', { ascending: false });
-            
-            if (!errorPorNombre && turnosPorNombre && turnosPorNombre.length > 0) {
-                turnosData = turnosPorNombre;
-                console.log(`✅ Turnos encontrados por nombre: ${turnosData.length}`);
-            } else {
-                console.log(`ℹ️ No se encontraron turnos para este usuario`);
-                turnosData = [];
+            function cerrarModalRegistro() {
+                document.getElementById('modalRegistro').classList.remove('active');
+                document.body.style.overflow = '';
+                document.getElementById('registerSection').style.display = 'block';
+                document.getElementById('registerSection').classList.remove('hidden');
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('loginSection').classList.remove('active');
+                document.getElementById('verificacionSection').style.display = 'none';
+                esModoLogin = false;
             }
-        }
-        
-        // Obtener servicios para imágenes
-        const { data: servicios } = await supabase
-            .from('servicios')
-            .select('*');
-        
-        // Formatear turnos para el frontend
-        const turnos = (turnosData || []).map(t => {
-            // Buscar imagen del servicio
-            let imagen = null;
-            if (servicios && servicios.length > 0 && t.massage_type) {
-                const servicio = servicios.find(s => 
-                    s.nombre && s.nombre.toLowerCase().includes(t.massage_type.toLowerCase())
-                );
-                if (servicio && servicio.imagen_web) {
-                    imagen = servicio.imagen_web;
+
+            document.getElementById('switchToLogin').addEventListener('click', function(e) {
+                e.preventDefault();
+                esModoLogin = true;
+                document.getElementById('registerSection').style.display = 'none';
+                document.getElementById('loginSection').style.display = 'block';
+                document.getElementById('loginSection').classList.add('active');
+                document.getElementById('modalTitleRegistro').textContent = 'Iniciar Sesión';
+                document.getElementById('authMessage1').style.display = 'none';
+                document.getElementById('authMessageLogin').style.display = 'none';
+            });
+
+            document.getElementById('switchToRegister').addEventListener('click', function(e) {
+                e.preventDefault();
+                esModoLogin = false;
+                document.getElementById('registerSection').style.display = 'block';
+                document.getElementById('registerSection').classList.remove('hidden');
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('loginSection').classList.remove('active');
+                document.getElementById('modalTitleRegistro').textContent = 'Crear Cuenta';
+                document.getElementById('authMessage1').style.display = 'none';
+                document.getElementById('authMessageLogin').style.display = 'none';
+            });
+
+            document.getElementById('switchBackToRegister').addEventListener('click', function(e) {
+                e.preventDefault();
+                esModoLogin = false;
+                document.getElementById('registerSection').style.display = 'block';
+                document.getElementById('verificacionSection').style.display = 'none';
+                document.getElementById('modalTitleRegistro').textContent = 'Crear Cuenta';
+            });
+
+            document.getElementById('modalRegistroClose').addEventListener('click', function(e) {
+                e.stopPropagation();
+                cerrarModalRegistro();
+            });
+
+            document.getElementById('modalRegistro').addEventListener('click', function(e) {
+                const verificacionSection = document.getElementById('verificacionSection');
+                if (e.target === this && verificacionSection.style.display !== 'block') {
+                    cerrarModalRegistro();
+                }
+            });
+
+            // ============================================================
+            // CARGA DE DATOS
+            // ============================================================
+            async function cargarUbicacionSalon() {
+                try {
+                    const response = await fetch(PAISES_API);
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.ubicacionSalon) {
+                            ubicacionSalon = data.ubicacionSalon;
+                            const display = document.getElementById('direccionSalonDisplay');
+                            const texto = document.getElementById('direccionSalonTexto');
+                            display.style.display = 'flex';
+                            texto.textContent = ubicacionSalon;
+                            debugLog(`📍 Ubicación del salón: ${ubicacionSalon}`, 'success');
+                        }
+                    }
+                } catch (e) {
+                    debugLog(`⚠️ Error cargando ubicación: ${e.message}`, 'warning');
                 }
             }
-            
-            return {
-                id: t.id,
-                codigo: t.codigo_cancelacion || t.id.slice(0, 8).toUpperCase(),
-                codigoCancelacion: t.codigo_cancelacion || t.id.slice(0, 8).toUpperCase(),
-                servicio: t.massage_type || 'Masaje',
-                precio: t.precio || '',
-                localidad: t.ubicacion || 'Salón Serenity Spa',
-                fecha: t.fecha || '',
-                hora: t.hora !== undefined && t.hora !== null ? `${t.hora}:00` : '',
-                estado: t.estado || 'pendiente',
-                confirmado: t.confirmado || false,
-                fechaReserva: t.fecha_creacion || new Date().toISOString(),
-                telefono: t.telefono || '',
-                nombre: t.nombre || '',
-                dia: t.dia || '',
-                tipo_servicio: t.tipo_servicio || 'salon',
-                ip: t.ip || 'N/A',
-                conteo_bloqueos: t.conteo_bloqueos || 0,
-                fecha_confirmacion: t.fecha_confirmacion || null,
-                fecha_cancelacion: t.fecha_cancelacion || null,
-                motivo_cancelacion: t.motivo_cancelacion || null,
-                bloqueado: t.bloqueado || false,
-                imagen: imagen,
-                ubicacion: t.ubicacion || 'Salón Serenity Spa',
-                usuario_id: t.usuario_id || null
-            };
-        });
-        
-        console.log(`📋 Total turnos devueltos: ${turnos.length}`);
-        res.json(turnos);
-        
-    } catch (e) {
-        console.error('Error en /api/turnos/mis-turnos:', e);
-        res.json([]);
-    }
-});
 
-// ============================================================
-// ⭐ CONFIRMAR TURNO
-// ============================================================
-app.post('/api/turnos/confirmar/:id', async (req, res) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(401).json({ error: 'No autorizado' });
-    }
-    
-    const token = authHeader.substring(7);
-    const id = req.params.id;
-    
-    try {
-        const usuario = await db.getUsuarioByToken(token);
-        if (!usuario) {
-            return res.status(401).json({ error: 'Usuario no encontrado' });
-        }
-        
-        const { data: turno, error: turnoError } = await supabase
-            .from('turnos')
-            .select('*')
-            .eq('id', id)
-            .maybeSingle();
-        
-        if (turnoError || !turno) {
-            return res.status(404).json({ error: 'Turno no encontrado' });
-        }
-        
-        // Verificar que el turno pertenece al usuario (por usuario_id O nombre)
-        if (turno.usuario_id && turno.usuario_id !== usuario.id) {
-            return res.status(403).json({ error: 'No tienes permiso para confirmar este turno' });
-        }
-        if (!turno.usuario_id && turno.nombre !== usuario.nombre) {
-            return res.status(403).json({ error: 'No tienes permiso para confirmar este turno' });
-        }
-        
-        if (turno.estado === 'cancelado' || turno.estado === 'cancelado_automatico') {
-            return res.status(400).json({ error: 'Este turno ya fue cancelado' });
-        }
-        
-        if (turno.estado === 'confirmado') {
-            return res.status(400).json({ error: 'Este turno ya está confirmado' });
-        }
-        
-        // Verificar tiempo (1 hora antes)
-        const fechaTurno = new Date(turno.fecha);
-        const horaTurno = parseInt(turno.hora);
-        fechaTurno.setHours(horaTurno, 0, 0, 0);
-        const ahora = new Date();
-        const diffHoras = (fechaTurno.getTime() - ahora.getTime()) / (1000 * 60 * 60);
-        
-        if (diffHoras > 1 || diffHoras < 0) {
-            return res.status(400).json({ 
-                error: 'Solo puedes confirmar el turno 1 hora antes',
-                tiempoRestante: diffHoras
+            async function cargarModalidades() {
+                try {
+                    const response = await fetch(MODALIDADES_API);
+                    const data = await response.json();
+                    modalidadesActivas = {
+                        salon: data.salon?.activo !== false,
+                        domicilio: data.domicilio?.activo !== false
+                    };
+                    debugLog(`📋 Modalidades: salon=${modalidadesActivas.salon}, domicilio=${modalidadesActivas.domicilio}`, 'info');
+                    
+                    const domicilioLabel = document.getElementById('domicilioLabel');
+                    if (domicilioLabel) {
+                        domicilioLabel.style.display = modalidadesActivas.domicilio ? 'flex' : 'none';
+                    }
+                    const salonRadio = document.querySelector('input[name="tipoServicio"][value="salon"]');
+                    const domicilioRadio = document.querySelector('input[name="tipoServicio"][value="domicilio"]');
+                    if (!modalidadesActivas.salon && modalidadesActivas.domicilio) {
+                        if (domicilioRadio) domicilioRadio.checked = true;
+                        if (salonRadio) salonRadio.disabled = true;
+                    } else if (!modalidadesActivas.domicilio && modalidadesActivas.salon) {
+                        if (salonRadio) salonRadio.checked = true;
+                        if (domicilioRadio) domicilioRadio.disabled = true;
+                    } else {
+                        if (salonRadio) salonRadio.disabled = false;
+                        if (domicilioRadio) domicilioRadio.disabled = false;
+                    }
+                } catch (e) {
+                    debugLog(`⚠️ Error cargando modalidades: ${e.message}`, 'warning');
+                }
+            }
+
+            async function cargarHorarios() {
+                try {
+                    const data = await fetchWithCache(HORARIOS_API, 'horarios', 60000);
+                    horariosGlobal = {
+                        dias: data.dias || ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'],
+                        horarios: data.horarios || ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00',
+                            '16:00', '17:00', '18:00', '19:00'
+                        ],
+                        inicio: data.inicio || 8,
+                        fin: data.fin || 20
+                    };
+                    debugLog(`📋 Horarios cargados: ${horariosGlobal.dias.length} días, ${horariosGlobal.horarios.length} horarios`, 'success');
+                    renderCalendar();
+                } catch (e) {
+                    debugLog(`⚠️ Error cargando horarios: ${e.message}`, 'warning');
+                    horariosGlobal = {
+                        dias: ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'],
+                        horarios: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00',
+                            '18:00', '19:00'
+                        ],
+                        inicio: 8,
+                        fin: 20
+                    };
+                    renderCalendar();
+                }
+            }
+
+            async function cargarTurnos() {
+                try {
+                    // ⭐ LIMPIAR CACHE PARA OBTENER DATOS FRESCOS
+                    memoryCache.delete('turnos');
+                    
+                    const response = await fetch(API_URL);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    turnosExistentes = await response.json();
+                    
+                    setCache('turnos', turnosExistentes);
+                    
+                    debugLog(`📋 Turnos cargados: ${turnosExistentes.length}`, 'info', 
+                        turnosExistentes.map(t => ({ fecha: t.fecha, dia: t.dia, hora: t.hora, estado: t.estado }))
+                    );
+                    
+                    renderCalendar();
+                } catch (e) {
+                    debugLog(`⚠️ Error cargando turnos: ${e.message}`, 'warning');
+                    turnosExistentes = [];
+                    renderCalendar();
+                }
+            }
+
+            async function cargarServicios() {
+                try {
+                    serviciosDisponibles = await fetchWithCache(SERVICIOS_API, 'servicios', 120000);
+                    const select = document.getElementById('tipoMasaje');
+                    if (select) {
+                        select.innerHTML = '<option value="">-- Selecciona un masaje --</option>';
+                        serviciosDisponibles.forEach(s => {
+                            const opt = document.createElement('option');
+                            opt.value = s.nombre;
+                            opt.textContent = `${s.nombre} - ${s.precio}`;
+                            select.appendChild(opt);
+                        });
+                    }
+                    debugLog(`📋 Servicios cargados: ${serviciosDisponibles.length}`, 'success');
+                    renderServices();
+                } catch (e) {
+                    debugLog(`⚠️ Error cargando servicios: ${e.message}`, 'warning');
+                    serviciosDisponibles = [];
+                    renderServices();
+                }
+            }
+
+            async function cargarTestimonios() {
+                try {
+                    const testimonios = await fetchWithCache(TESTIMONIOS_API, 'testimonios', 120000);
+                    debugLog(`📋 Testimonios cargados: ${testimonios.length}`, 'success');
+                    renderTestimonios(testimonios);
+                } catch (e) {
+                    debugLog(`⚠️ Error cargando testimonios: ${e.message}`, 'warning');
+                    document.getElementById('testimoniosGrid').innerHTML =
+                        '<div style="text-align:center;padding:2rem;color:var(--text-muted);">No se pudieron cargar las reseñas.</div>';
+                }
+            }
+
+            // ============================================================
+            // RENDER SERVICES
+            // ============================================================
+            function renderServices() {
+                const grid = document.getElementById('servicesGrid');
+                if (!grid) return;
+                if (!serviciosDisponibles || serviciosDisponibles.length === 0) {
+                    grid.innerHTML =
+                        '<div style="text-align:center;padding:2rem;color:var(--text-muted);">No hay servicios disponibles.</div>';
+                    return;
+                }
+                grid.innerHTML = serviciosDisponibles.map(s => {
+                    const imagenUrl = s.imagenWeb || "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800";
+                    return `
+                        <div class="card scroll-reveal" data-id="${s.id}" data-nombre="${escapeHtml(s.nombre)}" role="listitem">
+                            <img src="${imagenUrl}" alt="${escapeHtml(s.nombre)}" class="card-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800'">
+                            <div class="card-content">
+                                <div class="card-header">
+                                    <h3>${escapeHtml(s.nombre)}</h3>
+                                    <span class="price"><i class="fas fa-tag" aria-hidden="true"></i> ${escapeHtml(s.precio)}</span>
+                                </div>
+                                <p class="description">${escapeHtml(s.descripcion)}</p>
+                                <ul class="benefits-list">
+                                    ${(s.beneficios || []).map(b => `<li><i class="fas fa-check-circle" aria-hidden="true"></i> ${escapeHtml(b)}</li>`).join('')}
+                                </ul>
+                                <div class="card-cta">
+                                    <a href="#reservas" class="btn-details" onclick="document.getElementById('tipoMasaje').value='${escapeHtml(s.nombre)}'">Reservar <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </div>`;
+                }).join('');
+
+                document.querySelectorAll('.card-img').forEach(img => {
+                    img.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const card = this.closest('.card');
+                        const id = card.dataset.id;
+                        const servicio = serviciosDisponibles.find(s => s.id === id);
+                        if (servicio) {
+                            abrirModalServicioDetalles(servicio);
+                        }
+                    });
+                });
+                initScrollReveal();
+            }
+
+            // ============================================================
+            // RENDER TESTIMONIOS
+            // ============================================================
+            function renderTestimonios(testimonios) {
+                const grid = document.getElementById('testimoniosGrid');
+                if (!grid) return;
+                if (!testimonios || !Array.isArray(testimonios) || testimonios.length === 0) {
+                    grid.innerHTML =
+                        '<div style="text-align:center;padding:2rem;color:var(--text-muted);">Aún no hay reseñas. ¡Sé el primero en compartir tu experiencia!</div>';
+                    return;
+                }
+                const publicos = testimonios.filter(t => t.publico !== false);
+                if (publicos.length === 0) {
+                    grid.innerHTML =
+                        '<div style="text-align:center;padding:2rem;color:var(--text-muted);">No hay reseñas públicas disponibles.</div>';
+                    return;
+                }
+                grid.innerHTML = publicos.map(t => {
+                    const nombre = t.nombre || 'Anónimo';
+                    const comentario = t.comentario || 'Sin comentario';
+                    const avatarSrc = t.imagen || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(nombre) +
+                        '&background=C9A961&color=fff&size=40';
+                    const estrellas = '⭐'.repeat(Math.min(t.calificacion || 0, 5)) + '☆'.repeat(Math.max(0, 5 - (t
+                        .calificacion || 0)));
+                    const fecha = t.fecha ? new Date(t.fecha).toLocaleDateString() : '';
+                    return `
+                        <div class="testimonio-card" role="listitem">
+                            <div class="testimonio-header">
+                                <div class="testimonio-avatar">
+                                    <img src="${avatarSrc}" alt="${escapeHtml(nombre)}" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-user\\' style=\\'color:var(--gold);\\'></i>'">
+                                </div>
+                                <span class="testimonio-nombre">${escapeHtml(nombre)}</span>
+                                <span class="testimonio-estrellas">${estrellas}</span>
+                                ${fecha ? `<span class="testimonio-fecha">${fecha}</span>` : ''}
+                            </div>
+                            <div class="testimonio-comentario">
+                                "${escapeHtml(comentario)}"
+                            </div>
+                        </div>`;
+                }).join('');
+                initScrollReveal();
+            }
+
+            // ============================================================
+            // MODAL SERVICIO DETALLES
+            // ============================================================
+            function abrirModalServicioDetalles(servicio) {
+                const modal = document.getElementById('modalServicioDetalles');
+                const img = document.getElementById('modalServicioImg');
+                const videoContainer = document.getElementById('modalServicioVideoContainer');
+                const videoFrame = document.getElementById('modalServicioVideo');
+
+                document.getElementById('modalServicioNombre').textContent = servicio.nombre || 'Servicio';
+                document.getElementById('modalServicioPrecio').textContent = servicio.precio || '';
+                document.getElementById('modalServicioDesc').textContent = servicio.descripcion || '';
+
+                const tieneVideo = servicio.videoUrl && servicio.videoUrl.trim() !== '';
+                if (tieneVideo) {
+                    videoContainer.style.display = 'block';
+                    videoFrame.src = servicio.videoUrl;
+                    img.style.display = 'none';
+                } else {
+                    videoContainer.style.display = 'none';
+                    videoFrame.src = '';
+                    img.style.display = 'block';
+                    const imgUrl = servicio.imagenWeb || "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800";
+                    img.src = imgUrl;
+                    img.alt = servicio.nombre || 'Imagen del servicio';
+                }
+
+                const beneficiosContainer = document.getElementById('modalServicioBeneficios');
+                if (servicio.beneficios && Array.isArray(servicio.beneficios) && servicio.beneficios.length > 0) {
+                    beneficiosContainer.innerHTML = servicio.beneficios.map(b =>
+                        `<span style="background:var(--gold-dim);border:1px solid var(--gold-line);color:var(--gold);padding:.3rem .8rem;border-radius:20px;font-size:.75rem;">${escapeHtml(b)}</span>`
+                    ).join('');
+                } else {
+                    beneficiosContainer.innerHTML =
+                        '<span style="color:var(--text-muted);font-size:.75rem;">Sin beneficios listados</span>';
+                }
+
+                const efectosContainer = document.getElementById('modalServicioEfectos');
+                if (servicio.efectos && Array.isArray(servicio.efectos) && servicio.efectos.length > 0) {
+                    efectosContainer.innerHTML = servicio.efectos.map(e =>
+                        `<span style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:#10b981;padding:.3rem .8rem;border-radius:20px;font-size:.75rem;">✨ ${escapeHtml(e)}</span>`
+                    ).join('');
+                } else {
+                    efectosContainer.innerHTML = '';
+                }
+
+                const btnReservar = document.getElementById('modalServicioReservar');
+                btnReservar.onclick = function(e) {
+                    e.preventDefault();
+                    const select = document.getElementById('tipoMasaje');
+                    select.value = servicio.nombre;
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                    document.getElementById('reservas').scrollIntoView({ behavior: 'smooth' });
+                };
+
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            document.getElementById('modalServicioClose').addEventListener('click', function() {
+                document.getElementById('modalServicioDetalles').classList.remove('active');
+                document.body.style.overflow = '';
+                document.getElementById('modalServicioVideo').src = '';
             });
-        }
-        
-        const { error: updateError } = await supabase
-            .from('turnos')
-            .update({
-                estado: 'confirmado',
-                confirmado: true,
-                fecha_confirmacion: new Date().toISOString()
-            })
-            .eq('id', id);
-        
-        if (updateError) {
-            console.error('Error confirmando turno:', updateError);
-            return res.status(500).json({ error: 'Error al confirmar turno' });
-        }
-        
-        res.json({ 
-            success: true, 
-            mensaje: 'Turno confirmado exitosamente',
-            estado: 'confirmado'
-        });
-    } catch (e) {
-        console.error('Error en /api/turnos/confirmar:', e);
-        res.status(500).json({ error: 'Error interno' });
-    }
-});
 
-// ============================================================
-// ⭐ CANCELAR TURNO
-// ============================================================
-app.post('/api/turnos/cancelar/:id', async (req, res) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(401).json({ error: 'No autorizado' });
-    }
-    
-    const token = authHeader.substring(7);
-    const id = req.params.id;
-    const { motivo } = req.body;
-    
-    try {
-        const usuario = await db.getUsuarioByToken(token);
-        if (!usuario) {
-            return res.status(401).json({ error: 'Usuario no encontrado' });
-        }
-        
-        const { data: turno, error: turnoError } = await supabase
-            .from('turnos')
-            .select('*')
-            .eq('id', id)
-            .maybeSingle();
-        
-        if (turnoError || !turno) {
-            return res.status(404).json({ error: 'Turno no encontrado' });
-        }
-        
-        // Verificar que el turno pertenece al usuario
-        if (turno.usuario_id && turno.usuario_id !== usuario.id) {
-            return res.status(403).json({ error: 'No tienes permiso para cancelar este turno' });
-        }
-        if (!turno.usuario_id && turno.nombre !== usuario.nombre) {
-            return res.status(403).json({ error: 'No tienes permiso para cancelar este turno' });
-        }
-        
-        if (turno.estado === 'cancelado' || turno.estado === 'cancelado_automatico') {
-            return res.status(400).json({ error: 'Este turno ya fue cancelado' });
-        }
-        
-        if (turno.estado === 'cancelacion_solicitada') {
-            return res.status(400).json({ error: 'Ya solicitaste la cancelación de este turno' });
-        }
-        
-        const fechaTurno = new Date(turno.fecha);
-        const horaTurno = parseInt(turno.hora);
-        fechaTurno.setHours(horaTurno, 0, 0, 0);
-        const ahora = new Date();
-        const diffHoras = (fechaTurno.getTime() - ahora.getTime()) / (1000 * 60 * 60);
-        
-        if (diffHoras < 2) {
-            return res.status(400).json({ 
-                error: 'Solo puedes cancelar el turno con 2 horas de anticipación',
-                tiempoRestante: diffHoras
+            document.getElementById('modalServicioDetalles').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                    document.body.style.overflow = '';
+                    document.getElementById('modalServicioVideo').src = '';
+                }
             });
-        }
-        
-        const { error: updateError } = await supabase
-            .from('turnos')
-            .update({
-                estado: 'cancelacion_solicitada',
-                motivo_cancelacion: motivo || 'Cancelado por el usuario',
-                fecha_cancelacion: new Date().toISOString()
-            })
-            .eq('id', id);
-        
-        if (updateError) {
-            console.error('Error cancelando turno:', updateError);
-            return res.status(500).json({ error: 'Error al cancelar turno' });
-        }
-        
-        const mensaje = `❌ *CANCELACIÓN DE TURNO*\n\nHola ${turno.nombre}, tu solicitud de cancelación ha sido registrada.\n\n📅 *Fecha:* ${turno.fecha}\n⏰ *Hora:* ${turno.hora}:00 hs\n💆 *Servicio:* ${turno.massage_type}\n🔑 *Código de cancelación:* ${turno.codigo_cancelacion}\n\nTe confirmaremos la cancelación en breve.`;
-        const numero = `${turno.codigo_pais || '53'}${turno.telefono}`;
-        const whatsappUrl = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
-        
-        res.json({ 
-            success: true, 
-            mensaje: 'Solicitud de cancelación enviada',
-            estado: 'cancelacion_solicitada',
-            whatsappUrl: whatsappUrl
-        });
-    } catch (e) {
-        console.error('Error en /api/turnos/cancelar:', e);
-        res.status(500).json({ error: 'Error interno' });
-    }
-});
 
-// ============================================================
-// ⭐ CONFIRMAR CANCELACIÓN (Admin)
-// ============================================================
-app.post('/api/turnos/confirmar-cancelacion/:id', verifyAuth, async (req, res) => {
-    try {
-        const id = req.params.id;
-        const { motivo } = req.body;
-        
-        const { data: turno, error: turnoError } = await supabase
-            .from('turnos')
-            .select('*')
-            .eq('id', id)
-            .maybeSingle();
-        
-        if (turnoError || !turno) {
-            return res.status(404).json({ error: 'Turno no encontrado' });
-        }
-        
-        if (turno.estado !== 'cancelacion_solicitada') {
-            return res.status(400).json({ error: 'Este turno no tiene una solicitud de cancelación pendiente' });
-        }
-        
-        const { error: updateError } = await supabase
-            .from('turnos')
-            .update({
-                estado: 'cancelado',
-                motivo_cancelacion: motivo || 'Confirmado por administrador',
-                fecha_cancelacion: new Date().toISOString()
-            })
-            .eq('id', id);
-        
-        if (updateError) {
-            console.error('Error confirmando cancelación:', updateError);
-            return res.status(500).json({ error: 'Error al confirmar cancelación' });
-        }
-        
-        res.json({ success: true, mensaje: 'Cancelación confirmada' });
-    } catch (e) {
-        console.error('Error en /api/turnos/confirmar-cancelacion:', e);
-        res.status(500).json({ error: 'Error interno' });
-    }
-});
+            // ============================================================
+            // UTILIDADES
+            // ============================================================
+            function escapeHtml(str) {
+                if (!str) return '';
+                const d = document.createElement('div');
+                d.textContent = str;
+                return d.innerHTML;
+            }
 
-// ============================================================
-// ⭐ VERIFICAR TURNOS PARA CANCELACIÓN AUTOMÁTICA
-// ============================================================
-async function verificarTurnosAutomaticamente() {
-    try {
-        const ahora = new Date();
-        const horasParaConfirmar = 2;
-        
-        const { data: turnos, error } = await supabase
-            .from('turnos')
-            .select('*')
-            .eq('estado', 'pendiente')
-            .eq('confirmado', false)
-            .gte('fecha', new Date().toISOString().split('T')[0]);
-        
-        if (error) {
-            console.error('Error obteniendo turnos para verificar:', error);
-            return { cancelados: 0 };
-        }
-        
-        let cancelados = 0;
-        
-        for (const turno of turnos || []) {
-            const fechaTurno = new Date(turno.fecha);
-            const horaTurno = parseInt(turno.hora);
-            fechaTurno.setHours(horaTurno, 0, 0, 0);
-            
-            const diffHoras = (fechaTurno.getTime() - ahora.getTime()) / (1000 * 60 * 60);
-            
-            if (diffHoras < horasParaConfirmar && diffHoras > 0) {
-                const { error: updateError } = await supabase
-                    .from('turnos')
-                    .update({
-                        estado: 'cancelado_automatico',
-                        motivo_cancelacion: `Cancelado automáticamente por no confirmar (${horasParaConfirmar}h antes)`,
-                        fecha_cancelacion: new Date().toISOString()
-                    })
-                    .eq('id', turno.id);
+            function initScrollReveal() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add(
+                        'visible'); });
+                }, { threshold: 0.1 });
+                document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+            }
+
+            function formatearFecha(fecha) {
+                if (!fecha) return '';
+                const dias = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+                const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre',
+                    'octubre', 'noviembre', 'diciembre'
+                ];
+                return `${dias[fecha.getDay()]} ${fecha.getDate()} de ${meses[fecha.getMonth()]}`;
+            }
+
+            function formatearFechaCorta(fecha) {
+                if (!fecha) return '';
+                const y = fecha.getFullYear();
+                const m = String(fecha.getMonth() + 1).padStart(2, '0');
+                const d = String(fecha.getDate()).padStart(2, '0');
+                return `${y}-${m}-${d}`;
+            }
+
+            function getDiaSemana(fecha) {
+                const dias = ['domingo', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+                return dias[fecha.getDay()];
+            }
+
+            // ============================================================
+            // CALENDARIO - CORREGIDO DEFINITIVAMENTE
+            // ============================================================
+            function renderCalendar() {
+                const grid = document.getElementById('calendarGrid');
+                const display = document.getElementById('monthYearDisplay');
+                if (!grid) return;
+
+                // ⭐ OBTENER FECHA ACTUAL CORRECTA
+                const hoy = new Date();
+                hoy.setHours(0, 0, 0, 0);
+                const hoyStr = formatearFechaCorta(hoy);
                 
-                if (!updateError) {
-                    cancelados++;
-                    console.log(`🔄 Turno ${turno.id} cancelado automáticamente (no confirmado)`);
+                const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre',
+                    'Octubre', 'Noviembre', 'Diciembre'
+                ];
+                display.textContent = `${meses[mesActual]} ${anioActual}`;
+
+                debugLog(`📅 Renderizando: ${meses[mesActual]} ${anioActual} - Hoy: ${hoyStr}`, 'info');
+
+                const primerDia = new Date(anioActual, mesActual, 1);
+                const ultimoDia = new Date(anioActual, mesActual + 1, 0);
+                const diasEnMes = ultimoDia.getDate();
+                const diaInicioSemana = primerDia.getDay();
+
+                const diasSemana = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'];
+                let html = diasSemana.map(d => `<div class="day-name">${d}</div>`).join('');
+
+                let diasLaborales = horariosGlobal.dias || ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+
+                let disponiblesCount = 0;
+                let ocupadosCount = 0;
+                let pasadosCount = 0;
+
+                for (let i = 0; i < diaInicioSemana; i++) {
+                    html += `<div class="day-cell empty"></div>`;
+                }
+
+                for (let d = 1; d <= diasEnMes; d++) {
+                    const fecha = new Date(anioActual, mesActual, d);
+                    fecha.setHours(0, 0, 0, 0);
+                    const fechaStr = formatearFechaCorta(fecha);
+                    const diaSemana = getDiaSemana(fecha);
+                    const esHoy = fechaStr === hoyStr;
+                    
+                    // ⭐ CRITERIO CORREGIDO: SOLO es pasado si es ANTES de hoy
+                    const esPasado = fecha.getTime() < hoy.getTime();
+                    const esFuturo = fecha.getTime() >= hoy.getTime();
+
+                    const esLaboral = diasLaborales.includes(diaSemana);
+
+                    let clases = 'day-cell';
+                    if (esHoy) clases += ' today';
+
+                    // ⭐ Si es pasado, marcar como past
+                    if (esPasado) {
+                        clases += ' past';
+                        pasadosCount++;
+                    } else if (!esLaboral) {
+                        clases += ' full';
+                        ocupadosCount++;
+                    } else {
+                        // ⭐ FILTRAR TURNOS CORRECTAMENTE
+                        const ocupados = turnosExistentes
+                            .filter(t => {
+                                const tDia = t.dia ? t.dia.toLowerCase() : '';
+                                const tFecha = t.fecha || '';
+                                return tDia === diaSemana && tFecha === fechaStr;
+                            })
+                            .map(t => t.hora);
+                        
+                        const horariosDelDia = horariosGlobal.horarios || [];
+                        const disponibles = horariosDelDia.filter(h => {
+                            const horaNum = parseInt(h.split(':')[0]);
+                            return !ocupados.includes(horaNum);
+                        });
+                        
+                        if (disponibles.length > 0) {
+                            clases += ' available';
+                            disponiblesCount++;
+                        } else {
+                            clases += ' full';
+                            ocupadosCount++;
+                        }
+                    }
+
+                    if (fechaSeleccionada && fechaStr === formatearFechaCorta(fechaSeleccionada)) {
+                        clases += ' selected';
+                    }
+
+                    html += `<div class="${clases}" data-fecha="${fechaStr}" data-dia="${diaSemana}" role="gridcell">${d}</div>`;
+                }
+
+                grid.innerHTML = html;
+
+                debugLog(`📅 Resultado: ${disponiblesCount} disponibles, ${ocupadosCount} ocupados, ${pasadosCount} pasados`, 'info');
+
+                // ⭐ Eventos solo para disponibles o seleccionadas
+                document.querySelectorAll('.day-cell.available, .day-cell.selected').forEach(cell => {
+                    cell.addEventListener('click', function() {
+                        const fechaStr = this.dataset.fecha;
+                        const dia = this.dataset.dia;
+                        if (!fechaStr) return;
+                        const [y, m, d] = fechaStr.split('-').map(Number);
+                        const fechaObj = new Date(y, m - 1, d);
+                        fechaObj.setHours(0, 0, 0, 0);
+                        
+                        const hoy = new Date();
+                        hoy.setHours(0, 0, 0, 0);
+                        if (fechaObj.getTime() < hoy.getTime()) {
+                            debugLog(`⚠️ Intento de seleccionar fecha pasada: ${fechaStr}`, 'warning');
+                            showToast('⚠️ No puedes seleccionar una fecha pasada', 'warning');
+                            return;
+                        }
+                        
+                        debugLog(`📅 Fecha seleccionada: ${fechaStr} (${dia})`, 'success');
+                        seleccionarFecha(fechaObj, dia);
+                    });
+                    cell.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.click();
+                        }
+                    });
+                    cell.setAttribute('tabindex', '0');
+                    cell.setAttribute('role', 'gridcell');
+                });
+
+                const hoyDate = new Date();
+                document.getElementById('prevMonth').disabled = (anioActual === hoyDate.getFullYear() && mesActual <=
+                    hoyDate.getMonth());
+                document.getElementById('nextMonth').disabled = (anioActual === hoyDate.getFullYear() && mesActual >=
+                    hoyDate.getMonth() + 2);
+            }
+
+            function seleccionarFecha(fecha, dia) {
+                fechaSeleccionada = fecha;
+                diaSeleccionado = dia;
+
+                document.getElementById('fechaSeleccionada').value = formatearFechaCorta(fecha);
+                document.getElementById('diaSeleccionado').value = dia;
+                document.getElementById('fechaSeleccionadaDisplay').textContent = `📅 Fecha seleccionada: ${formatearFecha(fecha)}`;
+
+                document.getElementById('calendarWrapper').classList.remove('error', 'success');
+                document.getElementById('fechaHint').className = 'validation-hint';
+
+                renderCalendar();
+                mostrarHorariosDisponibles(fecha, dia);
+            }
+
+            // ============================================================
+            // HORARIOS DISPONIBLES
+            // ============================================================
+            async function mostrarHorariosDisponibles(fecha, dia) {
+                const container = document.getElementById('horariosContainer');
+                const group = document.getElementById('horariosGroup');
+                const horaInput = document.getElementById('horaSeleccionada');
+                horaInput.value = '';
+
+                if (!fecha || !dia) {
+                    group.style.display = 'none';
+                    return;
+                }
+
+                const tipoServicio = document.querySelector('input[name="tipoServicio"]:checked');
+                const modalidad = tipoServicio ? tipoServicio.value : 'salon';
+                const fechaStr = formatearFechaCorta(fecha);
+
+                debugLog(`⏰ Buscando horarios para ${fechaStr} (${dia}) modalidad: ${modalidad}`, 'info');
+
+                try {
+                    const response = await fetch(
+                        `/api/horarios-disponibles?fecha=${fechaStr}&dia=${dia}&modalidad=${modalidad}`);
+                    const data = await response.json();
+
+                    debugLog(`📋 Horarios disponibles: ${data.disponibles?.length || 0}`, 'info');
+
+                    if (data.mensaje === 'Día no laboral' || data.mensaje === 'Servicio a domicilio no disponible' ||
+                        data.mensaje === 'Servicio en salón no disponible') {
+                        group.style.display = 'block';
+                        container.innerHTML = `<span style="color:#e74c3c;font-size:.9rem;">${data.mensaje}</span>`;
+                        debugLog(`⚠️ ${data.mensaje}`, 'warning');
+                        return;
+                    }
+
+                    if (!data.disponibles || data.disponibles.length === 0) {
+                        group.style.display = 'block';
+                        container.innerHTML =
+                            `<span style="color:#e74c3c;font-size:.9rem;">No hay horarios disponibles para ${dia}.</span>`;
+                        debugLog(`⚠️ No hay horarios disponibles para ${dia}`, 'warning');
+                        return;
+                    }
+
+                    const ahora = new Date();
+                    const horaActual = ahora.getHours();
+                    const fechaHoy = new Date();
+                    fechaHoy.setHours(0, 0, 0, 0);
+                    const fechaSeleccionadaObj = new Date(fecha);
+                    fechaSeleccionadaObj.setHours(0, 0, 0, 0);
+                    const esHoy = fechaSeleccionadaObj.getTime() === fechaHoy.getTime();
+
+                    group.style.display = 'block';
+                    container.innerHTML = data.disponibles.map(h => {
+                        const horaNum = h.hora;
+                        let deshabilitado = false;
+                        let claseExtra = '';
+                        if (esHoy && horaNum <= horaActual) {
+                            deshabilitado = true;
+                            claseExtra = 'disabled';
+                        }
+                        const estaSeleccionado = (horaSeleccionada === horaNum && !deshabilitado);
+                        return `<button type="button" class="hora-btn ${estaSeleccionado ? 'selected' : ''} ${claseExtra}" data-hora="${horaNum}" ${deshabilitado ? 'disabled' : ''} role="button">
+                            ${h.horaStr} ${deshabilitado ? '⏰' : ''}
+                        </button>`;
+                    }).join('');
+
+                    container.querySelectorAll('.hora-btn:not([disabled])').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            container.querySelectorAll('.hora-btn').forEach(b => b.classList.remove('selected'));
+                            this.classList.add('selected');
+                            horaSeleccionada = parseInt(this.dataset.hora);
+                            document.getElementById('horaSeleccionada').value = horaSeleccionada;
+                            document.getElementById('horaHint').className = 'validation-hint';
+                            debugLog(`⏰ Hora seleccionada: ${horaSeleccionada}:00`, 'success');
+                        });
+                        btn.addEventListener('keydown', function(e) {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                this.click();
+                            }
+                        });
+                        btn.setAttribute('tabindex', '0');
+                    });
+
+                    const hayDeshabilitados = container.querySelectorAll('.hora-btn.disabled').length > 0;
+                    if (hayDeshabilitados && esHoy) {
+                        const infoMsg = document.createElement('div');
+                        infoMsg.style.cssText = 'font-size:0.7rem;color:var(--text-muted);margin-top:0.3rem;';
+                        infoMsg.innerHTML = `<i class="fas fa-info-circle"></i> Las horas en gris ya pasaron y no están disponibles.`;
+                        container.appendChild(infoMsg);
+                        debugLog(`⏰ ${hayDeshabilitados} horas deshabilitadas por ser pasadas (hoy)`, 'info');
+                    }
+
+                    if (horaSeleccionada !== null) {
+                        container.querySelectorAll('.hora-btn:not([disabled])').forEach(b => {
+                            if (parseInt(b.dataset.hora) === horaSeleccionada) {
+                                b.classList.add('selected');
+                            }
+                        });
+                    }
+
+                } catch (error) {
+                    debugLog(`❌ Error cargando horarios: ${error.message}`, 'error');
+                    group.style.display = 'block';
+                    container.innerHTML =
+                        '<span style="color:#e74c3c;font-size:.9rem;">Error al cargar horarios disponibles.</span>';
                 }
             }
-        }
-        
-        return { cancelados };
-    } catch (e) {
-        console.error('Error en verificarTurnosAutomaticamente:', e);
-        return { cancelados: 0 };
-    }
-}
 
-// ⭐ EJECUTAR VERIFICACIÓN AUTOMÁTICA CADA 10 MINUTOS
-setInterval(async () => {
-    try {
-        const { cancelados } = await verificarTurnosAutomaticamente();
-        if (cancelados > 0) {
-            console.log(`🔄 ${cancelados} turnos cancelados automáticamente por no confirmar`);
-        }
-    } catch (e) {
-        console.error('Error en verificación automática:', e);
-    }
-}, 10 * 60 * 1000);
+            // ============================================================
+            // DOMICILIO CONDICIONAL
+            // ============================================================
+            document.querySelectorAll('input[name="tipoServicio"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const group = document.getElementById('direccionGroup');
+                    const input = document.getElementById('direccionDomicilio');
+                    const display = document.getElementById('direccionSalonDisplay');
 
-setTimeout(async () => {
-    try {
-        const { cancelados } = await verificarTurnosAutomaticamente();
-        if (cancelados > 0) {
-            console.log(`🔄 ${cancelados} turnos cancelados automáticamente al inicio`);
-        }
-    } catch (e) {
-        console.error('Error en verificación inicial:', e);
-    }
-}, 5000);
+                    if (this.value === 'domicilio') {
+                        group.style.display = 'block';
+                        input.required = true;
+                        display.style.display = 'none';
+                        debugLog('📍 Modo domicilio activado', 'info');
+                    } else {
+                        group.style.display = 'none';
+                        input.required = false;
+                        if (ubicacionSalon) {
+                            display.style.display = 'flex';
+                        }
+                        debugLog('📍 Modo salón activado', 'info');
+                    }
 
-app.post('/api/turnos/verificar-automatico', verifyAuth, async (req, res) => {
-    try {
-        const { cancelados } = await verificarTurnosAutomaticamente();
-        res.json({ 
-            success: true, 
-            mensaje: `${cancelados} turnos cancelados automáticamente`,
-            cancelados: cancelados
-        });
-    } catch (e) {
-        console.error('Error en /api/turnos/verificar-automatico:', e);
-        res.status(500).json({ error: 'Error interno' });
-    }
-});
+                    if (fechaSeleccionada && diaSeleccionado) {
+                        mostrarHorariosDisponibles(fechaSeleccionada, diaSeleccionado);
+                    }
+                });
+            });
 
-// ============================================================
-// ⭐ RESERVAS (legado - compatibilidad)
-// ============================================================
-app.get('/api/reservas/mias', async (req, res) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(401).json({ error: 'No autorizado' });
-    }
-    
-    const token = authHeader.substring(7);
-    try {
-        const usuario = await db.getUsuarioByToken(token);
-        if (!usuario) {
-            return res.status(401).json({ error: 'Usuario no encontrado' });
-        }
-        
-        const { data, error } = await supabase
-            .from('turnos')
-            .select('*')
-            .eq('nombre', usuario.nombre)
-            .order('fecha_creacion', { ascending: false });
-        
-        if (error) {
-            console.error('Error obteniendo reservas:', error);
-            return res.json([]);
-        }
-        
-        const reservas = (data || []).map(t => ({
-            id: t.id,
-            codigo: t.codigo_cancelacion || t.id.slice(0, 8).toUpperCase(),
-            codigoCancelacion: t.codigo_cancelacion || t.id.slice(0, 8).toUpperCase(),
-            servicio: t.massage_type || 'Masaje',
-            precio: t.precio || '',
-            localidad: t.ubicacion || 'Salón Serenity Spa',
-            fecha: t.fecha || '',
-            hora: t.hora !== undefined && t.hora !== null ? `${t.hora}:00` : '',
-            estado: t.estado || 'pendiente',
-            confirmado: t.confirmado || false,
-            fechaReserva: t.fecha_creacion || new Date().toISOString(),
-            telefono: t.telefono || '',
-            nombre: t.nombre || '',
-            dia: t.dia || '',
-            tipo_servicio: t.tipo_servicio || 'salon',
-            ip: t.ip || 'N/A',
-            conteo_bloqueos: t.conteo_bloqueos || 0,
-            bloqueado: t.bloqueado || false
-        }));
-        
-        res.json(reservas);
-    } catch (e) {
-        console.error('Error en /api/reservas/mias:', e);
-        res.json([]);
-    }
-});
+            // ============================================================
+            // NAVEGACIÓN CALENDARIO
+            // ============================================================
+            document.getElementById('prevMonth').addEventListener('click', function() {
+                const hoy = new Date();
+                if (anioActual > hoy.getFullYear() || (anioActual === hoy.getFullYear() && mesActual > hoy.getMonth())) {
+                    mesActual--;
+                    if (mesActual < 0) { mesActual = 11;
+                        anioActual--; }
+                    renderCalendar();
+                    debugLog(`📅 Mes anterior: ${mesActual+1}/${anioActual}`, 'info');
+                }
+            });
 
-// ============================================================
-// RUTAS DE SEGURIDAD PARA ADMIN
-// ============================================================
-app.get('/api/seguridad/ataques', verifyAuth, security.getAtaques);
-app.get('/api/seguridad/bloqueos', verifyAuth, security.getBloqueos);
-app.delete('/api/seguridad/bloqueos/:ip', verifyAuth, security.desbloquearIPAdmin);
-app.post('/api/seguridad/bloquear', verifyAuth, security.bloquearIPAdmin);
-app.put('/api/seguridad/ataques/:id/resolver', verifyAuth, security.resolverAtaque);
-app.delete('/api/seguridad/ataques/:id', verifyAuth, security.eliminarAtaque);
-app.get('/api/seguridad/estadisticas', verifyAuth, security.getEstadisticasSeguridad);
+            document.getElementById('nextMonth').addEventListener('click', function() {
+                const hoy = new Date();
+                if (anioActual < hoy.getFullYear() || (anioActual === hoy.getFullYear() && mesActual < hoy.getMonth() +
+                    2)) {
+                    mesActual++;
+                    if (mesActual > 11) { mesActual = 0;
+                        anioActual++; }
+                    renderCalendar();
+                    debugLog(`📅 Mes siguiente: ${mesActual+1}/${anioActual}`, 'info');
+                }
+            });
 
-// ============================================================
-// INICIAR SERVIDOR
-// ============================================================
-console.log(`🚀 Iniciando servidor en puerto ${PORT}...`);
-console.log(`📂 Servidor ejecutándose en: ${__dirname}`);
-console.log(`📂 Sirviendo archivos desde: ${BASE_DIR}`);
+            // ============================================================
+            // VALIDACIÓN Y ENVÍO DE RESERVA
+            // ============================================================
+            function validarFormularioReserva() {
+                const nombre = document.getElementById('clienteNombre');
+                const telefono = document.getElementById('clienteTelefono');
+                const massageType = document.getElementById('tipoMasaje');
+                const fechaInput = document.getElementById('fechaSeleccionada');
+                const diaInput = document.getElementById('diaSeleccionado');
+                const horaInput = document.getElementById('horaSeleccionada');
+                const terminos = document.getElementById('aceptarTerminos');
+                const tipoServicio = document.querySelector('input[name="tipoServicio"]:checked');
+                const direccion = document.getElementById('direccionDomicilio');
 
-const server = app.listen(PORT, '0.0.0.0', async () => {
-    console.log('🌿 ==========================================');
-    console.log(`🌿 Serenity Spa iniciado en puerto ${PORT}`);
-    console.log('🌿 ==========================================');
-    console.log('✅ Servidor listo para recibir peticiones');
-    console.log(`📍 http://localhost:${PORT}`);
-    console.log(`📂 Sirviendo archivos desde: ${BASE_DIR}`);
-    
-    const checkFiles = ['index.html', 'asistente.html', 'admin.html'];
-    for (const file of checkFiles) {
-        const filePath = path.join(BASE_DIR, file);
-        if (fs.existsSync(filePath)) {
-            console.log(`✅ ${file} encontrado en: ${filePath}`);
-        } else {
-            console.warn(`⚠️ ${file} NO encontrado en: ${filePath}`);
-            const rootPath = path.join(__dirname, file);
-            if (fs.existsSync(rootPath)) {
-                console.log(`   → Encontrado en: ${rootPath}`);
+                let esValido = true;
+
+                document.querySelectorAll('.form-control').forEach(el => {
+                    el.classList.remove('error', 'success');
+                });
+                document.querySelectorAll('.validation-hint').forEach(el => {
+                    el.className = 'validation-hint';
+                });
+                document.querySelectorAll('.status-icon').forEach(el => {
+                    el.className = 'status-icon';
+                });
+                document.getElementById('calendarWrapper').classList.remove('error', 'success');
+                document.getElementById('terminosLabel').classList.remove('error');
+
+                if (!nombre.value.trim() || nombre.value.trim().length < 2) {
+                    nombre.classList.add('error');
+                    document.getElementById('nombreIcon').className = 'status-icon error';
+                    document.getElementById('nombreIcon').innerHTML = '<i class="fas fa-times-circle" aria-hidden="true"></i>';
+                    document.getElementById('nombreHint').className = 'validation-hint error';
+                    document.getElementById('nombreHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> El nombre es obligatorio (mínimo 2 caracteres).';
+                    esValido = false;
+                } else {
+                    nombre.classList.add('success');
+                    document.getElementById('nombreIcon').className = 'status-icon success';
+                    document.getElementById('nombreIcon').innerHTML = '<i class="fas fa-check-circle" aria-hidden="true"></i>';
+                }
+
+                const telefonoLimpio = telefono.value.replace(/\D/g, '');
+                if (!telefono.value.trim() || telefonoLimpio.length < 7) {
+                    telefono.classList.add('error');
+                    document.getElementById('telefonoIcon').className = 'status-icon error';
+                    document.getElementById('telefonoIcon').innerHTML = '<i class="fas fa-times-circle" aria-hidden="true"></i>';
+                    document.getElementById('telefonoHint').className = 'validation-hint error';
+                    document.getElementById('telefonoHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> El teléfono debe tener al menos 7 dígitos.';
+                    esValido = false;
+                } else {
+                    telefono.classList.add('success');
+                    document.getElementById('telefonoIcon').className = 'status-icon success';
+                    document.getElementById('telefonoIcon').innerHTML = '<i class="fas fa-check-circle" aria-hidden="true"></i>';
+                }
+
+                if (!massageType.value) {
+                    massageType.classList.add('error');
+                    document.getElementById('masajeHint').className = 'validation-hint error';
+                    document.getElementById('masajeHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Debes seleccionar un tipo de masaje.';
+                    esValido = false;
+                } else {
+                    massageType.classList.add('success');
+                }
+
+                if (!fechaInput.value || !diaInput.value) {
+                    document.getElementById('calendarWrapper').classList.add('error');
+                    document.getElementById('fechaHint').className = 'validation-hint error';
+                    document.getElementById('fechaHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Debes seleccionar una fecha disponible.';
+                    esValido = false;
+                } else {
+                    const fechaSeleccionadaObj = new Date(fechaInput.value);
+                    const hoy = new Date();
+                    hoy.setHours(0, 0, 0, 0);
+                    if (fechaSeleccionadaObj.getTime() < hoy.getTime()) {
+                        document.getElementById('calendarWrapper').classList.add('error');
+                        document.getElementById('fechaHint').className = 'validation-hint error';
+                        document.getElementById('fechaHint').innerHTML =
+                            '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> No puedes seleccionar una fecha pasada.';
+                        esValido = false;
+                    } else {
+                        document.getElementById('calendarWrapper').classList.add('success');
+                    }
+                }
+
+                if (!horaInput.value) {
+                    document.getElementById('horaHint').className = 'validation-hint error';
+                    document.getElementById('horaHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Debes seleccionar un horario disponible.';
+                    esValido = false;
+                } else {
+                    const fechaSeleccionadaObj = new Date(fechaInput.value);
+                    const hoy = new Date();
+                    hoy.setHours(0, 0, 0, 0);
+                    if (fechaSeleccionadaObj.getTime() === hoy.getTime()) {
+                        const horaActual = hoy.getHours();
+                        const horaSeleccionadaNum = parseInt(horaInput.value);
+                        if (horaSeleccionadaNum <= horaActual) {
+                            document.getElementById('horaHint').className = 'validation-hint error';
+                            document.getElementById('horaHint').innerHTML =
+                                '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> No puedes seleccionar una hora que ya pasó.';
+                            esValido = false;
+                        }
+                    }
+                }
+
+                if (tipoServicio && tipoServicio.value === 'domicilio') {
+                    if (!direccion.value.trim() || direccion.value.trim().length < 5) {
+                        direccion.classList.add('error');
+                        document.getElementById('direccionIcon').className = 'status-icon error';
+                        document.getElementById('direccionIcon').innerHTML = '<i class="fas fa-times-circle" aria-hidden="true"></i>';
+                        document.getElementById('direccionHint').className = 'validation-hint error';
+                        document.getElementById('direccionHint').innerHTML =
+                            '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Para el servicio a domicilio, ingresa una dirección completa.';
+                        esValido = false;
+                    } else {
+                        direccion.classList.add('success');
+                        document.getElementById('direccionIcon').className = 'status-icon success';
+                        document.getElementById('direccionIcon').innerHTML = '<i class="fas fa-check-circle" aria-hidden="true"></i>';
+                    }
+                }
+
+                if (!terminos.checked) {
+                    document.getElementById('terminosLabel').classList.add('error');
+                    document.getElementById('terminosHint').className = 'validation-hint error';
+                    document.getElementById('terminosHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Debes aceptar los Términos y Condiciones.';
+                    esValido = false;
+                }
+
+                if (!esValido) {
+                    const primerError = document.querySelector(
+                        '.form-control.error, .calendar-wrapper.error, .terminos-group label.error');
+                    if (primerError) {
+                        primerError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    return { valido: false, errores: [] };
+                }
+
+                return {
+                    valido: true,
+                    datos: {
+                        nombre: nombre.value.trim(),
+                        telefono: telefonoLimpio,
+                        massageType: massageType.value,
+                        fecha: fechaInput.value,
+                        dia: diaInput.value,
+                        hora: parseInt(horaInput.value),
+                        tipoServicio: tipoServicio.value,
+                        terminos: terminos.checked
+                    }
+                };
             }
-        }
-    }
-});
 
-server.on('error', (error) => {
-    console.error('❌ Error en el servidor:', error);
-    if (error.code === 'EADDRINUSE') {
-        console.error(`❌ El puerto ${PORT} ya está en uso`);
-        process.exit(1);
-    }
-});
+            document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                document.getElementById('mensajeResultado').style.display = 'none';
 
-process.on('SIGTERM', () => {
-    console.log('🛑 Recibido SIGTERM, cerrando servidor...');
-    server.close(() => {
-        console.log('✅ Servidor cerrado');
-        process.exit(0);
-    });
-});
+                const validacion = validarFormularioReserva();
+                if (!validacion.valido) return;
 
-module.exports = app;
+                if (!usuarioLogueado) {
+                    sessionStorage.setItem('reservaPendiente', JSON.stringify(validacion.datos));
+                    abrirModalRegistro();
+                    mostrarMensajeAuth1('info',
+                        '📝 Para completar tu reserva, primero debes registrarte o iniciar sesión.');
+                    debugLog('📝 Reserva pendiente, usuario no logueado', 'warning');
+                    return;
+                }
+
+                debugLog('📝 Procesando reserva...', 'info', validacion.datos);
+                await procesarReserva(validacion.datos);
+            });
+
+            // ============================================================
+            // PROCESAR RESERVA
+            // ============================================================
+            async function procesarReserva(datos) {
+                const { nombre, telefono, massageType, fecha, dia, hora, tipoServicio } = datos;
+                const pais = document.getElementById('clientePais').value;
+                const direccion = document.getElementById('direccionDomicilio').value.trim();
+
+                const ocupado = turnosExistentes.some(t => {
+                    if (t.fecha) {
+                        return t.dia === dia && t.fecha === fecha && t.hora === hora;
+                    }
+                    return t.dia === dia && t.hora === hora;
+                });
+
+                if (ocupado) {
+                    document.getElementById('calendarWrapper').classList.add('error');
+                    document.getElementById('fechaHint').className = 'validation-hint error';
+                    document.getElementById('fechaHint').innerHTML =
+                        '<i class="fas fa-exclamation-circle" aria-hidden="true"></i> Este horario ya fue reservado. Selecciona otro.';
+                    debugLog(`❌ Horario ocupado: ${fecha} ${dia} ${hora}:00`, 'error');
+                    await cargarTurnos();
+                    if (fechaSeleccionada && diaSeleccionado) {
+                        mostrarHorariosDisponibles(fechaSeleccionada, diaSeleccionado);
+                    }
+                    return;
+                }
+
+                const ubicacionFinal = tipoServicio === 'domicilio' ? direccion : (ubicacionSalon || 'Salón Serenity Spa');
+                const datosEnvio = {
+                    nombre: nombre,
+                    dia: dia,
+                    fecha: fecha,
+                    hora: hora,
+                    massageType: massageType,
+                    telefono: telefono,
+                    codigoPais: pais || '53',
+                    ubicacion: ubicacionFinal,
+                    tipoServicio: tipoServicio
+                };
+
+                debugLog(`📤 Enviando reserva: ${nombre} - ${massageType} - ${fecha} ${hora}:00`, 'info');
+
+                const btn = document.getElementById('submitReserva');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="spinner"></span> Procesando...';
+                btn.disabled = true;
+
+                try {
+                    const token = getToken();
+                    const headers = { 'Content-Type': 'application/json' };
+                    if (token) {
+                        headers['Authorization'] = 'Bearer ' + token;
+                        debugLog('✅ Token incluido en la reserva', 'success');
+                    }
+
+                    const response = await fetch('/turnos', {
+                        method: 'POST',
+                        headers: headers,
+                        body: JSON.stringify(datosEnvio)
+                    });
+                    const data = await response.json();
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+
+                    if (response.ok) {
+                        debugLog(`✅ Reserva exitosa: ${data.codigoCancelacion}`, 'success');
+                        
+                        const tipoTexto = datosEnvio.tipoServicio === 'domicilio' ?
+                            `📍 Dirección: ${datosEnvio.ubicacion}` :
+                            `📍 En nuestro salón: ${ubicacionSalon || 'Serenity Spa'}`;
+
+                        mostrarMensaje('success', `
+                            ✅ <strong>¡TURNO CONFIRMADO!</strong><br><br>
+                            📅 <strong>Día:</strong> ${dia}<br>
+                            📆 <strong>Fecha:</strong> ${fecha}<br>
+                            ⏰ <strong>Hora:</strong> ${datosEnvio.hora}:00 hs<br>
+                            💆 <strong>Masaje:</strong> ${datosEnvio.massageType}<br>
+                            ${tipoTexto}<br>
+                            📱 <strong>Teléfono:</strong> +${datosEnvio.codigoPais} ${datosEnvio.telefono}<br><br>
+                            🔑 <strong>Código de cancelación:</strong> <strong>${data.codigoCancelacion || 'N/A'}</strong><br><br>
+                            🌿 <strong>Te esperamos en Serenity Spa</strong>
+                        `);
+
+                        try {
+                            const misReservas = JSON.parse(localStorage.getItem('misReservas') || '[]');
+                            const nuevoTurno = {
+                                id: data.turno?.id || Date.now().toString(36),
+                                codigo: data.codigoCancelacion || 'N/A',
+                                codigoCancelacion: data.codigoCancelacion || 'N/A',
+                                servicio: datosEnvio.massageType,
+                                precio: '',
+                                localidad: datosEnvio.ubicacion,
+                                fecha: datosEnvio.fecha,
+                                hora: `${datosEnvio.hora}:00`,
+                                estado: 'pendiente',
+                                confirmado: false,
+                                fechaReserva: new Date().toISOString(),
+                                telefono: datosEnvio.telefono,
+                                nombre: datosEnvio.nombre,
+                                dia: datosEnvio.dia,
+                                tipo_servicio: datosEnvio.tipoServicio,
+                                usuario_id: null,
+                                imagen: null
+                            };
+                            misReservas.push(nuevoTurno);
+                            localStorage.setItem('misReservas', JSON.stringify(misReservas));
+                            debugLog('💾 Turno guardado en localStorage', 'success');
+                        } catch(e) {
+                            debugLog(`⚠️ Error guardando en localStorage: ${e.message}`, 'warning');
+                        }
+
+                        setTimeout(() => {
+                            mostrarNotificacionReserva();
+                            actualizarHeader();
+                        }, 300);
+
+                        fechaSeleccionada = null;
+                        diaSeleccionado = null;
+                        horaSeleccionada = null;
+                        document.getElementById('fechaSeleccionada').value = '';
+                        document.getElementById('diaSeleccionado').value = '';
+                        document.getElementById('horaSeleccionada').value = '';
+                        document.getElementById('fechaSeleccionadaDisplay').textContent = '';
+                        document.getElementById('horariosGroup').style.display = 'none';
+                        document.getElementById('horariosContainer').innerHTML = '';
+
+                        document.querySelectorAll('.form-control').forEach(el => {
+                            el.classList.remove('success');
+                        });
+                        document.getElementById('calendarWrapper').classList.remove('success');
+
+                        renderCalendar();
+                        await cargarTurnos();
+                    } else {
+                        debugLog(`❌ Error en reserva: ${data.error}`, 'error');
+                        mostrarMensaje('error', `❌ ${data.error || 'No se pudo completar la reserva.'}`);
+                        await cargarTurnos();
+                        if (fechaSeleccionada && diaSeleccionado) {
+                            mostrarHorariosDisponibles(fechaSeleccionada, diaSeleccionado);
+                        }
+                    }
+                } catch (error) {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    debugLog(`❌ Error de conexión en reserva: ${error.message}`, 'error');
+                    mostrarMensaje('error', '❌ Error de conexión. Verifica tu internet e intenta nuevamente.');
+                }
+            }
+
+            function mostrarMensaje(tipo, texto) {
+                const mensaje = document.getElementById('mensajeResultado');
+                const contenido = document.getElementById('mensajeContenido');
+                mensaje.className = `mensaje-reserva ${tipo}`;
+                contenido.innerHTML = texto;
+                mensaje.style.display = 'block';
+                mensaje.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            document.getElementById('cerrarMensajeBtn').addEventListener('click', function() {
+                const mensaje = document.getElementById('mensajeResultado');
+                mensaje.style.display = 'none';
+                mensaje.className = 'mensaje-reserva';
+                document.getElementById('mensajeContenido').textContent = '';
+            });
+
+            // ============================================================
+            // FUNCIONES DE MENSAJES MODAL
+            // ============================================================
+            function mostrarMensajeAuth1(tipo, texto) {
+                const msg = document.getElementById('authMessage1');
+                msg.className = `auth-message ${tipo}`;
+                msg.innerHTML = texto;
+                msg.style.display = 'block';
+            }
+
+            // ============================================================
+            // COMPARTIR
+            // ============================================================
+            document.querySelectorAll('.share-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const social = this.dataset.social;
+                    const url = encodeURIComponent(window.location.href);
+                    const text = encodeURIComponent('🌿 Descubre Serenity Spa - Masajes Profesionales');
+                    let shareUrl = '';
+                    switch (social) {
+                        case 'facebook':
+                            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                            break;
+                        case 'whatsapp':
+                            shareUrl = `https://api.whatsapp.com/send?text=${text}%20${url}`;
+                            break;
+                        case 'instagram':
+                            shareUrl = `https://www.instagram.com/`;
+                            break;
+                    }
+                    if (shareUrl) {
+                        window.open(shareUrl, '_blank', 'width=600,height=400');
+                        debugLog(`📤 Compartido en ${social}`, 'info');
+                    }
+                });
+            });
+
+            // ============================================================
+            // INICIALIZACIÓN
+            // ============================================================
+            async function init() {
+                debugLog('🚀 Iniciando Serenity Spa...', 'info');
+
+                // ⭐ FECHA ACTUAL
+                const hoy = new Date();
+                debugLog(`📅 FECHA DEL SISTEMA: ${hoy.toLocaleDateString()} ${hoy.toLocaleTimeString()}`, 'info');
+
+                // Tema
+                const savedTheme = getTheme();
+                setTheme(savedTheme);
+                document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+                // EmailJS
+                await cargarConfigEmailJS();
+
+                // Sesión
+                await verificarSesion();
+
+                // Notificación
+                setTimeout(mostrarNotificacionReserva, 500);
+
+                // ⭐ INICIALIZAR MES Y AÑO CON FECHA ACTUAL
+                mesActual = hoy.getMonth();
+                anioActual = hoy.getFullYear();
+                debugLog(`📅 Mes/Año: ${mesActual+1}/${anioActual}`, 'info');
+
+                // Carga de datos
+                const startTime = Date.now();
+                debugLog('⏳ Cargando datos...', 'info');
+                
+                await Promise.all([
+                    cargarUbicacionSalon(),
+                    cargarModalidades(),
+                    cargarHorarios(),
+                    cargarTurnos(),
+                    cargarServicios(),
+                    cargarTestimonios()
+                ]);
+
+                const elapsed = Date.now() - startTime;
+                debugLog(`✅ Datos cargados en ${elapsed}ms`, 'success');
+
+                renderCalendar();
+                initScrollReveal();
+
+                // ⭐ REFRESCAR TURNOS CADA 30 SEGUNDOS
+                setInterval(() => {
+                    if (!document.hidden) {
+                        debugLog('🔄 Refrescando turnos (intervalo)', 'info');
+                        cargarTurnos().catch(e => debugLog(`⚠️ Error en refresco: ${e.message}`, 'warning'));
+                    }
+                }, 30000);
+
+                debugLog('🌸 Serenity Spa listo', 'success');
+                showToast('✅ Sistema listo para reservar', 'success');
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+        })();
+    </script>
+
+</body>
+</html>
