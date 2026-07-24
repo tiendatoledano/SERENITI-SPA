@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Serenity Spa</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #0d0804; color: #e8d5b8; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+        .container { max-width: 400px; width: 100%; background: #1a1008; border: 1px solid rgba(201, 168, 122, 0.15); border-radius: 16px; padding: 2rem; }
+        h1 { color: #c9a87a; text-align: center; font-family: 'Georgia', serif; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.3rem; color: #a8906e; font-size: 0.85rem; }
+        input { width: 100%; padding: 0.7rem; border-radius: 8px; border: 1px solid rgba(201, 168, 122, 0.2); background: #0d0804; color: #e8d5b8; font-size: 0.95rem; }
+        .btn { width: 100%; padding: 0.8rem; background: #c9a87a; border: none; border-radius: 8px; color: #0d0804; font-weight: 700; font-size: 1rem; cursor: pointer; }
+        .btn:hover { background: #e8c98a; }
+        .back-link { display: block; text-align: center; margin-top: 1rem; color: #a8906e; text-decoration: none; }
+        .back-link:hover { color: #c9a87a; }
+        .error { color: #ff6b6b; text-align: center; margin-top: 0.5rem; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Acceso Admin</h1>
+        <form id="loginForm">
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" id="password" placeholder="Contraseña de administrador" required>
+            </div>
+            <button type="submit" class="btn">Ingresar</button>
+        </form>
+        <div class="error" id="errorMsg">❌ Contraseña incorrecta</div>
+        <a href="/" class="back-link">← Volver al inicio</a>
+    </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    sessionStorage.setItem('adminToken', data.token);
+                    window.location.href = '/admin';
+                } else {
+                    errorMsg.textContent = '❌ ' + (data.mensaje || 'Contraseña incorrecta');
+                    errorMsg.style.display = 'block';
+                }
+            } catch (error) {
+                errorMsg.textContent = '❌ Error de conexión';
+                errorMsg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
